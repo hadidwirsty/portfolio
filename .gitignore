@@ -14,6 +14,7 @@
 # next.js
 /.next/
 /out/
+.vercel/
 
 # production
 /build
@@ -51,4 +52,11 @@ docs/debugging/
 docs/plans/
 documents/
 pdf/
+pending-confirmations.md
+interview-prep.md
+.cv_personal_config.json
+.banned_words.json
+cv_templates/
+scripts/
+evidence-report.md
 

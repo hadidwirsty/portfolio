@@ -1,10 +1,10 @@
 "use client"
 
 import Image from "next/image"
-import { ArrowDown, Mail, Phone } from "lucide-react"
+import { ArrowDown, Globe, Mail } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { InstagramIcon, LinkedinIcon } from "@/components/icons"
+import { GithubIcon, LinkedinIcon } from "@/components/icons"
 import { profile, ui } from "@/lib/cv-data"
 import { useT } from "@/lib/language-context"
 
@@ -16,6 +16,7 @@ function HeroSection() {
   const downloadLabel = useT(ui.downloadCv)
   const contactLabel = useT(ui.contactMe)
   const availableLabel = useT(ui.availableFor)
+  const cvFile = useT(profile.cvFile)
 
   return (
     <section
@@ -49,7 +50,7 @@ function HeroSection() {
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Button size="lg" render={<a href={profile.cvFile} download />}>
+            <Button size="lg" render={<a href={cvFile} download />}>
               {downloadLabel}
             </Button>
             <Button variant="outline" size="lg" render={<a href="#contact" />}>
@@ -66,12 +67,6 @@ function HeroSection() {
               <Mail className="size-3.5" /> {profile.email}
             </a>
             <a
-              href={`tel:${profile.phoneHref}`}
-              className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
-            >
-              <Phone className="size-3.5" /> {profile.phoneDisplay}
-            </a>
-            <a
               href={profile.linkedin.href}
               target="_blank"
               rel="noreferrer"
@@ -80,12 +75,20 @@ function HeroSection() {
               <LinkedinIcon className="size-3.5" /> LinkedIn
             </a>
             <a
-              href={profile.instagram.href}
+              href={profile.github.href}
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
             >
-              <InstagramIcon className="size-3.5" /> Instagram
+              <GithubIcon className="size-3.5" /> GitHub
+            </a>
+            <a
+              href={profile.website.href}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
+            >
+              <Globe className="size-3.5" /> Website
             </a>
           </div>
         </div>

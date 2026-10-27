@@ -3,7 +3,7 @@
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { SectionHeading } from "@/components/section-heading"
-import { nav, projects, ui } from "@/lib/cv-data"
+import { nav, projects, ui, type Bi } from "@/lib/cv-data"
 import { useT } from "@/lib/language-context"
 
 function ProjectsSection() {
@@ -22,10 +22,16 @@ function ProjectsSection() {
   )
 }
 
+function ProjectBullet({ item }: { item: Bi }) {
+  const text = useT(item)
+  return <li>{text}</li>
+}
+
 function ProjectCard({ project }: { project: (typeof projects)[number] }) {
   const period = useT(project.period)
   const description = useT(project.description)
   const role = useT(project.role)
+  const company = useT(project.company)
   const roleLabel = useT(ui.role)
 
   return (
@@ -37,10 +43,17 @@ function ProjectCard({ project }: { project: (typeof projects)[number] }) {
             {period}
           </span>
         </div>
-        <p className="text-xs text-muted-foreground">{project.company}</p>
+        <p className="text-xs text-muted-foreground">{company}</p>
       </CardHeader>
       <CardContent>
         <p className="leading-relaxed text-muted-foreground">{description}</p>
+        {project.bullets && (
+          <ul className="my-2 list-disc space-y-1 pl-4 text-xs text-muted-foreground">
+            {project.bullets.map((b, idx) => (
+              <ProjectBullet key={idx} item={b} />
+            ))}
+          </ul>
+        )}
         <p className="text-foreground/80">
           <span className="text-muted-foreground">{roleLabel}: </span>
           {role}

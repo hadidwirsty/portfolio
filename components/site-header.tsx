@@ -23,6 +23,7 @@ const links = [
 function SiteHeader() {
   const [open, setOpen] = React.useState(false)
   const downloadLabel = useT(ui.downloadCv)
+  const cvFile = useT(profile.cvFile)
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/70 bg-background/80 backdrop-blur-md">
@@ -39,7 +40,7 @@ function SiteHeader() {
           <Button
             size="sm"
             className="hidden sm:inline-flex"
-            render={<a href={profile.cvFile} download />}
+            render={<a href={cvFile} download />}
           >
             <Download data-icon="inline-start" />
             {downloadLabel}
@@ -72,7 +73,7 @@ function SiteHeader() {
             ))}
             <div className="mt-2 flex items-center justify-between">
               <LanguageToggle />
-              <Button size="sm" render={<a href={profile.cvFile} download />}>
+              <Button size="sm" render={<a href={cvFile} download />}>
                 <Download data-icon="inline-start" />
                 {downloadLabel}
               </Button>

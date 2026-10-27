@@ -1,9 +1,9 @@
 "use client"
 
-import { Mail, Phone } from "lucide-react"
+import { Globe, Mail } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { InstagramIcon, LinkedinIcon } from "@/components/icons"
+import { GithubIcon, LinkedinIcon } from "@/components/icons"
 import { SectionHeading } from "@/components/section-heading"
 import { nav, profile, ui } from "@/lib/cv-data"
 import { useT } from "@/lib/language-context"
@@ -11,6 +11,7 @@ import { useT } from "@/lib/language-context"
 function ContactSection() {
   const downloadLabel = useT(ui.downloadCv)
   const contactPrompt = useT(ui.contactPrompt)
+  const cvFile = useT(profile.cvFile)
 
   return (
     <section
@@ -32,7 +33,7 @@ function ContactSection() {
             <Button
               variant="outline"
               size="lg"
-              render={<a href={profile.cvFile} download />}
+              render={<a href={cvFile} download />}
             >
               {downloadLabel}
             </Button>
@@ -46,20 +47,21 @@ function ContactSection() {
             href={`mailto:${profile.email}`}
           />
           <ContactRow
-            icon={<Phone className="size-4" />}
-            label={profile.phoneDisplay}
-            href={`tel:${profile.phoneHref}`}
-          />
-          <ContactRow
             icon={<LinkedinIcon className="size-4" />}
             label={profile.linkedin.label}
             href={profile.linkedin.href}
             external
           />
           <ContactRow
-            icon={<InstagramIcon className="size-4" />}
-            label={profile.instagram.label}
-            href={profile.instagram.href}
+            icon={<GithubIcon className="size-4" />}
+            label={profile.github.label}
+            href={profile.github.href}
+            external
+          />
+          <ContactRow
+            icon={<Globe className="size-4" />}
+            label={profile.website.label}
+            href={profile.website.href}
             external
           />
         </div>

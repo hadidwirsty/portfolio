@@ -22,9 +22,9 @@ const fraunces = Fraunces({
 })
 
 export const metadata: Metadata = {
-  title: "Muhammad Hadid Wiransetyo — Frontend Web Developer",
+  title: "Muhammad Hadid Wiransetyo — Frontend Engineer",
   description:
-    "Curriculum vitae Muhammad Hadid Wiransetyo, Frontend Web Developer berbasis di Yogyakarta, Indonesia.",
+    "Curriculum vitae Muhammad Hadid Wiransetyo, Frontend Engineer berbasis di Yogyakarta, Indonesia.",
 }
 
 export default function RootLayout({
