@@ -251,6 +251,20 @@ export const projects: ProjectEntry[] = [
       "Turut mendukung proposal teknis Telkomsigma dengan antarmuka responsif; proposal menduduki peringkat #1 pada evaluasi teknis klien.",
       "Contributed a responsive UI to the proposal that ranked #1 in the client's technical evaluation."
     ),
+    bullets: [
+      bi(
+        "Purwarupa sistem manajemen resi gudang terintegrasi dalam sprint 2 minggu dengan autentikasi dan RBAC 5 peran.",
+        "Warehouse receipt management proof-of-concept delivered in a 2-week sprint with authentication and 5-role RBAC."
+      ),
+      bi(
+        "Pencatatan alur audit trail setiap resi dari pembuatan hingga persetujuan dan pengelolaan data master gudang komoditas.",
+        "Audit trail tracking from creation to approval, plus commodity and warehouse master data management."
+      ),
+      bi(
+        "Mendukung proposal teknis Telkomsigma hingga meraih peringkat #1 pada evaluasi teknis klien (PT KBI – Danareksa).",
+        "Supported Telkomsigma technical proposal to achieve rank #1 in the client technical evaluation (PT KBI – Danareksa)."
+      ),
+    ],
     tech: [
       "Next.js",
       "TypeScript",
@@ -273,15 +287,31 @@ export const projects: ProjectEntry[] = [
       "Content Management System (CMS) on a modular microservices architecture with a micro-frontend architecture (Module Federation) on the frontend for Infomedia Nusantara."
     ),
     role: bi(
-      "Menyiapkan scaffolding awal proyek, arsitektur folder, dan tata letak UI dasar dengan shadcn/ui, serta berbagi alur kerja proyek kepada dua rekan kerja junior.",
-      "Set up initial project scaffolding, folder architecture, and shadcn/ui base layouts, and shared the project workflow with two junior teammates."
+      "Membangun modul Smart Contracting (manajemen kontrak, penyusunan formulir drag-and-drop, pratinjau & pembuatan dokumen PDF) serta menyiapkan scaffolding awal Host Shell micro-frontend (Module Federation) menggunakan Vite, React 19, dan Ant Design 5, serta memandu rekan tim junior.",
+      "Built the Smart Contracting module (contract workflows, drag-and-drop form builders, client-side PDF document generation) and set up the micro-frontend (Module Federation) Host Shell scaffolding using Vite, React 19, and Ant Design 5, while sharing workflows with junior teammates."
     ),
+    bullets: [
+      bi(
+        "Modul Smart Contracting untuk manajemen kontrak dan penandatanganan dokumen elektronik.",
+        "Smart Contracting module for contract management and electronic document workflows."
+      ),
+      bi(
+        "Penyusunan formulir berbasis drag-and-drop (@dnd-kit) dan pembuatan dokumen PDF sisi klien (@react-pdf/renderer).",
+        "Drag-and-drop form builder (@dnd-kit) and client-side PDF document generation (@react-pdf/renderer)."
+      ),
+      bi(
+        "Scaffolding Host Shell berbasis arsitektur micro-frontend (Module Federation) dengan Vite, React 19, dan Ant Design 5.",
+        "Host Shell scaffolding on a micro-frontend architecture (Module Federation) with Vite, React 19, and Ant Design 5."
+      ),
+    ],
     tech: [
-      "React",
+      "React 19",
       "Vite",
+      "Ant Design 5",
+      "Module Federation",
+      "@dnd-kit",
+      "@react-pdf/renderer",
       "Tailwind CSS",
-      "shadcn/ui",
-      "TanStack Query",
       "Zustand",
     ],
   },
@@ -413,10 +443,16 @@ export const projects: ProjectEntry[] = [
       "Integrated Management Asset and Procurement System — an enterprise asset management application for BPJS Kesehatan."
     ),
     role: bi(
-      "Mengimplementasikan modul daftar aset dan manajemen pengguna menggunakan Angular dan REST API, serta bertanggung jawab atas tata letak responsif, komponen, dan halaman di seluruh modul.",
-      "Implemented asset listing and user management modules using Angular and REST APIs, and took ownership of responsive layouts, components, and pages across all modules."
+      "Mengimplementasikan modul daftar aset dan manajemen pengguna untuk sistem IMAPS menggunakan Angular 18, pustaka UI Ant Design (NG-ZORRO), dan REST API, serta memegang kepemilikan atas standardisasi komponen, tata letak responsif, dan pengamanan antarmuka di seluruh modul.",
+      "Implemented asset listing and user management modules for IMAPS using Angular 18, Ant Design (NG-ZORRO), and REST APIs, taking ownership of responsive layouts, UI component consistency, and security hardening across all modules."
     ),
-    tech: ["Angular", "Tailwind CSS", "Ant Design", "REST API"],
+    tech: [
+      "Angular 18",
+      "Ant Design (NG-ZORRO)",
+      "TypeScript",
+      "Tailwind CSS",
+      "REST API",
+    ],
   },
   {
     id: "cis",
@@ -549,10 +585,10 @@ export const skillGroups: SkillGroup[] = [
       "GitLab",
       "GitHub",
       "Bitbucket",
-      "Antigravity",
-      "Postman",
       "Vite",
+      "Postman",
       "RESTful API Integration",
+      "AI-Assisted Development (Antigravity)",
     ],
   },
 ]
@@ -569,8 +605,11 @@ export type EducationEntry = {
 export const education: EducationEntry[] = [
   {
     id: "ugm",
-    institution: "Universitas Gadjah Mada",
-    degree: bi("S1 Ilmu Komputer", "Bachelor of Computer Science"),
+    institution: "Universitas Gadjah Mada (UGM)",
+    degree: bi(
+      "Sarjana Ilmu Komputer (S.Kom.)",
+      "Bachelor of Computer Science (S.Kom.)"
+    ),
     period: "2020 – 2024",
     score: "3.74 / 4.00",
     extra: bi(
