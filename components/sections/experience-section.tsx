@@ -27,6 +27,7 @@ function ExperienceCard({ entry }: { entry: (typeof experience)[number] }) {
   const period = useT(entry.period)
   const location = useT(entry.location)
   const employmentType = useT(entry.employmentType)
+  const summary = useT(entry.summary ?? { id: "", en: "" })
   const relatedLabel = useT(ui.keyProjects)
   const relatedProjects = projects.filter((p) =>
     entry.projectIds.includes(p.id)
@@ -43,6 +44,11 @@ function ExperienceCard({ entry }: { entry: (typeof experience)[number] }) {
       <div className="border-l border-border/70 pl-6">
         <h3 className="font-heading text-lg font-medium">{role}</h3>
         <p className="text-sm text-muted-foreground">{entry.company}</p>
+        {summary && (
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+            {summary}
+          </p>
+        )}
 
         <ul className="mt-4 flex flex-col gap-2.5">
           {entry.points.map((point, i) => (
