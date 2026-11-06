@@ -48,8 +48,7 @@ _tmp_*
 .github/skills/
 GEMINI.md
 CLAUDE.md
-docs/debugging/
-docs/plans/
+docs/
 documents/
 pdf/
 pending-confirmations.md
