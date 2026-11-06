@@ -179,7 +179,7 @@ export const experience: ExperienceEntry[] = [
       "Yogyakarta, Indonesia (Remote)",
       "Yogyakarta, Indonesia (Remote)"
     ),
-    employmentType: bi("Freelance", "Freelance"),
+    employmentType: bi("Paruh Waktu", "Part-Time"),
     points: [
       bi(
         "Merancang dan mengimplementasikan manajemen state keranjang belanja pada situs web E-Commerce Bulk Orders menggunakan Next.js 16 (App Router), TypeScript, Zustand, dan TanStack Query v5; mengintegrasikan pembaruan antarmuka optimistik (optimistic UI updates) dengan pemulihan otomatis saat gangguan jaringan, serta menguji alur transaksi pemesanan partai besar.",
