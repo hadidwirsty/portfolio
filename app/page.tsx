@@ -1,3 +1,4 @@
+import { BackToTop } from "@/components/back-to-top"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { HeroSection } from "@/components/sections/hero-section"
@@ -25,6 +26,7 @@ export default function Page() {
         <ContactSection />
       </main>
       <SiteFooter />
+      <BackToTop />
     </>
   )
 }
