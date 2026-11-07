@@ -10,6 +10,7 @@ export const profile = {
   name: "Muhammad Hadid Wiransetyo",
   initials: "MHW",
   photo: "/images/profile.jpg",
+  avatar: "/images/avatar.png",
   cvFile: bi(
     "/cv/Muhammad-Hadid-Wiransetyo-CV-2026-ID.pdf",
     "/cv/Muhammad-Hadid-Wiransetyo-CV-2026.pdf"
@@ -37,6 +38,38 @@ export const profile = {
     label: "hadidwirsty.vercel.app",
     href: "https://hadidwirsty.vercel.app",
   },
+  metrics: [
+    {
+      value: "2+",
+      label: bi("Tahun Pengalaman", "Years Experience"),
+      description: bi("Frontend & Enterprise Web", "Frontend & Enterprise Web"),
+    },
+    {
+      value: "10+",
+      label: bi("Aplikasi Web Enterprise", "Enterprise Web Apps"),
+      description: bi(
+        "Telkomsigma & Produk Digital",
+        "Telkomsigma & Digital Products"
+      ),
+    },
+    {
+      value: "3,74",
+      subvalue: "/ 4,00",
+      label: bi("IPK Ilmu Komputer UGM", "UGM CS Degree GPA"),
+      description: bi(
+        "Sarjana Ilmu Komputer (S.Kom.)",
+        "B.S. in Computer Science"
+      ),
+    },
+    {
+      value: "100%",
+      label: bi("Lulus Uji Otomatis", "Automated Tests Pass"),
+      description: bi(
+        "297 Tes Vitest & Audit Dokumen",
+        "297 Vitest Tests & Document Audit"
+      ),
+    },
+  ],
 }
 
 export const nav = {
@@ -77,6 +110,8 @@ export const ui = {
     "Terbuka untuk peluang baru sebagai Frontend Engineer.",
     "Open to new opportunities as a Frontend Engineer."
   ),
+  copyEmail: bi("Salin Email", "Copy Email"),
+  copied: bi("Tersalin!", "Copied!"),
 }
 
 export type ExperienceEntry = {
