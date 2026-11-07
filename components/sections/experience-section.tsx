@@ -1,8 +1,17 @@
 "use client"
 
+import * as React from "react"
+import { Briefcase, Building2, Calendar, MapPin } from "lucide-react"
+
 import { Badge } from "@/components/ui/badge"
 import { SectionHeading } from "@/components/section-heading"
-import { experience, nav, projects, ui } from "@/lib/cv-data"
+import {
+  experience,
+  nav,
+  projects,
+  ui,
+  type ExperienceEntry,
+} from "@/lib/cv-data"
 import { useT } from "@/lib/language-context"
 
 function ExperienceSection() {
@@ -13,59 +22,102 @@ function ExperienceSection() {
     >
       <SectionHeading index="01" title={nav.experience} />
 
-      <div className="flex flex-col gap-10">
-        {experience.map((entry) => (
-          <ExperienceCard key={entry.id} entry={entry} />
-        ))}
+      {/* Stepper Timeline Container */}
+      <div className="relative pl-8 before:absolute before:top-3 before:bottom-3 before:left-3.5 before:w-0.5 before:bg-border/80 sm:pl-10 sm:before:left-4.5">
+        <div className="flex flex-col gap-12 sm:gap-16">
+          {experience.map((entry) => (
+            <ExperienceItem key={entry.id} entry={entry} />
+          ))}
+        </div>
       </div>
     </section>
   )
 }
 
-function ExperienceCard({ entry }: { entry: (typeof experience)[number] }) {
+function ExperienceItem({ entry }: { entry: ExperienceEntry }) {
   const role = useT(entry.role)
   const period = useT(entry.period)
   const location = useT(entry.location)
   const employmentType = useT(entry.employmentType)
   const summary = useT(entry.summary ?? { id: "", en: "" })
   const relatedLabel = useT(ui.keyProjects)
+
   const relatedProjects = projects.filter((p) =>
     entry.projectIds.includes(p.id)
   )
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-[10rem_1fr] sm:gap-8">
-      <div className="text-sm text-muted-foreground">
-        <p className="font-mono text-xs">{period}</p>
-        <p className="mt-1">{location}</p>
-        <p className="mt-1">{employmentType}</p>
+    <div className="group relative">
+      {/* Timeline Stepper Node */}
+      <div className="absolute top-1 -left-[29px] flex size-6 items-center justify-center rounded-full border-2 border-primary bg-background shadow-xs transition-transform duration-200 group-hover:scale-110 sm:-left-[35px] sm:size-7">
+        <Briefcase className="size-3 text-primary" />
       </div>
 
-      <div className="border-l border-border/70 pl-6">
-        <h3 className="font-heading text-lg font-medium">{role}</h3>
-        <p className="text-sm text-muted-foreground">{entry.company}</p>
+      <div className="rounded-2xl border border-border/70 bg-card/60 p-5 shadow-2xs backdrop-blur-xs transition-all duration-200 hover:border-border hover:bg-card sm:p-7">
+        {/* Experience Header */}
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
+          <div>
+            <h3 className="font-heading text-xl font-medium tracking-tight text-foreground sm:text-2xl">
+              {role}
+            </h3>
+            <p className="mt-1 flex items-center gap-1.5 text-sm font-medium text-foreground/85">
+              <Building2 className="size-3.5 text-primary/80" />
+              {entry.company}
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center gap-1 rounded-md bg-muted/60 px-2.5 py-1 font-mono text-xs text-muted-foreground">
+              <Calendar className="size-3" />
+              {period}
+            </span>
+            <Badge variant="secondary" className="text-xs">
+              {employmentType}
+            </Badge>
+          </div>
+        </div>
+
+        {/* Location / Work Mode */}
+        <div className="mt-2.5 flex items-center gap-1.5 text-xs text-muted-foreground">
+          <MapPin className="size-3.5 text-muted-foreground/80" />
+          <span>{location}</span>
+        </div>
+
+        {/* Executive Summary */}
         {summary && (
-          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+          <p className="mt-4 text-xs leading-relaxed text-foreground/85 sm:text-sm">
             {summary}
           </p>
         )}
 
-        <ul className="mt-4 flex flex-col gap-2.5">
+        {/* Detailed Points */}
+        <ul className="mt-5 space-y-3">
           {entry.points.map((point, i) => (
             <PointItem key={i} point={point} />
           ))}
         </ul>
 
+        {/* Related Projects Linkage */}
         {relatedProjects.length > 0 && (
-          <div className="mt-5">
-            <p className="text-xs tracking-wide text-muted-foreground uppercase">
+          <div className="mt-6 border-t border-border/60 pt-4">
+            <p className="font-mono text-xs tracking-wider text-muted-foreground uppercase">
               {relatedLabel}
             </p>
-            <div className="mt-2 flex flex-wrap gap-1.5">
+            <div className="mt-2.5 flex flex-wrap gap-1.5">
               {relatedProjects.map((p) => (
-                <Badge key={p.id} variant="outline">
-                  {p.name}
-                </Badge>
+                <a
+                  key={p.id}
+                  href="#projects"
+                  className="inline-block transition-transform duration-150 hover:-translate-y-0.5"
+                  title={`Lihat proyek ${p.name} di seksi Proyek`}
+                >
+                  <Badge
+                    variant="outline"
+                    className="cursor-pointer text-xs transition-colors hover:border-primary/50 hover:bg-primary/5"
+                  >
+                    {p.name}
+                  </Badge>
+                </a>
               ))}
             </div>
           </div>
@@ -75,16 +127,13 @@ function ExperienceCard({ entry }: { entry: (typeof experience)[number] }) {
   )
 }
 
-function PointItem({
-  point,
-}: {
-  point: (typeof experience)[number]["points"][number]
-}) {
+function PointItem({ point }: { point: ExperienceEntry["points"][number] }) {
   const text = useT(point)
+
   return (
-    <li className="flex gap-2 text-sm leading-relaxed text-muted-foreground">
-      <span className="mt-2 size-1 shrink-0 rounded-full bg-amber-500" />
-      {text}
+    <li className="flex items-start gap-2.5 text-xs leading-relaxed text-muted-foreground sm:text-sm">
+      <span className="mt-2 size-1.5 shrink-0 rounded-full bg-emerald-500/80 dark:bg-emerald-400" />
+      <span>{text}</span>
     </li>
   )
 }
