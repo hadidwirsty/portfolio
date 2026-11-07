@@ -24,6 +24,7 @@ function EducationSection() {
 function EducationCard({ entry }: { entry: (typeof education)[number] }) {
   const degree = useT(entry.degree)
   const gpaLabel = useT(ui.gpa)
+  const score = useT(entry.score)
   const extra = useT(entry.extra ?? { id: "", en: "" })
 
   return (
@@ -40,7 +41,7 @@ function EducationCard({ entry }: { entry: (typeof education)[number] }) {
       <CardContent>
         <p className="text-foreground/80">
           <span className="text-muted-foreground">{gpaLabel}: </span>
-          {entry.score}
+          {score}
         </p>
         {extra && (
           <p className="leading-relaxed text-muted-foreground">{extra}</p>
