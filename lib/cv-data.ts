@@ -21,8 +21,8 @@ export const profile = {
     "Building web interfaces that are clean, fast, and built to last."
   ),
   summary: bi(
-    "Frontend Engineer (S.Kom. Ilmu Komputer UGM, IPK 3,74/4,00) dengan pengalaman 2 tahun mengembangkan antarmuka aplikasi web enterprise dan web tools menggunakan TypeScript, React, dan Next.js (App Router). Terbiasa merancang komponen antarmuka modular, mengintegrasikan REST API, mengelola state asinkron (TanStack Query, Zustand), serta memelihara stabilitas aplikasi lintas kerangka kerja (Next.js, Angular, Vue/Nuxt). Berorientasi pada kerapian kode, kejelasan komunikasi tim, dan siap berkontribusi langsung pada pengembangan produk web modern.",
-    "Frontend Engineer (B.S. in Computer Science from UGM, GPA 3.74/4.00) with 2 years of professional experience developing responsive enterprise web applications and tools using TypeScript, React, and Next.js (App Router). Experienced in designing modular UI components, integrating RESTful APIs, managing asynchronous state (TanStack Query, Zustand), and maintaining cross-framework web applications (Next.js, Angular, Vue/Nuxt). Dedicated to writing clean code, collaborating effectively in cross-functional teams, and ready to deliver immediate value."
+    "Frontend Engineer (S.Kom. Ilmu Komputer UGM, IPK 3,74/4,00) dengan 2 tahun pengalaman membangun dan mengamankan 10 aplikasi web enterprise di PT Sigma Cipta Caraka (Telkomsigma) dan produk digital. Mahir dalam TypeScript, React (19/18), Next.js (App Router, RSC), Tailwind CSS v4, dan TanStack Query. Berpengalaman mengimplementasikan antarmuka modular, pengujian otomatis (Vitest), penguatan keamanan web (XSS, CSP, validasi biner magic bytes), serta kolaborasi harian dalam sprint Agile/Scrum bersama 6 peran lintas fungsi. Berorientasi pada kerapian kode dan siap berkontribusi langsung pada pengembangan produk web modern yang cepat dan teruji.",
+    "Frontend Engineer (B.S. in Computer Science from UGM, GPA 3.74/4.00) with 2 years of professional experience developing and securing 10 enterprise web applications at PT Sigma Cipta Caraka (Telkomsigma) and digital products. Specialized in TypeScript, React (19/18), Next.js (App Router, RSC), Tailwind CSS v4, and TanStack Query. Proven track record in delivering modular UI components, automated test suites (Vitest), frontend security hardening (XSS, CSP, magic bytes validation), and collaborating in Agile/Scrum sprints alongside cross-functional teams. Dedicated to writing clean code and ready to deliver immediate engineering value."
   ),
   email: "m.hadid.2001@gmail.com",
   linkedin: {
@@ -95,19 +95,13 @@ export const experience: ExperienceEntry[] = [
   {
     id: "sigma",
     company: "PT Sigma Cipta Caraka (Telkomsigma)",
-    role: bi(
-      "Junior Programmer",
-      "Junior Programmer"
-    ),
+    role: bi("Junior Programmer", "Junior Programmer"),
     period: bi("Nov 2024 – Okt 2026", "Nov 2024 – Oct 2026"),
     location: bi(
       "Yogyakarta, Indonesia (On-site)",
       "Yogyakarta, Indonesia (On-site)"
     ),
-    employmentType: bi(
-      "Kontrak",
-      "Contract"
-    ),
+    employmentType: bi("Kontrak", "Contract"),
     summary: bi(
       "Mengembangkan dan memelihara antarmuka serta keamanan sisi frontend lintas 10 aplikasi web enterprise (B2B dan internal Telkom Group) menggunakan Next.js, React, Angular, Vue/Nuxt, dan Blazor. Menjalankan siklus kerja harian Agile/Scrum bersama Scrum Master (SM) dan Business Analyst (BA) untuk membedah kebutuhan pengguna, menerjemahkan rancangan teknis System Analyst dan UI/UX Designer menjadi kode modular, mengintegrasikan kontrak API bersama Backend Engineer, serta mengawal pengujian fungsional dan remediasi bug bersama Quality Assurance (QA) hingga siap rilis produksi.",
       "Developed and maintained frontend interfaces and security across 10 enterprise web applications (B2B and internal Telkom Group) using Next.js, React, Angular, Vue/Nuxt, and Blazor. Executed daily Agile/Scrum cycles alongside Scrum Masters (SM) and Business Analysts (BA) to refine user requirements, translated System Analyst specifications and UI/UX Designer mockups into modular code, integrated API contracts with Backend Engineers, and collaborated with Quality Assurance (QA) on functional testing and bug remediation for production releases."
@@ -126,8 +120,8 @@ export const experience: ExperienceEntry[] = [
         "Info Tender (LPSE & SiRUP): Developed the frontend for the government procurement market intelligence web application supporting the Sales Support team using React 18, TypeScript, Vite, Tailwind CSS, and Radix UI; implemented procurement analytics dashboards (Recharts), LPSE tenders and SiRUP planning catalogs (TanStack Table), side-by-side data comparison tools, and scraping parameter configuration modules (KBLI keywords); designed an automated route-integrated user session dwell-tracker; integrated REST APIs with TanStack Query and Zustand; maintained role-based access control (RBAC)."
       ),
       bi(
-        "MONARA (Monitoring Natal-Tahun Baru dan Ramadan): Mengembangkan antarmuka aplikasi web pemantauan operasional tiket layanan TI untuk tim Service Desk menggunakan Next.js (App Router), React 19, TypeScript, Tailwind CSS, dan Radix UI; mengimplementasikan dasbor pemantauan status tiket dengan pembaruan data otomatis berkala (polling interval 30 detik), grafik analitik Recharts, modul master data shift kerja dan penyedia layanan, serta formulir pengunggahan bukti penanganan; merancang alur validasi pergantian jam kerja petugas (shift schedule); mengintegrasikan REST API dengan TanStack Query dan Zustand; serta memelihara kontrol akses berbasis peran (RBAC).",
-        "MONARA (Christmas, New Year & Ramadan Monitoring): Developed the frontend for the IT service ticket operations monitoring web application supporting the Service Desk team using Next.js (App Router), React 19, TypeScript, Tailwind CSS, and Radix UI; implemented ticket status monitoring dashboards with automated polling updates (30-second intervals), Recharts analytics, work shift and service provider master data modules, and handling evidence upload forms; designed duty shift schedule validation workflows; integrated REST APIs with TanStack Query and Zustand; maintained role-based access control (RBAC)."
+        "MONARA (Monitoring Natal-Tahun Baru dan Ramadan): Mengembangkan antarmuka aplikasi web pemantauan operasional tiket layanan TI untuk tim Service Desk menggunakan Next.js (App Router), React 19, TypeScript, Tailwind CSS, dan Radix UI; mengimplementasikan dasbor pemantauan status tiket dengan pembaruan data otomatis berkala (polling interval 30 detik), grafik analitik Recharts, modul master data shift kerja dan sekitar 40 unit penyedia layanan, serta formulir pengunggahan bukti penanganan; merancang alur validasi pergantian jam kerja petugas (shift schedule); mengintegrasikan REST API dengan TanStack Query dan Zustand; serta memelihara kontrol akses berbasis peran (RBAC).",
+        "MONARA (Christmas, New Year & Ramadan Monitoring): Developed the frontend for the IT service ticket operations monitoring web application supporting the Service Desk team using Next.js (App Router), React 19, TypeScript, Tailwind CSS, and Radix UI; implemented ticket status monitoring dashboards with automated polling updates (30-second intervals), Recharts analytics, work shift and about 40 service-provider units master data modules, and handling evidence upload forms; designed duty shift schedule validation workflows; integrated REST APIs with TanStack Query and Zustand; maintained role-based access control (RBAC)."
       ),
       bi(
         "Alisa 2.0 (Smart Contracting): Mengembangkan antarmuka modul Smart Contracting dan Host Shell micro-frontend untuk sistem manajemen kontrak enterprise Infomedia Nusantara menggunakan Vite, React 19, Ant Design 5, Tailwind CSS, dan Module Federation; mengimplementasikan alur peninjauan pesanan legal, modul konfigurasi tipe dan tahapan kontrak, serta pratinjau dokumen PDF sisi klien (@react-pdf/renderer); merancang antarmuka penyusunan formulir berbasis seret-dan-lepas (drag-and-drop); mengintegrasikan REST API dengan TanStack Query dan Zustand; serta memelihara konsistensi perutean terfederasi (TanStack Router).",
@@ -146,12 +140,12 @@ export const experience: ExperienceEntry[] = [
         "Whistleblowing System (Internal WBS): Developed internal Whistleblowing System web application interfaces for Telkomsigma's WBS Management Team to handle corporate ethics and governance violation cases (ISO 37002) using Next.js (App Router), React 19, TypeScript, Tailwind CSS v4, and TanStack Query; implemented executive analytics dashboards with Recharts, multi-stage case assessment data tables (validation-verification and inspection), and multi-channel report registration forms (letter, phone, and email); designed evidence file upload security layers based on binary file signature inspection (magic bytes) and ClamAV antivirus scanning integration; integrated multilingual support (i18next) and configurable questionnaire management modules; maintained role-based access control (RBAC)."
       ),
       bi(
-        "PIS MARS (Pertamina International Shipping): Mengembangkan dan memelihara antarmuka portal web enterprise serta sistem manajemen konten (CMS) PT Pertamina International Shipping menggunakan C#, .NET 8.0, ASP.NET Core, dan Blazor Server (Interactive Server Mode) dalam arsitektur microservices; menstandarisasi pewarisan kelas dasar dan siklus hidup komponen pada pustaka antarmuka Oktaf.UI lintas ratusan berkas komponen Razor; mengimplementasikan penanganan deserialisasi nilai null dan peningkatan stabilitas pada modul Form Builder serta editor CMS; merancang antarmuka navigasi bertingkat (StickyMenu) dengan indikator tahapan; mengintegrasikan Mock Authentication Middleware pada 6 microservice backend untuk simulasi otorisasi peran (RBAC) di lingkungan lokal; serta memelihara konfigurasi kontainerisasi Docker.",
-        "PIS MARS (Pertamina International Shipping): Developed and maintained enterprise web portal interfaces and content management systems (CMS) for PT Pertamina International Shipping using C#, .NET 8.0, ASP.NET Core, and Blazor Server (Interactive Server Mode) within a microservices architecture; standardized base component inheritance and lifecycle execution across the Oktaf.UI Razor component library across hundreds of component files; implemented null deserialization safeguards and stability enhancements on the Form Builder and CMS editor; designed multi-level navigation interfaces (StickyMenu) with step progress indicators; integrated Mock Authentication Middleware across 6 backend microservices to simulate role-based authorization (RBAC) in local environments; maintained Docker containerization configurations."
+        "PIS MARS (Pertamina International Shipping): Mengembangkan dan memelihara antarmuka portal web enterprise serta sistem manajemen konten (CMS) PT Pertamina International Shipping menggunakan C#, .NET 8.0, ASP.NET Core, dan Blazor Server (Interactive Server Mode) dalam arsitektur microservices; menstandarisasi pewarisan kelas dasar dan siklus hidup komponen pada pustaka antarmuka Oktaf.UI lintas 384 berkas komponen Razor; mengimplementasikan penanganan deserialisasi nilai null dan peningkatan stabilitas pada modul Form Builder serta editor CMS; merancang antarmuka navigasi bertingkat (StickyMenu) dengan indikator tahapan; mengintegrasikan Mock Authentication Middleware pada 6 microservice backend untuk simulasi otorisasi peran (RBAC) di lingkungan lokal; serta memelihara konfigurasi kontainerisasi Docker.",
+        "PIS MARS (Pertamina International Shipping): Developed and maintained enterprise web portal interfaces and content management systems (CMS) for PT Pertamina International Shipping using C#, .NET 8.0, ASP.NET Core, and Blazor Server (Interactive Server Mode) within a microservices architecture; standardized base component inheritance and lifecycle execution across the Oktaf.UI Razor component library across 384 Razor component files; implemented null deserialization safeguards and stability enhancements on the Form Builder and CMS editor; designed multi-level navigation interfaces (StickyMenu) with step progress indicators; integrated Mock Authentication Middleware across 6 backend microservices to simulate role-based authorization (RBAC) in local environments; maintained Docker containerization configurations."
       ),
       bi(
-        "Managed Services and Operations (MSO) CIS: Mengembangkan pembaruan antarmuka, menyelesaikan tiket gangguan (bug fix), dan mengimplementasikan perbaikan keamanan sisi frontend pada 2 aplikasi enterprise Corporate Information System (CIS: LSM dan Patricia) menggunakan Vue.js, Nuxt.js, TypeScript, dan Tailwind CSS; mengimplementasikan composable sanitasi data (useSanitize, useSvgSanitizer) dan Content Security Policy (CSP) untuk penguatan terhadap Cross-Site Scripting (XSS); merancang sanitasi URL pengalihan login guna mencegah celah Open Redirect; memasang pelindung kompatibilitas Server-Side Rendering (SSR guards) untuk stabilitas di lingkungan Node 22; serta menguji dan memperbaiki logika penguraian ID Purchase Order dan integrasi REST API publik.",
-        "Managed Services and Operations (MSO) CIS: Developed frontend updates, resolved bug-fix tickets, and implemented frontend security remediations across 2 enterprise Corporate Information System (CIS) applications (LSM and Patricia) using Vue.js, Nuxt.js, TypeScript, and Tailwind CSS; implemented data sanitization composables (useSanitize, useSvgSanitizer) and Content Security Policy (CSP) headers to harden against Cross-Site Scripting (XSS); designed login redirect URL sanitization to prevent Open Redirect vulnerabilities; implemented Server-Side Rendering (SSR) compatibility guards ensuring stability in Node 22 environments; tested and fixed Purchase Order ID parsing logic and public REST API integrations."
+        "Pemeliharaan Aplikasi Web Enterprise & Portal Operasional: Mengembangkan pembaruan antarmuka, menyelesaikan tiket gangguan (bug fix), dan mengimplementasikan perbaikan keamanan sisi frontend pada 2 aplikasi web enterprise menggunakan Vue.js, Nuxt.js, TypeScript, dan Tailwind CSS; mengimplementasikan composable sanitasi data (useSanitize, useSvgSanitizer) dan Content Security Policy (CSP) untuk penguatan terhadap Cross-Site Scripting (XSS); merancang sanitasi URL pengalihan login guna mencegah celah Open Redirect; memasang pelindung kompatibilitas Server-Side Rendering (SSR guards) untuk stabilitas di lingkungan Node 22; serta menguji dan memperbaiki logika penguraian ID Purchase Order dan integrasi REST API publik.",
+        "Enterprise Web Applications Maintenance & Operations Portal: Developed frontend updates, resolved bug-fix tickets, and implemented frontend security remediations across 2 enterprise web applications using Vue.js, Nuxt.js, TypeScript, and Tailwind CSS; implemented data sanitization composables (useSanitize, useSvgSanitizer) and Content Security Policy (CSP) headers to harden against Cross-Site Scripting (XSS); designed login redirect URL sanitization to prevent Open Redirect vulnerabilities; implemented Server-Side Rendering (SSR) compatibility guards ensuring stability in Node 22 environments; tested and fixed Purchase Order ID parsing logic and public REST API integrations."
       ),
     ],
     projectIds: [
@@ -170,10 +164,7 @@ export const experience: ExperienceEntry[] = [
   {
     id: "tumbuhin",
     company: "Tumbuhin Digital",
-    role: bi(
-      "Frontend Engineer",
-      "Frontend Engineer"
-    ),
+    role: bi("Frontend Engineer", "Frontend Engineer"),
     period: bi("Mei 2026 – Jun 2026", "May 2026 – Jun 2026"),
     location: bi(
       "Yogyakarta, Indonesia (Remote)",
@@ -195,10 +186,7 @@ export const experience: ExperienceEntry[] = [
   {
     id: "telkom",
     company: "Telkom Indonesia",
-    role: bi(
-      "Developer",
-      "Developer"
-    ),
+    role: bi("Developer", "Developer"),
     period: bi("Jan 2023 – Des 2023", "Jan 2023 – Dec 2023"),
     location: bi("Jakarta, Indonesia (Remote)", "Jakarta, Indonesia (Remote)"),
     employmentType: bi("Magang", "Internship"),
@@ -264,7 +252,7 @@ export const projects: ProjectEntry[] = [
       ),
       bi(
         "Mengintegrasikan fitur ekspor laporan transaksi terstandar ke dalam format Excel (.xlsx) dan CSV untuk kebutuhan audit pembukuan dan rekonsiliasi perbankan.",
-        "Integrated standardized multi-format transaction report exports (Excel .xlsx and CSV) to facilitate accounting audits and bank reconciliations."
+        "Integrated standardized multi-format transaction report exports in Excel (.xlsx) and CSV formats to facilitate accounting audits and bank reconciliations."
       ),
     ],
     tech: [
@@ -583,16 +571,16 @@ export const projects: ProjectEntry[] = [
   },
   {
     id: "cis",
-    name: "Enterprise Web Applications Maintenance (CIS Managed Services)",
+    name: "Enterprise Web Applications Maintenance & Operations Portal",
     period: bi("Mar 2026 – Sep 2026", "Mar 2026 – Sep 2026"),
     company: bi("PT Sigma Cipta Caraka", "PT Sigma Cipta Caraka"),
     description: bi(
-      "Pemeliharaan dan penguatan keamanan antarmuka pada 2 aplikasi enterprise Corporate Information System (CIS: LSM dan Patricia) dalam skema managed services, mencakup remediasi temuan vulnerability scan, kompatibilitas SSR Node 22, dan perbaikan alur transaksi pengadaan.",
-      "Frontend maintenance and security hardening across 2 enterprise Corporate Information System (CIS: LSM and Patricia) web applications under managed services, covering vulnerability scan remediations, Node 22 SSR compatibility, and procurement transaction workflow fixes."
+      "Pemeliharaan dan penguatan keamanan antarmuka pada 2 aplikasi web enterprise dalam skema managed services, mencakup remediasi temuan vulnerability scan (XSS, CSP, Open Redirect), kompatibilitas SSR Node 22, dan perbaikan alur transaksi pengadaan.",
+      "Frontend maintenance and security hardening across 2 enterprise web applications under managed services, covering vulnerability scan remediations (XSS, CSP, Open Redirect), Node 22 SSR compatibility, and procurement transaction workflow fixes."
     ),
     role: bi(
-      "Mengembangkan pembaruan antarmuka, menyelesaikan tiket gangguan (bug fix), dan mengimplementasikan perbaikan keamanan sisi frontend pada 2 aplikasi enterprise Corporate Information System (CIS: LSM dan Patricia) menggunakan Vue.js, Nuxt.js, TypeScript, dan Tailwind CSS; mengimplementasikan composable sanitasi data (useSanitize, useSvgSanitizer) dan Content Security Policy (CSP) untuk penguatan terhadap Cross-Site Scripting (XSS); merancang sanitasi URL pengalihan login guna mencegah celah Open Redirect; memasang pelindung kompatibilitas Server-Side Rendering (SSR guards) untuk stabilitas di lingkungan Node 22; serta menguji dan memperbaiki logika penguraian ID Purchase Order dan integrasi REST API publik.",
-      "Developed frontend updates, resolved bug-fix tickets, and implemented frontend security remediations across 2 enterprise Corporate Information System (CIS) applications (LSM and Patricia) using Vue.js, Nuxt.js, TypeScript, and Tailwind CSS; implemented data sanitization composables (useSanitize, useSvgSanitizer) and Content Security Policy (CSP) headers to harden against Cross-Site Scripting (XSS); designed login redirect URL sanitization to prevent Open Redirect vulnerabilities; implemented Server-Side Rendering (SSR) compatibility guards ensuring stability in Node 22 environments; tested and fixed Purchase Order ID parsing logic and public REST API integrations."
+      "Mengembangkan pembaruan antarmuka, menyelesaikan tiket gangguan (bug fix), dan mengimplementasikan perbaikan keamanan sisi frontend pada 2 aplikasi web enterprise menggunakan Vue.js, Nuxt.js, TypeScript, dan Tailwind CSS; mengimplementasikan composable sanitasi data (useSanitize, useSvgSanitizer) dan Content Security Policy (CSP) untuk penguatan terhadap Cross-Site Scripting (XSS); merancang sanitasi URL pengalihan login guna mencegah celah Open Redirect; memasang pelindung kompatibilitas Server-Side Rendering (SSR guards) untuk stabilitas di lingkungan Node 22; serta menguji dan memperbaiki logika penguraian ID Purchase Order dan integrasi REST API publik.",
+      "Developed frontend updates, resolved bug-fix tickets, and implemented frontend security remediations across 2 enterprise web applications using Vue.js, Nuxt.js, TypeScript, and Tailwind CSS; implemented data sanitization composables (useSanitize, useSvgSanitizer) and Content Security Policy (CSP) headers to harden against Cross-Site Scripting (XSS); designed login redirect URL sanitization to prevent Open Redirect vulnerabilities; implemented Server-Side Rendering (SSR) compatibility guards ensuring stability in Node 22 environments; tested and fixed Purchase Order ID parsing logic and public REST API integrations."
     ),
     bullets: [
       bi(
@@ -600,8 +588,8 @@ export const projects: ProjectEntry[] = [
         "Developed data sanitization composables (useSanitize & useSvgSanitizer) to filter input strings, URL parameters, and QR code SVG markups, remediating Cross-Site Scripting (XSS) vulnerabilities across procurement documents."
       ),
       bi(
-        "Mengimplementasikan proteksi Content Security Policy (CSP) dan sanitasi pengalihan URL pada alur login portal kemitraan (Patricia) guna mencegah serangan injeksi skrip dan celah Open Redirect.",
-        "Implemented Content Security Policy (CSP) protections and URL redirect sanitization on partner portal login flows (Patricia) to prevent script injection and Open Redirect exploits."
+        "Mengimplementasikan proteksi Content Security Policy (CSP) dan sanitasi pengalihan URL pada alur login portal kemitraan guna mencegah serangan injeksi skrip dan celah Open Redirect.",
+        "Implemented Content Security Policy (CSP) protections and URL redirect sanitization on partner portal login flows to prevent script injection and Open Redirect exploits."
       ),
       bi(
         "Merancang pelindung kompatibilitas Server-Side Rendering (SSR guards) dengan mock aman objek peramban (localStorage) dan pembungkus <ClientOnly> untuk mencegah kegagalan hidrasi pada runtime Node 22.",
@@ -886,8 +874,8 @@ export const skillGroups: SkillGroup[] = [
     items: [
       "TypeScript",
       "JavaScript (ES6+)",
-      "React",
-      "Next.js (App Router)",
+      "React (19/18)",
+      "Next.js (App Router, RSC)",
       "HTML5",
       "CSS3",
     ],
@@ -897,7 +885,7 @@ export const skillGroups: SkillGroup[] = [
     items: [
       "Tailwind CSS (v3 & v4)",
       "shadcn/ui",
-      "Ant Design",
+      "Ant Design 5",
       "Radix UI",
       "Base UI",
       "Responsive Web Design",
@@ -916,8 +904,23 @@ export const skillGroups: SkillGroup[] = [
     ],
   },
   {
-    title: bi("Keterampilan Kerja Pendukung", "Working Proficiency"),
-    items: ["Angular", "Vue.js", "Nuxt", "Blazor (C#/.NET)"],
+    title: bi("Pengujian & Keamanan Web", "Testing & Web Security"),
+    items: [
+      "Vitest",
+      "Jest",
+      "React Testing Library",
+      "DOM Sanitization (XSS Hardening)",
+      "HTTP CSP Headers",
+      "Magic Bytes Binary Validation",
+    ],
+  },
+  {
+    title: bi("Keahlian Lintas Framework", "Cross-Framework Proficiency"),
+    items: [
+      "Angular (17, RxJS)",
+      "Vue.js / Nuxt 3 (Pinia)",
+      "Blazor Server (C# / .NET 8)",
+    ],
   },
   {
     title: bi("Alat & Ekosistem", "Tools & Ecosystem"),
@@ -927,9 +930,11 @@ export const skillGroups: SkillGroup[] = [
       "GitHub",
       "Bitbucket",
       "Vite",
+      "Webpack",
       "Postman",
       "RESTful API Integration",
-      "AI-Assisted Development (Antigravity)",
+      "AWS Cloud (S3/EC2 Basics)",
+      "AI-Assisted Development",
     ],
   },
 ]
@@ -939,7 +944,7 @@ export type EducationEntry = {
   institution: string
   degree: Bi
   period: string
-  score: string
+  score: Bi
   extra?: Bi
 }
 
@@ -952,9 +957,9 @@ export const education: EducationEntry[] = [
       "Bachelor of Computer Science (S.Kom.)"
     ),
     period: "2020 – 2024",
-    score: "3.74 / 4.00",
+    score: bi("3,74 / 4,00", "3.74 / 4.00"),
     extra: bi(
-      "Skripsi: Keamanan Akses Dashboard Metabase Tertanam (Embedded) menggunakan JSON Web Token pada Purwarupa Web Analytics Netmonk.",
+      "Skripsi: Keamanan Akses Dashboard Metabase Tertanam menggunakan JSON Web Token pada Purwarupa Web Analytics Netmonk.",
       "Thesis: Access Security for Embedded Metabase Dashboards using JSON Web Token on the Netmonk Web Analytics Prototype."
     ),
   },
@@ -963,7 +968,7 @@ export const education: EducationEntry[] = [
     institution: "SMA Negeri 1 Semarang",
     degree: bi("Jurusan IPA", "Science Track (IPA)"),
     period: "2017 – 2020",
-    score: "92.27 / 100",
+    score: bi("92,27 / 100", "92.27 / 100"),
   },
 ]
 
@@ -975,14 +980,29 @@ export type CertificationEntry = {
 
 export const certifications: CertificationEntry[] = [
   {
-    name: "Become a React Web Developer Expert",
+    name: "Menjadi React Web Developer Expert",
     issuer: "Dicoding Indonesia",
-    period: "Oct 2024 – Oct 2027",
+    period: bi("Okt 2024 – Okt 2027", "Oct 2024 – Oct 2027"),
   },
   {
-    name: "Learn Intermediate Web Front-End Tools",
+    name: "Belajar Tools Front-End Web Intermediate",
     issuer: "Dicoding Indonesia",
-    period: "Oct 2024 – Oct 2027",
+    period: bi("Okt 2024 – Okt 2027", "Oct 2024 – Oct 2027"),
+  },
+  {
+    name: "Belajar Fundamental Front-End Web Development",
+    issuer: "Dicoding Indonesia",
+    period: bi("Sep 2024 – Sep 2027", "Sep 2024 – Sep 2027"),
+  },
+  {
+    name: "Cloud Practitioner Essentials (Belajar Dasar AWS Cloud)",
+    issuer: "Dicoding Indonesia",
+    period: bi("Sep 2024 – Sep 2027", "Sep 2024 – Sep 2027"),
+  },
+  {
+    name: "Agile Foundations",
+    issuer: "LinkedIn Learning",
+    period: bi("Jul 2025", "Jul 2025"),
   },
   {
     name: "React Essential Training",
@@ -990,69 +1010,59 @@ export const certifications: CertificationEntry[] = [
     period: "Jul 2025",
   },
   {
-    name: "Beginner Back-End Learning with JavaScript",
+    name: "Belajar Back-End Pemula dengan JavaScript",
     issuer: "Dicoding Indonesia",
-    period: "Oct 2024 – Oct 2027",
+    period: bi("Okt 2024 – Okt 2027", "Oct 2024 – Oct 2027"),
   },
   {
-    name: "Learn Web Application Fundamentals with React",
+    name: "Belajar Fundamental Aplikasi Web dengan React",
     issuer: "Dicoding Indonesia",
-    period: "Aug 2024 – Aug 2027",
+    period: bi("Agu 2024 – Agu 2027", "Aug 2024 – Aug 2027"),
   },
   {
-    name: "Learn to Build Web Apps with React",
+    name: "Belajar Membuat Aplikasi Web dengan React",
     issuer: "Dicoding Indonesia",
-    period: "Aug 2024 – Aug 2027",
+    period: bi("Agu 2024 – Agu 2027", "Aug 2024 – Aug 2027"),
   },
   {
-    name: "Cloud Practitioner Essentials (AWS Cloud Basics)",
+    name: "Belajar Dasar Structured Query Language (SQL)",
     issuer: "Dicoding Indonesia",
-    period: "Sep 2024 – Sep 2027",
+    period: bi("Jan 2025 – Jan 2028", "Jan 2025 – Jan 2028"),
   },
   {
-    name: "Learn the Fundamentals of Front-End Web Development",
+    name: "Belajar Dasar Data Science",
     issuer: "Dicoding Indonesia",
-    period: "Sep 2024 – Sep 2027",
+    period: bi("Jan 2025 – Jan 2028", "Jan 2025 – Jan 2028"),
   },
   {
-    name: "Learn the Basics of SQL",
+    name: "Memulai Pemrograman dengan Python",
     issuer: "Dicoding Indonesia",
-    period: "Jan 2025 – Jan 2028",
+    period: bi("Jan 2025 – Jan 2028", "Jan 2025 – Jan 2028"),
   },
   {
-    name: "Learn Data Science Basics",
+    name: "Belajar Pemrograman Prosedural dengan Python",
     issuer: "Dicoding Indonesia",
-    period: "Jan 2025 – Jan 2028",
+    period: bi("Jan 2024 – Jan 2027", "Jan 2024 – Jan 2027"),
   },
   {
-    name: "Getting Started with Python Programming",
+    name: "Belajar Dasar Pemrograman JavaScript",
     issuer: "Dicoding Indonesia",
-    period: "Jan 2025 – Jan 2028",
+    period: bi("Agu 2024 – Agu 2027", "Aug 2024 – Aug 2027"),
   },
   {
-    name: "Learn Procedural Programming with Python",
+    name: "Belajar Membuat Front-End Web untuk Pemula",
     issuer: "Dicoding Indonesia",
-    period: "Jan 2024 – Jan 2027",
+    period: bi("Agu 2024 – Agu 2027", "Aug 2024 – Aug 2027"),
   },
   {
-    name: "Learn JavaScript Programming Basics",
+    name: "Belajar Dasar Pemrograman Web",
     issuer: "Dicoding Indonesia",
-    period: "Aug 2024 – Aug 2027",
+    period: bi("Agu 2024 – Agu 2027", "Aug 2024 – Aug 2027"),
   },
   {
-    name: "Learn to Create a Web Front-End for Beginners",
+    name: "Belajar Dasar Manajemen Proyek",
     issuer: "Dicoding Indonesia",
-    period: "Aug 2024 – Aug 2027",
-  },
-  {
-    name: "Learn Web Programming Basics",
-    issuer: "Dicoding Indonesia",
-    period: "Aug 2024 – Aug 2027",
-  },
-  {
-    name: "Learn Project Management Basics",
-    issuer: "Dicoding Indonesia",
-    period: "Jan 2024 – Jan 2027",
+    period: bi("Jan 2024 – Jan 2027", "Jan 2024 – Jan 2027"),
   },
   {
     name: "Academic English Proficiency Test (AcEPT) – Skor 218",
