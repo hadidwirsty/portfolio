@@ -4,6 +4,7 @@ import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 
 import { Button } from "@/components/ui/button"
+import { changeTheme } from "@/lib/theme-transition"
 
 function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme()
@@ -14,7 +15,9 @@ function ThemeToggle() {
       variant="ghost"
       size="icon"
       aria-label="Toggle theme"
-      onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+      onClick={() =>
+        changeTheme(resolvedTheme === "dark" ? "light" : "dark", setTheme)
+      }
       className="relative"
     >
       <Moon className="size-4 scale-100 rotate-0 transition-transform duration-200 dark:scale-0 dark:-rotate-90" />

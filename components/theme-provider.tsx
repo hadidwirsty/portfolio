@@ -3,6 +3,8 @@
 import * as React from "react"
 import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes"
 
+import { changeTheme } from "@/lib/theme-transition"
+
 function ThemeProvider({
   children,
   ...props
@@ -12,7 +14,6 @@ function ThemeProvider({
       attribute="class"
       defaultTheme="system"
       enableSystem
-      disableTransitionOnChange
       {...props}
     >
       <ThemeHotkey />
@@ -55,7 +56,7 @@ function ThemeHotkey() {
         return
       }
 
-      setTheme(resolvedTheme === "dark" ? "light" : "dark")
+      changeTheme(resolvedTheme === "dark" ? "light" : "dark", setTheme)
     }
 
     window.addEventListener("keydown", onKeyDown)
