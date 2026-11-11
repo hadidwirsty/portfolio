@@ -112,6 +112,39 @@ export const ui = {
   ),
   copyEmail: bi("Salin Email", "Copy Email"),
   copied: bi("Tersalin!", "Copied!"),
+  greeting: bi("Halo 👋", "Hey 👋"),
+  backToTop: bi("Kembali ke Atas", "Back to Top"),
+}
+
+export const subpages = {
+  about: {
+    title: bi("Tentang", "About"),
+    description: bi(
+      "Frontend Engineer berspesialisasi dalam TypeScript, React, Next.js, dan arsitektur web enterprise performa tinggi.",
+      "Frontend Engineer specialized in TypeScript, React, Next.js, and high-performance enterprise web architectures."
+    ),
+  },
+  contact: {
+    title: bi("Kontak", "Contact"),
+    description: bi(
+      "Terbuka untuk peluang rekayasa perangkat lunak baru. Jangan ragu untuk menyalin email langsung saya atau terhubung melalui LinkedIn dan GitHub.",
+      "Available for new engineering opportunities. Feel free to copy my direct email or connect through LinkedIn and GitHub."
+    ),
+  },
+  portfolio: {
+    title: bi("Portofolio", "Portfolio"),
+    description: bi(
+      "Jelajahi 10 aplikasi web enterprise yang dikembangkan di bidang siklus hidup layanan kesehatan enterprise, continuous automated red teaming, dan produk digital.",
+      "Explore 10 enterprise web applications developed across enterprise healthcare lifecycle, continuous automated red teaming, and digital products."
+    ),
+  },
+  stack: {
+    title: bi("Keahlian", "Stack"),
+    description: bi(
+      "6 ranah rekayasa inti mencakup TypeScript, arsitektur modern React & Next.js, sistem CSS, dan test suite enterprise.",
+      "6 core engineering domains spanning TypeScript, modern React & Next.js architectures, CSS systems, and enterprise test suites."
+    ),
+  },
 }
 
 export type ExperienceEntry = {
@@ -1187,4 +1220,26 @@ export const volunteering: OrganizationEntry[] = [
     role: bi("Peserta", "Participant"),
     period: "Sep 2020",
   },
+]
+
+export interface TechStackItem {
+  name: string
+  src: string
+}
+
+export const FRONTEND_STACK: TechStackItem[] = [
+  { name: "Next.js", src: "/icons/skills/nextjs.svg" },
+  { name: "React", src: "/icons/skills/react.svg" },
+  { name: "TypeScript", src: "/icons/skills/typescript.svg" },
+  { name: "JavaScript", src: "/icons/skills/javascript.svg" },
+  { name: "Tailwind CSS", src: "/icons/skills/tailwind.svg" },
+  { name: "Vue.js", src: "/icons/skills/vue.svg" },
+  { name: "Nuxt", src: "/icons/skills/nuxt.svg" },
+  { name: "Angular", src: "/icons/skills/angular.svg" },
+  { name: "HTML5", src: "/icons/skills/html.svg" },
+  { name: "CSS3", src: "/icons/skills/css.svg" },
+  { name: "Git", src: "/icons/skills/git.svg" },
+  { name: "Vite", src: "/icons/skills/vite.svg" },
+  { name: "Node.js", src: "/icons/skills/nodejs.svg" },
+  { name: "Figma", src: "/icons/skills/figma.svg" },
 ]

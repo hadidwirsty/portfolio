@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Fraunces, Geist_Mono, Inter } from "next/font/google"
+import { Fraunces, Geist_Mono, Inter, Pixelify_Sans } from "next/font/google"
 
 import { ThemeProvider } from "@/components/theme-provider"
 import { LanguageProvider } from "@/lib/language-context"
@@ -21,6 +21,12 @@ const fraunces = Fraunces({
   style: ["normal", "italic"],
 })
 
+const pixelifySans = Pixelify_Sans({
+  subsets: ["latin"],
+  variable: "--font-pixel",
+  weight: ["400", "500", "600", "700"],
+})
+
 export const metadata: Metadata = {
   title: "Muhammad Hadid Wiransetyo — Frontend Engineer",
   description:
@@ -35,13 +41,15 @@ export default function RootLayout({
   return (
     <html
       lang="id"
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
       className={cn(
         "antialiased",
         fontMono.variable,
         "font-sans",
         inter.variable,
-        fraunces.variable
+        fraunces.variable,
+        pixelifySans.variable
       )}
     >
       <body>
