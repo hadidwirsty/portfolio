@@ -6,7 +6,7 @@ import Image from "next/image"
 import { ArrowUpRight } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
-import { profile, FRONTEND_STACK } from "@/lib/cv-data"
+import { profile, FRONTEND_STACK, ui } from "@/lib/cv-data"
 import { useLanguage, useT } from "@/lib/language-context"
 import { LetterRoll } from "@/components/ui/letter-roll"
 import { AsciiWaterReveal } from "@/components/ui/ascii-water-reveal"
@@ -14,6 +14,7 @@ import { GradientMotionBackground } from "@/components/ui/gradient-motion-backgr
 import { VexooLanguageToggle } from "@/components/vexoo-language-toggle"
 import { ThemeSwitch } from "@/components/theme-switch"
 import { AnimatedCardLabel } from "@/components/animated-card-label"
+import { KineticHeading } from "@/components/kinetic-heading"
 
 type HoveredCard = "about" | "portfolio" | "contact" | "stack" | "resume" | null
 
@@ -23,11 +24,11 @@ export function VexooDashboard() {
   const role = useT(profile.role)
   const location = useT(profile.location)
   const cvFile = useT(profile.cvFile)
+  const openToWorkText = useT(ui.openToWork)
 
   const [hoveredCard, setHoveredCard] = React.useState<HoveredCard>(null)
   const [timeString, setTimeString] = React.useState("")
   const [tickerIndex, setTickerIndex] = React.useState(0)
-  const [tickerDirection, setTickerDirection] = React.useState<1 | -1>(1)
 
   React.useEffect(() => {
     const updateTime = () => {
@@ -47,29 +48,19 @@ export function VexooDashboard() {
 
   React.useEffect(() => {
     const tickerInterval = setInterval(() => {
-      setTickerIndex((prev) => {
-        if (prev === 0) {
-          setTickerDirection(1)
-          return 1
-        } else {
-          setTickerDirection(-1)
-          return 0
-        }
-      })
+      setTickerIndex((prev) => (prev + 1) % 3)
     }, 3800)
     return () => clearInterval(tickerInterval)
   }, [])
 
-  const tickerItems = React.useMemo(() => {
-    return [role, `${location} • ${timeString || "14:00"} GMT+7`]
-  }, [role, location, timeString])
+  const locationDesktop = React.useMemo(() => {
+    return `${location} • ${timeString || "14:00"} GMT+7`
+  }, [location, timeString])
 
-  const tickerItemsMobile = React.useMemo(() => {
-    const mobileLoc = location.includes("Indonesia")
-      ? location.replace("Indonesia", "ID")
-      : location
-    return [role, `${mobileLoc} • ${timeString || "14:00"} GMT+7`]
-  }, [role, location, timeString])
+  const locationMobile = React.useMemo(() => {
+    const city = location.split(",")[0].trim()
+    return `${city} • ${timeString || "14:00"}`
+  }, [location, timeString])
 
   const getKineticText = () => {
     switch (hoveredCard) {
@@ -109,9 +100,9 @@ export function VexooDashboard() {
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: "easeOut" }}
-        className="relative z-20 grid h-10 shrink-0 grid-cols-[auto_1fr_auto] items-center gap-3 font-sans text-xs tracking-tight md:h-12 md:grid-cols-[1fr_auto_1fr] md:text-sm"
+        className="relative z-20 grid h-10 shrink-0 grid-cols-[auto_1fr_auto] items-center gap-1.5 font-sans text-xs tracking-tight sm:gap-3 md:h-12 md:grid-cols-[1fr_auto_1fr] md:gap-4 md:text-sm"
       >
-        <div className="flex items-center justify-self-start">
+        <div className="flex shrink-0 items-center justify-self-start">
           <Link
             href="/"
             className="inline-flex items-center"
@@ -123,7 +114,7 @@ export function VexooDashboard() {
               width={2058}
               height={267}
               priority
-              className="hidden h-4.25 w-auto object-contain sm:h-5.5 lg:h-6.5 dark:block"
+              className="hidden h-3.75 w-auto object-contain sm:h-5 lg:h-6.5 dark:block"
             />
             <Image
               src="/images/logo-black.png"
@@ -131,49 +122,98 @@ export function VexooDashboard() {
               width={2058}
               height={267}
               priority
-              className="block h-4.25 w-auto object-contain sm:h-5.5 lg:h-6.5 dark:hidden"
+              className="block h-3.75 w-auto object-contain sm:h-5 lg:h-6.5 dark:hidden"
             />
           </Link>
         </div>
 
-        <div className="relative flex h-6 items-center justify-center justify-self-center overflow-hidden md:h-7">
+        <div className="relative flex h-7 items-center justify-center justify-self-center overflow-hidden md:h-8">
           <AnimatePresence mode="wait">
-            <motion.div
-              key={tickerIndex}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.16, ease: "easeOut" }}
-              className="text-xs font-medium whitespace-nowrap text-muted-foreground md:text-sm"
-            >
-              <div className="md:hidden">
+            {tickerIndex === 0 && (
+              <motion.div
+                key="ticker-role"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.22, ease: "easeOut" }}
+                className="flex items-center justify-center text-[11px] font-medium whitespace-nowrap text-muted-foreground sm:text-xs md:text-sm"
+              >
                 <LetterRoll
-                  key={`mobile-${tickerIndex}-${tickerDirection}`}
-                  text={tickerItemsMobile[tickerIndex]}
-                  direction={tickerDirection === 1 ? "up" : "down"}
+                  key={`role-${lang}`}
+                  text={role}
+                  direction="up"
                   stagger={0.65}
                   duration={0.38}
                   isRolled={true}
-                  className="text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+                  className="text-[11px] font-medium whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground sm:text-xs md:text-sm"
                 />
-              </div>
+              </motion.div>
+            )}
 
-              <div className="hidden md:block">
-                <LetterRoll
-                  key={`desktop-${tickerIndex}-${tickerDirection}`}
-                  text={tickerItems[tickerIndex]}
-                  direction={tickerDirection === 1 ? "up" : "down"}
-                  stagger={0.65}
-                  duration={0.38}
-                  isRolled={true}
-                  className="text-xs font-medium text-muted-foreground transition-colors hover:text-foreground md:text-sm"
-                />
-              </div>
-            </motion.div>
+            {tickerIndex === 1 && (
+              <motion.div
+                key="ticker-loc"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.22, ease: "easeOut" }}
+                className="flex items-center justify-center text-[11px] font-medium whitespace-nowrap text-muted-foreground sm:text-xs md:text-sm"
+              >
+                <div className="sm:hidden">
+                  <LetterRoll
+                    key={`loc-mob-${timeString}`}
+                    text={locationMobile}
+                    direction="up"
+                    stagger={0.65}
+                    duration={0.38}
+                    isRolled={true}
+                    className="text-[11px] font-medium whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground"
+                  />
+                </div>
+                <div className="hidden sm:block">
+                  <LetterRoll
+                    key={`loc-desk-${timeString}`}
+                    text={locationDesktop}
+                    direction="up"
+                    stagger={0.65}
+                    duration={0.38}
+                    isRolled={true}
+                    className="text-xs font-medium whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground md:text-sm"
+                  />
+                </div>
+              </motion.div>
+            )}
+
+            {tickerIndex === 2 && (
+              <motion.div
+                key="ticker-badge"
+                initial={{ opacity: 0, y: 10, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -10, scale: 0.96 }}
+                transition={{ duration: 0.22, ease: "easeOut" }}
+                className="flex items-center justify-center"
+              >
+                <div className="group inline-flex items-center gap-1.5 rounded-full border border-border/70 bg-foreground/5 px-2.5 py-0.5 font-pixel text-[11px] font-semibold tracking-wider text-muted-foreground shadow-2xs transition-all duration-300 select-none hover:border-border hover:bg-foreground/10 hover:text-foreground sm:gap-2 sm:px-3 sm:py-1 sm:text-xs">
+                  <span className="relative flex size-2 shrink-0 items-center justify-center">
+                    <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75 motion-reduce:animate-none" />
+                    <span className="relative inline-flex size-1.5 rounded-full bg-emerald-500 sm:size-2" />
+                  </span>
+                  <LetterRoll
+                    key={`badge-${lang}`}
+                    text={openToWorkText}
+                    direction="up"
+                    stagger={0.65}
+                    duration={0.38}
+                    hoverTarget="parent"
+                    className="font-pixel text-[11px] font-semibold tracking-wider text-muted-foreground transition-colors group-hover:text-foreground sm:text-xs"
+                  />
+                </div>
+              </motion.div>
+            )}
           </AnimatePresence>
         </div>
 
-        <div className="flex items-center gap-2.5 justify-self-end md:gap-4 lg:gap-5">
+        <div className="flex shrink-0 items-center gap-1.5 justify-self-end sm:gap-2.5 md:gap-4 lg:gap-5">
           <VexooLanguageToggle />
 
           <ThemeSwitch />
@@ -182,20 +222,10 @@ export function VexooDashboard() {
 
       <main className="relative z-10 flex min-h-0 flex-1 flex-col py-1.5 md:py-2 lg:pt-2 lg:pb-0">
         <div className="relative flex min-h-0 w-full flex-1 flex-col">
-          <div className="pointer-events-none relative z-0 -mb-1.5 flex shrink-0 justify-center overflow-visible pt-1 text-center text-4xl leading-none sm:-mb-2.5 sm:text-6xl md:pt-2 lg:-mb-3.5 xl:text-7xl 2xl:-mb-5.5 2xl:text-9xl">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={hoveredCard || "default"}
-                initial={{ opacity: 0, y: 18, filter: "blur(6px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                exit={{ opacity: 0, y: -16, filter: "blur(6px)" }}
-                transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
-                className="font-pixel leading-none font-bold tracking-wider whitespace-nowrap text-foreground"
-              >
-                {getKineticText()}
-              </motion.div>
-            </AnimatePresence>
-          </div>
+          <KineticHeading
+            text={getKineticText()}
+            motionKey={hoveredCard || "default"}
+          />
 
           <div className="relative z-10 flex min-h-0 w-full flex-1 flex-col gap-2.5 md:grid md:grid-rows-[1.1fr_1.9fr] md:gap-3.5 lg:grid-rows-2 xl:gap-4">
             <div className="flex min-h-0 flex-1 flex-col gap-2.5 md:grid md:h-full md:grid-cols-2 md:grid-rows-1 md:gap-3.5 lg:col-span-12 lg:grid-cols-12 lg:gap-4">

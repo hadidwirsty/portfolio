@@ -110,6 +110,7 @@ export const ui = {
     "Terbuka untuk peluang baru sebagai Frontend Engineer.",
     "Open to new opportunities as a Frontend Engineer."
   ),
+  openToWork: bi("Siap Bekerja", "Open to Work"),
   copyEmail: bi("Salin Email", "Copy Email"),
   copied: bi("Tersalin!", "Copied!"),
   greeting: bi("Halo 👋", "Hey 👋"),
