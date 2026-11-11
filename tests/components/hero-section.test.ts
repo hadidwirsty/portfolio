@@ -11,4 +11,6 @@ test("hero profile has required presentation fields", () => {
   assert.ok(profile.metrics && profile.metrics.length === 4)
   assert.ok(ui.copyEmail)
   assert.ok(ui.copied)
+  assert.strictEqual(ui.openToWork.id, "Siap Bekerja")
+  assert.strictEqual(ui.openToWork.en, "Open to Work")
 })
