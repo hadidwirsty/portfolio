@@ -8,18 +8,24 @@ import { motion, AnimatePresence } from "framer-motion"
 
 import { profile, FRONTEND_STACK, ui } from "@/lib/cv-data"
 import { useLanguage, useT } from "@/lib/language-context"
-import { LetterRoll } from "@/components/ui/letter-roll"
 import { AsciiWaterReveal } from "@/components/ui/ascii-water-reveal"
 import { GradientMotionBackground } from "@/components/ui/gradient-motion-background"
+import { LetterRoll } from "@/components/ui/letter-roll"
 import { VexooLanguageToggle } from "@/components/vexoo-language-toggle"
 import { ThemeSwitch } from "@/components/theme-switch"
 import { AnimatedCardLabel } from "@/components/animated-card-label"
 import { KineticHeading } from "@/components/kinetic-heading"
+import {
+  useDashboardIntro,
+  DashboardIntroOverlay,
+} from "@/components/dashboard-intro"
 
-type HoveredCard = "about" | "portfolio" | "contact" | "stack" | "resume" | null
+type HoveredCard =
+  "about" | "portfolio" | "contact" | "stack" | "resume" | "greeting" | null
 
 export function VexooDashboard() {
   const { lang } = useLanguage()
+  const { phase, isIntroActive, getCardMotionProps } = useDashboardIntro()
 
   const role = useT(profile.role)
   const location = useT(profile.location)
@@ -74,6 +80,8 @@ export function VexooDashboard() {
         return lang === "id" ? "Keahlian" : "Stack"
       case "resume":
         return "Resume"
+      case "greeting":
+        return lang === "id" ? "Halo 👋" : "Hi 👋"
       default:
         return "Hadidwirsty"
     }
@@ -89,6 +97,8 @@ export function VexooDashboard() {
 
   return (
     <div className="relative flex h-dvh w-full flex-col overflow-x-hidden bg-background p-3.5 font-sans text-foreground select-none md:p-6 lg:p-5 xl:p-6">
+      <DashboardIntroOverlay phase={phase} />
+
       <AsciiWaterReveal
         fontSize={12}
         density={1.05}
@@ -96,12 +106,20 @@ export function VexooDashboard() {
         velocity={0.48}
         maxOpacity={0.25}
       />
+
       <motion.header
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={isIntroActive ? { opacity: 0, y: -8 } : { opacity: 1, y: 0 }}
+        animate={
+          isIntroActive
+            ? phase === "phaseC" || phase === "phaseD"
+              ? { opacity: 1, y: 0 }
+              : { opacity: 0, y: -8 }
+            : { opacity: 1, y: 0 }
+        }
         transition={{ duration: 0.4, ease: "easeOut" }}
         className="relative z-20 grid h-10 shrink-0 grid-cols-[auto_1fr_auto] items-center gap-1.5 font-sans text-xs tracking-tight sm:gap-3 md:h-12 md:grid-cols-[1fr_auto_1fr] md:gap-4 md:text-sm"
       >
+        {/* Left: Logo */}
         <div className="flex shrink-0 items-center justify-self-start">
           <Link
             href="/"
@@ -127,6 +145,7 @@ export function VexooDashboard() {
           </Link>
         </div>
 
+        {/* Center: Ticker */}
         <div className="relative flex h-7 items-center justify-center justify-self-center overflow-hidden md:h-8">
           <AnimatePresence mode="wait">
             {tickerIndex === 0 && (
@@ -136,16 +155,16 @@ export function VexooDashboard() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.22, ease: "easeOut" }}
-                className="flex items-center justify-center text-[11px] font-medium whitespace-nowrap text-muted-foreground sm:text-xs md:text-sm"
+                className="flex items-center justify-center text-xs font-medium whitespace-nowrap text-muted-foreground md:text-sm"
               >
                 <LetterRoll
                   key={`role-${lang}`}
                   text={role}
                   direction="up"
                   stagger={0.65}
-                  duration={0.38}
+                  duration={0.4}
                   isRolled={true}
-                  className="text-[11px] font-medium whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground sm:text-xs md:text-sm"
+                  className="text-xs font-medium whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground md:text-sm"
                 />
               </motion.div>
             )}
@@ -157,7 +176,7 @@ export function VexooDashboard() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.22, ease: "easeOut" }}
-                className="flex items-center justify-center text-[11px] font-medium whitespace-nowrap text-muted-foreground sm:text-xs md:text-sm"
+                className="flex items-center justify-center text-xs font-medium whitespace-nowrap text-muted-foreground md:text-sm"
               >
                 <div className="sm:hidden">
                   <LetterRoll
@@ -165,9 +184,9 @@ export function VexooDashboard() {
                     text={locationMobile}
                     direction="up"
                     stagger={0.65}
-                    duration={0.38}
+                    duration={0.4}
                     isRolled={true}
-                    className="text-[11px] font-medium whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground"
+                    className="text-xs font-medium whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground md:text-sm"
                   />
                 </div>
                 <div className="hidden sm:block">
@@ -176,7 +195,7 @@ export function VexooDashboard() {
                     text={locationDesktop}
                     direction="up"
                     stagger={0.65}
-                    duration={0.38}
+                    duration={0.4}
                     isRolled={true}
                     className="text-xs font-medium whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground md:text-sm"
                   />
@@ -193,8 +212,12 @@ export function VexooDashboard() {
                 transition={{ duration: 0.22, ease: "easeOut" }}
                 className="flex items-center justify-center"
               >
-                <div className="group inline-flex items-center gap-1.5 rounded-full border border-border/70 bg-foreground/5 px-2.5 py-0.5 font-pixel text-[11px] font-semibold tracking-wider text-muted-foreground shadow-2xs transition-all duration-300 select-none hover:border-border hover:bg-foreground/10 hover:text-foreground sm:gap-2 sm:px-3 sm:py-1 sm:text-xs">
-                  <span className="relative flex size-2 shrink-0 items-center justify-center">
+                <div className="group relative inline-flex items-center gap-1.5 overflow-hidden rounded-full border border-border/70 bg-card/8 px-2.5 py-0.5 font-pixel text-sm font-semibold tracking-wider text-muted-foreground shadow-2xs backdrop-blur-[10px] transition-all duration-300 select-none hover:border-border hover:bg-card/2 hover:text-foreground sm:gap-2 sm:px-3 sm:py-1">
+                  <GradientMotionBackground
+                    seed={77}
+                    className="pointer-events-none absolute inset-0 z-0 overflow-hidden rounded-[inherit] bg-transparent transition-opacity duration-500 group-hover:opacity-25 dark:bg-transparent"
+                  />
+                  <span className="relative z-10 flex size-2 shrink-0 items-center justify-center">
                     <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75 motion-reduce:animate-none" />
                     <span className="relative inline-flex size-1.5 rounded-full bg-emerald-500 sm:size-2" />
                   </span>
@@ -203,9 +226,9 @@ export function VexooDashboard() {
                     text={openToWorkText}
                     direction="up"
                     stagger={0.65}
-                    duration={0.38}
+                    duration={0.4}
                     hoverTarget="parent"
-                    className="font-pixel text-[11px] font-semibold tracking-wider text-muted-foreground transition-colors group-hover:text-foreground sm:text-xs"
+                    className="relative z-10 font-pixel text-xs font-semibold tracking-wider text-muted-foreground transition-colors group-hover:text-foreground md:text-sm"
                   />
                 </div>
               </motion.div>
@@ -213,24 +236,36 @@ export function VexooDashboard() {
           </AnimatePresence>
         </div>
 
+        {/* Right: Controls */}
         <div className="flex shrink-0 items-center gap-1.5 justify-self-end sm:gap-2.5 md:gap-4 lg:gap-5">
           <VexooLanguageToggle />
-
           <ThemeSwitch />
         </div>
       </motion.header>
 
       <main className="relative z-10 flex min-h-0 flex-1 flex-col py-1.5 md:py-2 lg:pt-2 lg:pb-0">
         <div className="relative flex min-h-0 w-full flex-1 flex-col">
-          <KineticHeading
-            text={getKineticText()}
-            motionKey={hoveredCard || "default"}
-          />
+          <motion.div
+            initial={isIntroActive ? { opacity: 0 } : { opacity: 1 }}
+            animate={
+              isIntroActive && phase === "phaseA"
+                ? { opacity: 0 }
+                : { opacity: 1 }
+            }
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="w-full"
+          >
+            <KineticHeading
+              text={getKineticText()}
+              motionKey={hoveredCard || "default"}
+            />
+          </motion.div>
 
           <div className="relative z-10 flex min-h-0 w-full flex-1 flex-col gap-2.5 md:grid md:grid-rows-[1.1fr_1.9fr] md:gap-3.5 lg:grid-rows-2 xl:gap-4">
             <div className="flex min-h-0 flex-1 flex-col gap-2.5 md:grid md:h-full md:grid-cols-2 md:grid-rows-1 md:gap-3.5 lg:col-span-12 lg:grid-cols-12 lg:gap-4">
-              {/* Card About */}
+              {/* Card About (1) */}
               <motion.div
+                {...getCardMotionProps(0)}
                 whileHover={{ y: -2, transition: { duration: 0.2 } }}
                 whileTap={{ scale: 0.985 }}
                 className="min-h-0 flex-1 md:col-span-1 md:h-full lg:col-span-3"
@@ -238,11 +273,11 @@ export function VexooDashboard() {
                 <Link
                   href="/about"
                   {...hoverProps("about")}
-                  className="group relative flex h-full min-h-24 w-full cursor-pointer flex-col justify-end overflow-hidden rounded-xl border border-border/80 bg-card/75 p-4 shadow-xs backdrop-blur-xl transition-all duration-500 hover:bg-card/25 hover:shadow-2xl hover:shadow-black/15 sm:rounded-3xl sm:p-5 dark:hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.7)]"
+                  className="group relative flex h-full min-h-24 w-full cursor-pointer flex-col justify-end overflow-hidden rounded-xl border border-border/80 bg-card/8 p-4 shadow-xs backdrop-blur-[10px] transition-all duration-500 hover:bg-card/2 hover:shadow-2xl hover:shadow-black/15 sm:rounded-3xl sm:p-5 dark:hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.7)]"
                 >
                   <GradientMotionBackground
                     seed={11}
-                    className="pointer-events-none absolute inset-0 z-0 overflow-hidden rounded-[inherit] transition-opacity duration-500 group-hover:opacity-25"
+                    className="pointer-events-none absolute inset-0 z-0 overflow-hidden rounded-[inherit] bg-transparent transition-opacity duration-500 group-hover:opacity-25 dark:bg-transparent"
                   />
                   <div className="relative z-10 flex items-center justify-between">
                     <AnimatedCardLabel
@@ -255,8 +290,9 @@ export function VexooDashboard() {
                 </Link>
               </motion.div>
 
-              {/* Card Portfolio */}
+              {/* Card Portfolio (2) */}
               <motion.div
+                {...getCardMotionProps(1)}
                 whileHover={{ y: -2, transition: { duration: 0.2 } }}
                 whileTap={{ scale: 0.985 }}
                 className="min-h-0 flex-1 md:col-span-1 md:h-full lg:col-span-9"
@@ -264,11 +300,11 @@ export function VexooDashboard() {
                 <Link
                   href="/portfolio"
                   {...hoverProps("portfolio")}
-                  className="group relative flex h-full min-h-24 w-full cursor-pointer flex-col justify-end overflow-hidden rounded-xl border border-border/80 bg-card/75 p-4 shadow-xs backdrop-blur-xl transition-all duration-500 hover:bg-card/25 hover:shadow-2xl hover:shadow-black/15 sm:rounded-3xl sm:p-5 dark:hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.7)]"
+                  className="group relative flex h-full min-h-24 w-full cursor-pointer flex-col justify-end overflow-hidden rounded-xl border border-border/80 bg-card/8 p-4 shadow-xs backdrop-blur-[10px] transition-all duration-500 hover:bg-card/2 hover:shadow-2xl hover:shadow-black/15 sm:rounded-3xl sm:p-5 dark:hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.7)]"
                 >
                   <GradientMotionBackground
                     seed={22}
-                    className="pointer-events-none absolute inset-0 z-0 overflow-hidden rounded-[inherit] transition-opacity duration-500 group-hover:opacity-25"
+                    className="pointer-events-none absolute inset-0 z-0 overflow-hidden rounded-[inherit] bg-transparent transition-opacity duration-500 group-hover:opacity-25 dark:bg-transparent"
                   />
                   <div className="relative z-10 flex items-center justify-between">
                     <AnimatedCardLabel
@@ -284,8 +320,9 @@ export function VexooDashboard() {
 
             <div className="flex min-h-0 flex-1 flex-col gap-2.5 md:grid md:h-full md:grid-rows-[1.05fr_0.95fr] md:gap-3.5 lg:col-span-12 lg:row-span-1 lg:grid lg:grid-cols-12 lg:grid-rows-1 lg:gap-4">
               <div className="grid min-h-0 flex-1 grid-cols-2 gap-2.5 md:flex md:h-full md:flex-row md:gap-3.5 lg:col-span-9 lg:gap-4">
-                {/* Card Contact */}
+                {/* Card Contact (3) */}
                 <motion.div
+                  {...getCardMotionProps(2)}
                   whileHover={{ y: -2, transition: { duration: 0.2 } }}
                   whileTap={{ scale: 0.985 }}
                   className="col-span-1 h-full min-h-0 md:h-full md:flex-1"
@@ -293,11 +330,11 @@ export function VexooDashboard() {
                   <Link
                     href="/contact"
                     {...hoverProps("contact")}
-                    className="group relative flex h-full w-full cursor-pointer flex-col justify-end overflow-hidden rounded-xl border border-border/80 bg-card/75 p-4 shadow-xs backdrop-blur-xl transition-all duration-500 hover:bg-card/25 hover:shadow-2xl hover:shadow-black/15 sm:rounded-3xl sm:p-5 dark:hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.7)]"
+                    className="group relative flex h-full w-full cursor-pointer flex-col justify-end overflow-hidden rounded-xl border border-border/80 bg-card/8 p-4 shadow-xs backdrop-blur-[10px] transition-all duration-500 hover:bg-card/2 hover:shadow-2xl hover:shadow-black/15 sm:rounded-3xl sm:p-5 dark:hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.7)]"
                   >
                     <GradientMotionBackground
                       seed={33}
-                      className="pointer-events-none absolute inset-0 z-0 overflow-hidden rounded-[inherit] transition-opacity duration-500 group-hover:opacity-25"
+                      className="pointer-events-none absolute inset-0 z-0 overflow-hidden rounded-[inherit] bg-transparent transition-opacity duration-500 group-hover:opacity-25 dark:bg-transparent"
                     />
                     <div className="relative z-10 flex items-center justify-between">
                       <AnimatedCardLabel
@@ -310,19 +347,21 @@ export function VexooDashboard() {
                   </Link>
                 </motion.div>
 
-                {/* Card Avatar Profile */}
+                {/* Card Avatar Profile (4) */}
                 <motion.div
+                  {...getCardMotionProps(3)}
+                  {...hoverProps("greeting")}
                   whileHover={{ y: -2, transition: { duration: 0.2 } }}
                   whileTap={{ scale: 0.985 }}
-                  className="group relative col-span-1 h-full min-h-0 overflow-hidden rounded-xl border border-border/80 bg-card/75 p-2 shadow-xs backdrop-blur-xl transition-all duration-500 hover:bg-card/25 hover:shadow-2xl hover:shadow-black/15 sm:rounded-3xl sm:p-3 md:aspect-square md:h-full md:w-auto md:shrink-0 dark:hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.7)]"
+                  className="group relative col-span-1 h-full min-h-0 overflow-hidden rounded-xl border border-border/80 bg-card/8 p-2 shadow-xs backdrop-blur-[10px] transition-all duration-500 hover:bg-card/2 hover:shadow-2xl hover:shadow-black/15 sm:rounded-3xl sm:p-3 md:aspect-square md:h-full md:w-auto md:shrink-0 dark:hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.7)]"
                 >
                   <GradientMotionBackground
                     seed={44}
-                    className="pointer-events-none absolute inset-0 z-0 overflow-hidden rounded-[inherit] transition-opacity duration-500 group-hover:opacity-25"
+                    className="pointer-events-none absolute inset-0 z-0 overflow-hidden rounded-[inherit] bg-transparent transition-opacity duration-500 group-hover:opacity-25 dark:bg-transparent"
                   />
                   <div className="relative z-10 flex h-full w-full items-end justify-center">
                     <Image
-                      src="/images/profile-github-transparent.png"
+                      src="/images/pixel-art-sticker/pixel-art-business-avatar-sticker.png"
                       alt={profile.name}
                       width={512}
                       height={512}
@@ -335,8 +374,9 @@ export function VexooDashboard() {
               </div>
 
               <div className="grid min-h-0 flex-[0.85] grid-cols-2 gap-2.5 md:h-full md:grid-rows-1 md:gap-3.5 lg:col-span-3 lg:flex lg:h-full lg:flex-col lg:gap-4">
-                {/* Card Stack */}
+                {/* Card Stack (5) */}
                 <motion.div
+                  {...getCardMotionProps(4)}
                   whileHover={{ y: -2, transition: { duration: 0.2 } }}
                   whileTap={{ scale: 0.985 }}
                   className="col-span-1 h-full min-h-0 lg:h-auto lg:flex-1"
@@ -344,12 +384,12 @@ export function VexooDashboard() {
                   <Link
                     href="/stack"
                     {...hoverProps("stack")}
-                    className="group relative flex h-full w-full cursor-pointer flex-col justify-between overflow-hidden rounded-xl border border-border/80 bg-card/75 p-4 shadow-xs backdrop-blur-xl transition-all duration-500 hover:bg-card/25 hover:shadow-2xl hover:shadow-black/15 sm:rounded-3xl sm:p-5 dark:hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.7)]"
+                    className="group relative flex h-full w-full cursor-pointer flex-col justify-between overflow-hidden rounded-xl border border-border/80 bg-card/8 p-4 shadow-xs backdrop-blur-[10px] transition-all duration-500 hover:bg-card/2 hover:shadow-2xl hover:shadow-black/15 sm:rounded-3xl sm:p-5 lg:p-3.5 xl:p-4 dark:hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.7)]"
                     title="Lihat Tech Stack & Keahlian"
                   >
                     <GradientMotionBackground
                       seed={55}
-                      className="pointer-events-none absolute inset-0 z-0 overflow-hidden rounded-[inherit] transition-opacity duration-500 group-hover:opacity-25"
+                      className="pointer-events-none absolute inset-0 z-0 overflow-hidden rounded-[inherit] bg-transparent transition-opacity duration-500 group-hover:opacity-25 dark:bg-transparent"
                     />
 
                     <div className="relative z-10 my-auto flex w-full flex-1 items-center justify-start overflow-hidden mask-[linear-gradient(to_right,transparent,black_8%,black_92%,transparent)] py-1">
@@ -363,11 +403,11 @@ export function VexooDashboard() {
                         className="flex w-max shrink-0 items-center"
                       >
                         {/* Track 1 */}
-                        <div className="flex shrink-0 items-center gap-2 pr-2 sm:gap-2.5 sm:pr-2.5 md:gap-3.5 md:pr-3.5 lg:gap-3 lg:pr-3 xl:gap-4 xl:pr-4">
+                        <div className="flex shrink-0 items-center gap-2 pr-2 sm:gap-2.5 sm:pr-2.5 md:gap-3.5 md:pr-3.5 lg:gap-2.5 lg:pr-2.5 xl:gap-3 xl:pr-3 2xl:gap-4 2xl:pr-4">
                           {FRONTEND_STACK.map((item) => (
                             <div
                               key={`t1-${item.name}`}
-                              className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-border/40 bg-foreground/5 p-2 shadow-xs transition-transform duration-200 hover:scale-120 sm:size-11 sm:rounded-xl md:size-14 md:p-2.5 lg:size-13 lg:p-2.5 xl:size-15 xl:rounded-2xl xl:p-3"
+                              className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-border/40 bg-foreground/5 p-2 shadow-xs transition-transform duration-200 hover:scale-120 sm:size-11 sm:rounded-xl md:size-14 md:p-2.5 lg:size-10 lg:rounded-xl lg:p-2 xl:size-11 xl:p-2 2xl:size-15 2xl:rounded-2xl 2xl:p-3"
                               title={item.name}
                             >
                               <Image
@@ -375,7 +415,7 @@ export function VexooDashboard() {
                                 alt={item.name}
                                 width={48}
                                 height={48}
-                                className="size-6 object-contain sm:size-7 md:size-8 lg:size-8 xl:size-9"
+                                className="size-6 object-contain sm:size-7 md:size-8 lg:size-6 xl:size-7 2xl:size-8"
                                 unoptimized
                               />
                             </div>
@@ -384,13 +424,13 @@ export function VexooDashboard() {
 
                         {/* Track 2 (Seamless clone) */}
                         <div
-                          className="flex shrink-0 items-center gap-2 pr-2 sm:gap-2.5 sm:pr-2.5 md:gap-3.5 md:pr-3.5 lg:gap-3 lg:pr-3 xl:gap-4 xl:pr-4"
+                          className="flex shrink-0 items-center gap-2 pr-2 sm:gap-2.5 sm:pr-2.5 md:gap-3.5 md:pr-3.5 lg:gap-2.5 lg:pr-2.5 xl:gap-3 xl:pr-3 2xl:gap-4 2xl:pr-4"
                           aria-hidden="true"
                         >
                           {FRONTEND_STACK.map((item) => (
                             <div
                               key={`t2-${item.name}`}
-                              className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-border/40 bg-foreground/5 p-2 shadow-xs transition-transform duration-200 hover:scale-120 sm:size-11 sm:rounded-xl md:size-14 md:p-2.5 lg:size-13 lg:p-2.5 xl:size-15 xl:rounded-2xl xl:p-3"
+                              className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-border/40 bg-foreground/5 p-2 shadow-xs transition-transform duration-200 hover:scale-120 sm:size-11 sm:rounded-xl md:size-14 md:p-2.5 lg:size-10 lg:rounded-xl lg:p-2 xl:size-11 xl:p-2 2xl:size-15 2xl:rounded-2xl 2xl:p-3"
                               title={item.name}
                             >
                               <Image
@@ -398,7 +438,7 @@ export function VexooDashboard() {
                                 alt={item.name}
                                 width={48}
                                 height={48}
-                                className="size-6 object-contain sm:size-7 md:size-8 lg:size-8 xl:size-9"
+                                className="size-6 object-contain sm:size-7 md:size-8 lg:size-6 xl:size-7 2xl:size-8"
                                 unoptimized
                               />
                             </div>
@@ -418,8 +458,9 @@ export function VexooDashboard() {
                   </Link>
                 </motion.div>
 
-                {/* Card Resume */}
+                {/* Card Resume (6) */}
                 <motion.div
+                  {...getCardMotionProps(5)}
                   whileHover={{ y: -2, transition: { duration: 0.2 } }}
                   whileTap={{ scale: 0.985 }}
                   className="col-span-1 h-full min-h-0 lg:h-auto lg:flex-1"
@@ -428,12 +469,12 @@ export function VexooDashboard() {
                     href={cvFile}
                     download
                     {...hoverProps("resume")}
-                    className="group relative flex h-full w-full cursor-pointer flex-col justify-end overflow-hidden rounded-xl border border-border/80 bg-card/75 p-4 shadow-xs backdrop-blur-xl transition-all duration-500 hover:bg-card/25 hover:shadow-2xl hover:shadow-black/15 sm:rounded-3xl sm:p-5 dark:hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.7)]"
+                    className="group relative flex h-full w-full cursor-pointer flex-col justify-end overflow-hidden rounded-xl border border-border/80 bg-card/8 p-4 shadow-xs backdrop-blur-[10px] transition-all duration-500 hover:bg-card/2 hover:shadow-2xl hover:shadow-black/15 sm:rounded-3xl sm:p-5 dark:hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.7)]"
                     title="Unduh Resume / CV PDF"
                   >
                     <GradientMotionBackground
                       seed={66}
-                      className="pointer-events-none absolute inset-0 z-0 overflow-hidden rounded-[inherit] transition-opacity duration-500 group-hover:opacity-25"
+                      className="pointer-events-none absolute inset-0 z-0 overflow-hidden rounded-[inherit] bg-transparent transition-opacity duration-500 group-hover:opacity-25 dark:bg-transparent"
                     />
                     <div className="relative z-10 flex items-center justify-between">
                       <AnimatedCardLabel
@@ -451,7 +492,18 @@ export function VexooDashboard() {
         </div>
       </main>
 
-      <footer className="relative z-20 mt-2 flex shrink-0 flex-col items-center justify-between gap-1.5 font-sans text-xs text-muted-foreground/60 sm:mt-3 sm:text-xs lg:mt-4 lg:flex-row">
+      <motion.footer
+        initial={isIntroActive ? { opacity: 0, y: 8 } : { opacity: 1, y: 0 }}
+        animate={
+          isIntroActive
+            ? phase === "phaseC" || phase === "phaseD"
+              ? { opacity: 1, y: 0 }
+              : { opacity: 0, y: 8 }
+            : { opacity: 1, y: 0 }
+        }
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="relative z-20 mt-2 flex shrink-0 flex-col items-center justify-between gap-1.5 font-sans text-xs text-muted-foreground/60 sm:mt-3 md:text-sm lg:mt-4 lg:flex-row"
+      >
         <div>
           © {new Date().getFullYear()} {profile.name}.{" "}
           {lang === "id" ? "Hak Cipta Dilindungi." : "All rights reserved."}
@@ -468,7 +520,7 @@ export function VexooDashboard() {
           </a>
           <span>Framer Template</span>
         </div>
-      </footer>
+      </motion.footer>
     </div>
   )
 }

@@ -65,6 +65,17 @@ export function AsciiWaterReveal({
       }
     }
 
+    let canvasDocLeft = 0
+    let canvasDocTop = 0
+    const updateDocCoords = () => {
+      if (!canvas) return
+      const rect = canvas.getBoundingClientRect()
+      const scrollX = window.scrollX || window.pageXOffset || 0
+      const scrollY = window.scrollY || window.pageYOffset || 0
+      canvasDocLeft = rect.left + scrollX
+      canvasDocTop = rect.top + scrollY
+    }
+
     function initBuffers() {
       if (!container || !canvas) return
       const rect = container.getBoundingClientRect()
@@ -75,6 +86,7 @@ export function AsciiWaterReveal({
       const size = cols * rows
       buffer1 = new Float32Array(size)
       buffer2 = new Float32Array(size)
+      updateDocCoords()
       wakeUp()
     }
 
@@ -113,9 +125,10 @@ export function AsciiWaterReveal({
 
     const handlePointerMove = (e: PointerEvent) => {
       if (!canvas) return
-      const rect = canvas.getBoundingClientRect()
-      mouse.x = e.clientX - rect.left
-      mouse.y = e.clientY - rect.top
+      const scrollX = window.scrollX || window.pageXOffset || 0
+      const scrollY = window.scrollY || window.pageYOffset || 0
+      mouse.x = e.clientX - (canvasDocLeft - scrollX)
+      mouse.y = e.clientY - (canvasDocTop - scrollY)
 
       if (mouse.prevX === -1) {
         mouse.prevX = mouse.x
@@ -158,6 +171,10 @@ export function AsciiWaterReveal({
     window.addEventListener("pointermove", handlePointerMove, { passive: true })
     window.addEventListener("pointerdown", handlePointerDown, { passive: true })
     window.addEventListener("pointerup", handlePointerUp, { passive: true })
+    window.addEventListener("resize", updateDocCoords, { passive: true })
+    window.addEventListener("orientationchange", updateDocCoords, {
+      passive: true,
+    })
     container.addEventListener("pointerleave", handlePointerLeave, {
       passive: true,
     })
@@ -226,6 +243,8 @@ export function AsciiWaterReveal({
       window.removeEventListener("pointermove", handlePointerMove)
       window.removeEventListener("pointerdown", handlePointerDown)
       window.removeEventListener("pointerup", handlePointerUp)
+      window.removeEventListener("resize", updateDocCoords)
+      window.removeEventListener("orientationchange", updateDocCoords)
       container.removeEventListener("pointerleave", handlePointerLeave)
       cancelAnimationFrame(animationFrameId)
     }

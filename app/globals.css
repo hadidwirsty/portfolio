@@ -81,6 +81,11 @@
   --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.705 0.015 286.067);
+  --sticker-yellow: #facc15;
+  --sticker-coral: #fb7185;
+  --sticker-mint: #34d399;
+  --sticker-blue: #38bdf8;
+  --sticker-ink: #0f172a;
 }
 
 .dark {
@@ -129,7 +134,7 @@
     cursor: pointer;
   }
   html {
-    @apply scroll-smooth font-sans;
+    @apply font-sans;
   }
 }
 
@@ -190,5 +195,67 @@ html.theme-switching *::after {
   .status-heading-404 {
     font-size: min(calc(100cqw / 1.81), 20dvh);
     margin-bottom: 1rem;
+  }
+}
+
+@keyframes gradient-blob-float {
+  0% {
+    transform: translate(calc(-50% - var(--blob-tx, 0px)), calc(-50% - var(--blob-ty, 0px))) rotate(var(--blob-rot, 0deg));
+  }
+  100% {
+    transform: translate(calc(-50% + var(--blob-tx, 0px)), calc(-50% + var(--blob-ty, 0px))) rotate(var(--blob-rot, 0deg));
+  }
+}
+
+.gradient-motion-blob {
+  position: absolute;
+  border-radius: 50%;
+  animation: gradient-blob-float var(--blob-dur, 21.4s) ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gradient-motion-blob {
+    animation: none;
+  }
+}
+
+@keyframes wave-hand {
+  0% {
+    transform: rotate(0deg);
+  }
+  15% {
+    transform: rotate(14deg);
+  }
+  30% {
+    transform: rotate(-8deg);
+  }
+  45% {
+    transform: rotate(14deg);
+  }
+  60% {
+    transform: rotate(-4deg);
+  }
+  75% {
+    transform: rotate(10deg);
+  }
+  90% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.animate-wave-hand {
+  display: inline-block;
+  transform-origin: 70% 70%;
+  animation: wave-hand 2s ease-in-out infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-wave-hand {
+    animation: none;
   }
 }
