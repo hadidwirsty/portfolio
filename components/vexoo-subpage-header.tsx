@@ -3,15 +3,13 @@
 import * as React from "react"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
-import { useTheme } from "next-themes"
 
 import { profile } from "@/lib/cv-data"
-import { useLanguage, useT } from "@/lib/language-context"
-import { changeTheme } from "@/lib/theme-transition"
+import { useT } from "@/lib/language-context"
+import { VexooLanguageToggle } from "@/components/vexoo-language-toggle"
+import { ThemeSwitch } from "@/components/theme-switch"
 
 export function VexooSubpageHeader() {
-  const { resolvedTheme, setTheme } = useTheme()
-  const { lang, setLang } = useLanguage()
   const location = useT(profile.location)
   const role = useT(profile.role)
 
@@ -50,32 +48,16 @@ export function VexooSubpageHeader() {
         <span className="hidden text-muted-foreground md:inline">{role}</span>
       </div>
 
-      {/* Kanan: Lokasi & Jam Lokal + Toggle */}
-      <div className="flex items-center gap-3 sm:gap-5">
-        <span className="text-muted-foreground">
+      {/* Kanan: Lokasi & Jam Lokal + Toggle Controls sama persis seperti Home */}
+      <div className="flex items-center gap-2.5 sm:gap-4 md:gap-5">
+        <span className="hidden text-muted-foreground md:inline">
           {location.split(",")[0]} • {timeString || "12:00 WIB"}
         </span>
 
-        {/* Language switch */}
-        <button
-          type="button"
-          onClick={() => setLang(lang === "id" ? "en" : "id")}
-          className="rounded-full border border-border/80 px-2 py-0.5 font-mono text-[0.65rem] text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground"
-          title="Ganti Bahasa (ID / EN)"
-        >
-          {lang.toUpperCase()}
-        </button>
-
-        {/* Theme Toggle Dot */}
-        <button
-          type="button"
-          onClick={() =>
-            changeTheme(resolvedTheme === "dark" ? "light" : "dark", setTheme)
-          }
-          className="size-3 rounded-full border border-foreground/30 bg-foreground transition-transform hover:scale-125"
-          aria-label="Toggle tema tampilan"
-          title="Toggle tema tampilan"
-        />
+        <div className="flex shrink-0 items-center gap-1.5 sm:gap-2.5 md:gap-4 lg:gap-5">
+          <VexooLanguageToggle />
+          <ThemeSwitch />
+        </div>
       </div>
     </header>
   )

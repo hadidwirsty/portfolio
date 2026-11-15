@@ -164,7 +164,7 @@ export function StatusPage({
           >
             <GradientMotionBackground
               seed={77}
-              className="pointer-events-none absolute inset-0 z-0 overflow-hidden rounded-[inherit] opacity-85 transition-opacity duration-500"
+              className="pointer-events-none absolute inset-0 z-0 overflow-hidden rounded-[inherit]"
             />
 
             <div className="relative z-10 flex flex-col items-center gap-3.5 text-center sm:gap-5">

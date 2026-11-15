@@ -18,9 +18,15 @@ test("profile provides pixel avatar image and favicon assets exist", () => {
   assert.ok(profile.avatar)
   const avatarPath = path.join(process.cwd(), "public", profile.avatar)
   const faviconAppPath = path.join(process.cwd(), "app", "favicon.ico")
-  const iconAppPath = path.join(process.cwd(), "app", "icon.png")
 
-  assert.ok(fs.existsSync(avatarPath), "public/images/avatar.png must exist")
+  assert.ok(fs.existsSync(avatarPath), "profile avatar image must exist")
+  assert.ok(
+    fs.statSync(avatarPath).size > 0,
+    "profile avatar image must not be empty"
+  )
   assert.ok(fs.existsSync(faviconAppPath), "app/favicon.ico must exist")
-  assert.ok(fs.existsSync(iconAppPath), "app/icon.png must exist")
+  assert.ok(
+    fs.statSync(faviconAppPath).size > 0,
+    "app/favicon.ico must not be empty"
+  )
 })

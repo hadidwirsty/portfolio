@@ -6,9 +6,15 @@ import { ProjectsSection } from "@/components/sections/projects-section"
 import { SiteFooter } from "@/components/site-footer"
 
 export const metadata: Metadata = {
-  title: "Portofolio (Portfolio) — Muhammad Hadid Wiransetyo",
+  title: "Portfolio — Hadidwirsty",
   description:
     "Katalog 10 proyek dan aplikasi web enterprise yang dikembangkan oleh Muhammad Hadid Wiransetyo.",
+  openGraph: {
+    title: "Portfolio — Hadidwirsty",
+    description:
+      "Showcase of 10 enterprise web applications and digital products developed by Muhammad Hadid Wiransetyo.",
+    type: "website",
+  },
 }
 
 export default function PortfolioPage() {
@@ -19,16 +25,11 @@ export default function PortfolioPage() {
     >
       <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
         <VexooSubpageHeader />
-
         <main className="mt-10 space-y-12 sm:mt-16">
-          {/* Big Header Title */}
           <VexooSubpageIntro pageKey="portfolio" />
-
-          {/* Projects Catalog */}
           <ProjectsSection />
         </main>
       </div>
-
       <SiteFooter />
     </div>
   )
