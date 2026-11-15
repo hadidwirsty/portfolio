@@ -1,17 +1,16 @@
 import type { Metadata } from "next"
 
+import { subpages } from "@/lib/cv-data"
 import { VexooSubpageShell } from "@/components/vexoo-subpage-shell"
 import { ContactHero } from "@/components/contact/contact-hero"
 import { PlayfulFooter } from "@/components/playful-footer"
 
 export const metadata: Metadata = {
-  title: "Contact — Hadidwirsty",
-  description:
-    "Hubungi Muhammad Hadid Wiransetyo untuk peluang kerja sama, rekayasa perangkat lunak, dan konsultasi teknis.",
+  title: `${subpages.contact.title.en} — Hadidwirsty`,
+  description: subpages.contact.description.id,
   openGraph: {
-    title: "Contact — Hadidwirsty",
-    description:
-      "Get in touch with Muhammad Hadid Wiransetyo for software engineering opportunities, technical collaboration, and consulting.",
+    title: `${subpages.contact.title.en} — Hadidwirsty`,
+    description: subpages.contact.description.en,
     type: "website",
   },
 }

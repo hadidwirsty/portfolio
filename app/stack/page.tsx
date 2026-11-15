@@ -1,18 +1,17 @@
 import type { Metadata } from "next"
 
+import { subpages } from "@/lib/cv-data"
 import { VexooSubpageHeader } from "@/components/vexoo-subpage-header"
 import { VexooSubpageIntro } from "@/components/vexoo-subpage-intro"
 import { SkillsSection } from "@/components/sections/skills-section"
 import { SiteFooter } from "@/components/site-footer"
 
 export const metadata: Metadata = {
-  title: "Stack — Hadidwirsty",
-  description:
-    "Keahlian teknis dan domain rekayasa perangkat lunak mencakup TypeScript, React, Next.js, arsitektur CSS, dan pengujian enterprise.",
+  title: `${subpages.stack.title.en} — Hadidwirsty`,
+  description: subpages.stack.description.id,
   openGraph: {
-    title: "Stack — Hadidwirsty",
-    description:
-      "Technical skills and engineering domain expertise spanning TypeScript, React, Next.js, CSS architecture, and automated testing.",
+    title: `${subpages.stack.title.en} — Hadidwirsty`,
+    description: subpages.stack.description.en,
     type: "website",
   },
 }

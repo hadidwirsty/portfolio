@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 
+import { subpages } from "@/lib/cv-data"
 import { VexooSubpageHeader } from "@/components/vexoo-subpage-header"
 import { VexooSubpageIntro } from "@/components/vexoo-subpage-intro"
 import { ExperienceSection } from "@/components/sections/experience-section"
@@ -9,13 +10,11 @@ import { CertificationsSection } from "@/components/sections/certifications-sect
 import { SiteFooter } from "@/components/site-footer"
 
 export const metadata: Metadata = {
-  title: "About — Hadidwirsty",
-  description:
-    "Profil profesional, riwayat karier, pendidikan, pencapaian, dan sertifikasi teknis Muhammad Hadid Wiransetyo.",
+  title: `${subpages.about.title.en} — Hadidwirsty`,
+  description: subpages.about.description.id,
   openGraph: {
-    title: "About — Hadidwirsty",
-    description:
-      "Professional background, career history, education, achievements, and technical certifications of Muhammad Hadid Wiransetyo.",
+    title: `${subpages.about.title.en} — Hadidwirsty`,
+    description: subpages.about.description.en,
     type: "website",
   },
 }

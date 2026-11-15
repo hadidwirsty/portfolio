@@ -1,18 +1,17 @@
 import type { Metadata } from "next"
 
+import { subpages } from "@/lib/cv-data"
 import { VexooSubpageHeader } from "@/components/vexoo-subpage-header"
 import { VexooSubpageIntro } from "@/components/vexoo-subpage-intro"
 import { ProjectsSection } from "@/components/sections/projects-section"
 import { SiteFooter } from "@/components/site-footer"
 
 export const metadata: Metadata = {
-  title: "Portfolio — Hadidwirsty",
-  description:
-    "Katalog 10 proyek dan aplikasi web enterprise yang dikembangkan oleh Muhammad Hadid Wiransetyo.",
+  title: `${subpages.portfolio.title.en} — Hadidwirsty`,
+  description: subpages.portfolio.description.id,
   openGraph: {
-    title: "Portfolio — Hadidwirsty",
-    description:
-      "Showcase of 10 enterprise web applications and digital products developed by Muhammad Hadid Wiransetyo.",
+    title: `${subpages.portfolio.title.en} — Hadidwirsty`,
+    description: subpages.portfolio.description.en,
     type: "website",
   },
 }
