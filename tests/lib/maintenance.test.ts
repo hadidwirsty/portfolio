@@ -10,28 +10,32 @@ import {
 } from "../../lib/maintenance.ts"
 import { resolveHeadingEmWidth } from "../../lib/status-heading.ts"
 
-test("HIDDEN_PATHS contains the exact 4 pages under maintenance", () => {
+test("HIDDEN_PATHS contains the exact 3 pages under maintenance", () => {
   assert.deepEqual(Array.from(HIDDEN_PATHS), [
     "/about",
     "/portfolio",
-    "/contact",
     "/stack",
   ])
 })
 
 test("isPageHidden correctly matches hidden routes and subroutes", () => {
-  // Exact match
+  // Exact match for hidden routes
   assert.equal(isPageHidden("/about"), true)
   assert.equal(isPageHidden("/about/"), true)
   assert.equal(isPageHidden("/portfolio"), true)
-  assert.equal(isPageHidden("/contact"), true)
   assert.equal(isPageHidden("/stack"), true)
+
+  // Released routes MUST NOT be hidden
+  assert.equal(isPageHidden("/contact"), false)
+  assert.equal(isPageHidden("/contact/"), false)
 
   // Subroutes under hidden pages
   assert.equal(isPageHidden("/portfolio/project-1"), true)
   assert.equal(isPageHidden("/about/team"), true)
-  assert.equal(isPageHidden("/contact/form/submit"), true)
   assert.equal(isPageHidden("/stack/detail"), true)
+
+  // Subroutes under released pages MUST NOT be hidden
+  assert.equal(isPageHidden("/contact/form/submit"), false)
 
   // Prefix collisions MUST NOT match
   assert.equal(isPageHidden("/stacks"), false)

@@ -19,7 +19,6 @@
 export const HIDDEN_PATHS = [
   "/about",
   "/portfolio",
-  "/contact",
   "/stack",
 ] as const
 
