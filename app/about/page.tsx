@@ -9,9 +9,15 @@ import { CertificationsSection } from "@/components/sections/certifications-sect
 import { SiteFooter } from "@/components/site-footer"
 
 export const metadata: Metadata = {
-  title: "Tentang (About) — Muhammad Hadid Wiransetyo",
+  title: "About — Hadidwirsty",
   description:
     "Profil profesional, riwayat karier, pendidikan, pencapaian, dan sertifikasi teknis Muhammad Hadid Wiransetyo.",
+  openGraph: {
+    title: "About — Hadidwirsty",
+    description:
+      "Professional background, career history, education, achievements, and technical certifications of Muhammad Hadid Wiransetyo.",
+    type: "website",
+  },
 }
 
 export default function AboutPage() {
@@ -22,19 +28,14 @@ export default function AboutPage() {
     >
       <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
         <VexooSubpageHeader />
-
         <main className="mt-10 space-y-16 sm:mt-16">
-          {/* Big Header Title */}
           <VexooSubpageIntro pageKey="about" />
-
-          {/* Sections */}
           <ExperienceSection />
           <EducationSection />
           <AchievementsSection />
           <CertificationsSection />
         </main>
       </div>
-
       <SiteFooter />
     </div>
   )

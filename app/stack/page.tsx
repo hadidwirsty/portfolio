@@ -6,9 +6,15 @@ import { SkillsSection } from "@/components/sections/skills-section"
 import { SiteFooter } from "@/components/site-footer"
 
 export const metadata: Metadata = {
-  title: "Keahlian (Stack) — Muhammad Hadid Wiransetyo",
+  title: "Stack — Hadidwirsty",
   description:
     "Keahlian teknis dan domain rekayasa perangkat lunak mencakup TypeScript, React, Next.js, arsitektur CSS, dan pengujian enterprise.",
+  openGraph: {
+    title: "Stack — Hadidwirsty",
+    description:
+      "Technical skills and engineering domain expertise spanning TypeScript, React, Next.js, CSS architecture, and automated testing.",
+    type: "website",
+  },
 }
 
 export default function StackPage() {
@@ -19,16 +25,11 @@ export default function StackPage() {
     >
       <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
         <VexooSubpageHeader />
-
         <main className="mt-10 space-y-12 sm:mt-16">
-          {/* Big Header Title */}
           <VexooSubpageIntro pageKey="stack" />
-
-          {/* Skills Section */}
           <SkillsSection />
         </main>
       </div>
-
       <SiteFooter />
     </div>
   )

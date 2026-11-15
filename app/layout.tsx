@@ -3,6 +3,8 @@ import { Fraunces, Geist_Mono, Inter, Pixelify_Sans } from "next/font/google"
 
 import { ThemeProvider } from "@/components/theme-provider"
 import { LanguageProvider } from "@/lib/language-context"
+import { DynamicIslandNav } from "@/components/dynamic-island-nav"
+import { PageTransition } from "@/components/page-transition"
 import { cn } from "@/lib/utils"
 
 import "./globals.css"
@@ -28,9 +30,15 @@ const pixelifySans = Pixelify_Sans({
 })
 
 export const metadata: Metadata = {
-  title: "Muhammad Hadid Wiransetyo — Frontend Engineer",
+  title: "Hadidwirsty",
   description:
-    "Curriculum vitae Muhammad Hadid Wiransetyo, Frontend Engineer berbasis di Semarang, Indonesia.",
+    "Portfolio & Curriculum Vitae Muhammad Hadid Wiransetyo — Frontend Engineer berbasis di Semarang, Indonesia. Spesialisasi TypeScript, React, Next.js, dan web enterprise.",
+  openGraph: {
+    title: "Hadidwirsty",
+    description:
+      "Frontend Engineer specializing in TypeScript, React, Next.js, and high-performance enterprise web applications.",
+    type: "website",
+  },
 }
 
 export default function RootLayout({
@@ -54,7 +62,11 @@ export default function RootLayout({
     >
       <body>
         <ThemeProvider>
-          <LanguageProvider>{children}</LanguageProvider>
+          <LanguageProvider>
+            {children}
+            <DynamicIslandNav />
+            <PageTransition />
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>
