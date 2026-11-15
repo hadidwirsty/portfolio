@@ -6,11 +6,11 @@ import Image from "next/image"
 import { ArrowUpRight } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
-import { profile, FRONTEND_STACK, ui } from "@/lib/cv-data"
+import { profile, FRONTEND_STACK, subpages, ui } from "@/lib/cv-data"
 import { useLanguage, useT } from "@/lib/language-context"
 import { AsciiWaterReveal } from "@/components/ui/ascii-water-reveal"
 import { GradientMotionBackground } from "@/components/ui/gradient-motion-background"
-import { LetterRoll } from "@/components/ui/letter-roll"
+import { LetterRoll, ResponsiveLetterRoll } from "@/components/ui/letter-roll"
 import { VexooLanguageToggle } from "@/components/vexoo-language-toggle"
 import { ThemeSwitch } from "@/components/theme-switch"
 import { AnimatedCardLabel } from "@/components/animated-card-label"
@@ -31,6 +31,7 @@ export function VexooDashboard() {
   const location = useT(profile.location)
   const cvFile = useT(profile.cvFile)
   const openToWorkText = useT(ui.openToWork)
+  const openToWorkShortText = useT(ui.openToWorkShort)
 
   const [hoveredCard, setHoveredCard] = React.useState<HoveredCard>(null)
   const [timeString, setTimeString] = React.useState("")
@@ -71,13 +72,17 @@ export function VexooDashboard() {
   const getKineticText = () => {
     switch (hoveredCard) {
       case "about":
-        return lang === "id" ? "Tentang" : "About"
+        return lang === "id" ? subpages.about.title.id : subpages.about.title.en
       case "portfolio":
-        return lang === "id" ? "Portofolio" : "Portfolio"
+        return lang === "id"
+          ? subpages.portfolio.title.id
+          : subpages.portfolio.title.en
       case "contact":
-        return lang === "id" ? "Kontak" : "Contact"
+        return lang === "id"
+          ? subpages.contact.title.id
+          : subpages.contact.title.en
       case "stack":
-        return lang === "id" ? "Keahlian" : "Stack"
+        return lang === "id" ? subpages.stack.title.id : subpages.stack.title.en
       case "resume":
         return "Resume"
       case "greeting":
@@ -221,9 +226,10 @@ export function VexooDashboard() {
                     <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75 motion-reduce:animate-none" />
                     <span className="relative inline-flex size-1.5 rounded-full bg-emerald-500 sm:size-2" />
                   </span>
-                  <LetterRoll
-                    key={`badge-${lang}`}
-                    text={openToWorkText}
+                  <ResponsiveLetterRoll
+                    mobileText={openToWorkShortText}
+                    desktopText={openToWorkText}
+                    langKey={lang}
                     direction="up"
                     stagger={0.65}
                     duration={0.4}
@@ -281,8 +287,8 @@ export function VexooDashboard() {
                   />
                   <div className="relative z-10 flex items-center justify-between">
                     <AnimatedCardLabel
-                      idText="Tentang"
-                      enText="About"
+                      idText={subpages.about.title.id}
+                      enText={subpages.about.title.en}
                       isHovered={hoveredCard === "about"}
                     />
                     <ArrowUpRight className="size-4 text-muted-foreground transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-foreground" />
@@ -308,8 +314,8 @@ export function VexooDashboard() {
                   />
                   <div className="relative z-10 flex items-center justify-between">
                     <AnimatedCardLabel
-                      idText="Portofolio"
-                      enText="Portfolio"
+                      idText={subpages.portfolio.title.id}
+                      enText={subpages.portfolio.title.en}
                       isHovered={hoveredCard === "portfolio"}
                     />
                     <ArrowUpRight className="size-4 text-muted-foreground transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-foreground" />
@@ -338,8 +344,8 @@ export function VexooDashboard() {
                     />
                     <div className="relative z-10 flex items-center justify-between">
                       <AnimatedCardLabel
-                        idText="Kontak"
-                        enText="Contact"
+                        idText={subpages.contact.title.id}
+                        enText={subpages.contact.title.en}
                         isHovered={hoveredCard === "contact"}
                       />
                       <ArrowUpRight className="size-4 text-muted-foreground transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-foreground" />
@@ -449,8 +455,8 @@ export function VexooDashboard() {
 
                     <div className="relative z-10 flex items-center justify-between">
                       <AnimatedCardLabel
-                        idText="Keahlian"
-                        enText="Stack"
+                        idText={subpages.stack.title.id}
+                        enText={subpages.stack.title.en}
                         isHovered={hoveredCard === "stack"}
                       />
                       <ArrowUpRight className="size-4 text-muted-foreground transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-foreground" />

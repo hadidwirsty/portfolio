@@ -324,3 +324,7 @@ export function LetterRoll({
 }
 
 export default LetterRoll
+export {
+  ResponsiveLetterRoll,
+  type ResponsiveLetterRollProps,
+} from "./responsive-letter-roll"

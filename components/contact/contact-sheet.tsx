@@ -9,7 +9,7 @@ import { useT, useLanguage } from "@/lib/language-context"
 import { copyTextToClipboard } from "@/lib/clipboard"
 import { Button } from "@/components/ui/button"
 import { GradientMotionBackground } from "@/components/ui/gradient-motion-background"
-import { LetterRoll } from "@/components/ui/letter-roll"
+import { LetterRoll, ResponsiveLetterRoll } from "@/components/ui/letter-roll"
 import { StickerBoard } from "@/components/contact/sticker-board"
 
 function RegistrationMark({ className }: { className?: string }) {
@@ -58,6 +58,7 @@ export function ContactSheet() {
   const contactPrompt = useT(ui.contactPrompt)
   const contactSubcopy = useT(ui.contactSubcopy)
   const openToWorkText = useT(ui.openToWork)
+  const openToWorkShortText = useT(ui.openToWorkShort)
   const downloadCvLabel = useT(ui.downloadCv)
   const copyEmailLabel = useT(ui.copyEmail)
   const copiedLabel = useT(ui.copied)
@@ -134,9 +135,10 @@ export function ContactSheet() {
                 <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75 motion-reduce:animate-none" />
                 <span className="relative inline-flex size-1.5 rounded-full bg-emerald-500 sm:size-2" />
               </span>
-              <LetterRoll
-                key={`badge-${lang}`}
-                text={openToWorkText}
+              <ResponsiveLetterRoll
+                mobileText={openToWorkShortText}
+                desktopText={openToWorkText}
+                langKey={lang}
                 direction="up"
                 stagger={0.65}
                 duration={0.38}
