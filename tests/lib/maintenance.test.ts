@@ -11,11 +11,7 @@ import {
 import { resolveHeadingEmWidth } from "../../lib/status-heading.ts"
 
 test("HIDDEN_PATHS contains the exact 3 pages under maintenance", () => {
-  assert.deepEqual(Array.from(HIDDEN_PATHS), [
-    "/about",
-    "/portfolio",
-    "/stack",
-  ])
+  assert.deepEqual(Array.from(HIDDEN_PATHS), ["/about", "/portfolio", "/stack"])
 })
 
 test("isPageHidden correctly matches hidden routes and subroutes", () => {
