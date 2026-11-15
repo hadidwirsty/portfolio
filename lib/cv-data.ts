@@ -131,6 +131,7 @@ export const ui = {
     "Open to new opportunities as a Frontend Engineer."
   ),
   openToWork: bi("Terbuka untuk Peluang Kerja", "Open to Work"),
+  openToWorkShort: bi("Siap Bekerja", "Open to Work"),
   copyEmail: bi("Salin Email", "Copy Email"),
   copied: bi("Email Disalin!", "Copied!"),
   greeting: bi("Halo 👋", "Hi 👋"),
@@ -177,18 +178,9 @@ export const ui = {
     ),
     cv: bi("Unduh CV (PDF)", "Download CV (PDF)"),
     avatar: bi("Avatar piksel Hadidwirsty", "Hadidwirsty's pixel avatar"),
-    hi: bi("Sapa saya!", "Say hi!"),
     "open-to-work": bi(
-      "Terbuka untuk peluang kerja",
+      "Terbuka untuk peluang kerja baru",
       "Open to new opportunities"
-    ),
-    heart: bi(
-      "Dibuat dengan cinta di Semarang",
-      "Crafted with love in Semarang"
-    ),
-    bolt: bi(
-      "Semangat tinggi, pengembangan cepat",
-      "High energy, efficient delivery"
     ),
     strava: bi("Aktivitas lari di Strava", "Strava running activities"),
     youtube: bi("Saluran YouTube", "YouTube channel"),

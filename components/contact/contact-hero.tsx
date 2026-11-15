@@ -1,13 +1,13 @@
 "use client"
 
-import { nav } from "@/lib/cv-data"
+import { subpages } from "@/lib/cv-data"
 import { useT } from "@/lib/language-context"
 import { KineticHeading } from "@/components/kinetic-heading"
 import { ContactSheet } from "@/components/contact/contact-sheet"
 import { TickerStrip } from "@/components/contact/ticker-strip"
 
 export function ContactHero() {
-  const headingText = useT(nav.contact)
+  const headingText = useT(subpages.contact.title)
 
   return (
     <div className="relative flex w-full flex-1 flex-col justify-between">
