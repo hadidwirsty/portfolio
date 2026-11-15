@@ -50,5 +50,5 @@ test("subpage titles match expected bilingual labels", () => {
   assert.strictEqual(subpages.portfolio.title.en, "Portfolio")
 
   assert.strictEqual(subpages.stack.title.id, "Keahlian")
-  assert.strictEqual(subpages.stack.title.en, "Stack")
+  assert.strictEqual(subpages.stack.title.en, "Tech Stack")
 })

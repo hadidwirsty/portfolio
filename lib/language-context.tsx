@@ -18,8 +18,6 @@ function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLangState] = React.useState<Lang>("id")
 
   React.useEffect(() => {
-    // Reads a browser-only API (localStorage), so it must run post-mount;
-    // the resulting one-time render update is intentional here.
     const stored = window.localStorage.getItem(STORAGE_KEY)
     if (stored === "id" || stored === "en") {
       // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -65,9 +63,9 @@ function useLanguage() {
   return context
 }
 
-/** Pick the string for the current language from a bilingual record. */
-function useT<T>(entry: Record<Lang, T>): T {
+function useT<T>(entry?: Record<Lang, T> | null): T {
   const { lang } = useLanguage()
+  if (!entry) return "" as unknown as T
   return entry[lang]
 }
 
