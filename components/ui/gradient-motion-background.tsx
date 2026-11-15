@@ -54,9 +54,10 @@ export function GradientMotionBackground({
   const mounted = useMounted()
   const { resolvedTheme } = useTheme()
   const isDark = resolvedTheme !== "light"
-  const [tick, setTick] = React.useState(0)
-  const startTimeRef = React.useRef<number | null>(null)
-  const rafRef = React.useRef<number | null>(null)
+
+  const durationSec = React.useMemo(() => {
+    return speed > 0 ? (600 / speed).toFixed(2) : "21.4"
+  }, [speed])
 
   const blobs: BlobSpec[] = React.useMemo(() => {
     const rand = mulberry32(Math.floor(seed * 1000) + 7)
@@ -94,41 +95,6 @@ export function GradientMotionBackground({
     return list
   }, [seed])
 
-  React.useEffect(() => {
-    if (!mounted) return
-    let active = true
-    let paused = false
-
-    const loop = (t: number) => {
-      if (!active) return
-      if (document.hidden) {
-        paused = true
-        return
-      }
-      if (startTimeRef.current === null) startTimeRef.current = t
-      const elapsed = (t - startTimeRef.current) / 1000
-      setTick(elapsed * (speed / 100))
-      rafRef.current = requestAnimationFrame(loop)
-    }
-
-    const handleVisibilityChange = () => {
-      if (!document.hidden && paused && active) {
-        paused = false
-        rafRef.current = requestAnimationFrame(loop)
-      }
-    }
-
-    document.addEventListener("visibilitychange", handleVisibilityChange)
-    rafRef.current = requestAnimationFrame(loop)
-
-    return () => {
-      active = false
-      document.removeEventListener("visibilitychange", handleVisibilityChange)
-      if (rafRef.current) cancelAnimationFrame(rafRef.current)
-      startTimeRef.current = null
-    }
-  }, [mounted, speed])
-
   return (
     <div
       className={cn(
@@ -143,27 +109,30 @@ export function GradientMotionBackground({
           style={{ filter: `blur(${blurAmount}px)` }}
         >
           {blobs.map((b) => {
-            const loopT = ((tick + b.phase * 6) % 6) / 6
-            const swing = Math.sin(loopT * Math.PI * 2)
             const range = 24
-            const tx = b.dirX * range * swing
-            const ty = b.dirY * range * swing
+            const tx = (b.dirX * range).toFixed(2)
+            const ty = (b.dirY * range).toFixed(2)
             const color = isDark ? b.colorDark : b.colorLight
+            const delaySec = (-(b.phase * Number(durationSec))).toFixed(2)
 
             return (
               <div
                 key={b.id}
-                style={{
-                  position: "absolute",
-                  left: `${b.xPct}%`,
-                  top: `${b.yPct}%`,
-                  width: `${b.sizePct}%`,
-                  height: `${b.sizePct}%`,
-                  background: `radial-gradient(circle, ${color} 0%, transparent 72%)`,
-                  borderRadius: "50%",
-                  transform: `translate(-50%, -50%) translate(${tx.toFixed(2)}px, ${ty.toFixed(2)}px) rotate(${b.rotation}deg)`,
-                  willChange: "transform",
-                }}
+                className="gradient-motion-blob"
+                style={
+                  {
+                    left: `${b.xPct}%`,
+                    top: `${b.yPct}%`,
+                    width: `${b.sizePct}%`,
+                    height: `${b.sizePct}%`,
+                    background: `radial-gradient(circle, ${color} 0%, transparent 72%)`,
+                    "--blob-tx": `${tx}px`,
+                    "--blob-ty": `${ty}px`,
+                    "--blob-rot": `${b.rotation.toFixed(1)}deg`,
+                    "--blob-dur": `${durationSec}s`,
+                    animationDelay: `${delaySec}s`,
+                  } as React.CSSProperties
+                }
               />
             )
           })}

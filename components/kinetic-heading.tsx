@@ -8,14 +8,26 @@ export interface KineticHeadingProps {
   text: string
   motionKey: string
   peek?: string
-  ghostBlur?: string
-  ghostOpacity?: number
   className?: string
 }
 
-const DEFAULT_PEEK = "0.4em"
-const DEFAULT_GHOST_BLUR = "0.09em"
-const DEFAULT_GHOST_OPACITY = 0.55
+const DEFAULT_PEEK = "0.3em"
+
+function renderHeadingContent(text: string) {
+  if (!text.includes("👋")) {
+    return text
+  }
+
+  const parts = text.split("👋")
+  return parts.map((part, index) => (
+    <React.Fragment key={index}>
+      {part}
+      {index < parts.length - 1 && (
+        <span className="animate-wave-hand inline-block select-none">👋</span>
+      )}
+    </React.Fragment>
+  ))
+}
 
 function HeadingText({ text, motionKey }: { text: string; motionKey: string }) {
   return (
@@ -28,7 +40,7 @@ function HeadingText({ text, motionKey }: { text: string; motionKey: string }) {
         transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
         className="font-pixel leading-none font-bold tracking-wider whitespace-nowrap text-foreground"
       >
-        {text}
+        {renderHeadingContent(text)}
       </motion.div>
     </AnimatePresence>
   )
@@ -38,8 +50,6 @@ export function KineticHeading({
   text,
   motionKey,
   peek = DEFAULT_PEEK,
-  ghostBlur = DEFAULT_GHOST_BLUR,
-  ghostOpacity = DEFAULT_GHOST_OPACITY,
   className,
 }: KineticHeadingProps) {
   return (
@@ -50,29 +60,10 @@ export function KineticHeading({
       )}
       style={{
         ["--peek" as string]: peek,
-        ["--ghost-blur" as string]: ghostBlur,
         marginBottom: "calc(var(--peek) * -1)",
       }}
     >
       <div className="pointer-events-none relative z-0">
-        <HeadingText text={text} motionKey={motionKey} />
-      </div>
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-20 flex justify-center overflow-visible pt-1 md:pt-2"
-        style={{
-          filter: `blur(var(--ghost-blur, ${ghostBlur}))`,
-          opacity: ghostOpacity,
-          maskImage:
-            "linear-gradient(to bottom, transparent calc(100% - var(--peek)), #000 calc(100% - var(--peek) + 0.02em), transparent 100%)",
-          WebkitMaskImage:
-            "linear-gradient(to bottom, transparent calc(100% - var(--peek)), #000 calc(100% - var(--peek) + 0.02em), transparent 100%)",
-          maskRepeat: "no-repeat",
-          WebkitMaskRepeat: "no-repeat",
-          maskSize: "100% 100%",
-          WebkitMaskSize: "100% 100%",
-        }}
-      >
         <HeadingText text={text} motionKey={motionKey} />
       </div>
     </div>
