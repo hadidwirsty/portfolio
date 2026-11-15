@@ -7,7 +7,6 @@ export const config = {
   matcher: [
     "/about/:path*",
     "/portfolio/:path*",
-    "/contact/:path*",
     "/stack/:path*",
   ],
 }
