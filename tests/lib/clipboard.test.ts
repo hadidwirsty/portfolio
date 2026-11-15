@@ -25,7 +25,7 @@ test("ui includes copyEmail and copied labels", () => {
   assert.strictEqual(customUi.copyEmail.id, "Salin Email")
   assert.strictEqual(customUi.copyEmail.en, "Copy Email")
   assert.ok(customUi.copied)
-  assert.strictEqual(customUi.copied.id, "Tersalin!")
+  assert.strictEqual(customUi.copied.id, "Email Disalin!")
   assert.strictEqual(customUi.copied.en, "Copied!")
 })
 
