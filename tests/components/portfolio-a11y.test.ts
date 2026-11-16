@@ -303,3 +303,45 @@ test("Reduced Motion: all animated components honor useReducedMotion", () => {
     "sheet lift motion must be disabled when shouldReduceMotion is true"
   )
 })
+
+test("Accessibility: ProjectTimelineAccordion & TimelineRuler implement robust WAI-ARIA and bilingual labels", () => {
+  const ACCORDION_PATH = path.resolve(
+    process.cwd(),
+    "components/portfolio/project-timeline-accordion.tsx"
+  )
+  const RULER_PATH = path.resolve(
+    process.cwd(),
+    "components/portfolio/timeline-ruler.tsx"
+  )
+
+  const accordionSource = fs.readFileSync(ACCORDION_PATH, "utf-8")
+  const rulerSource = fs.readFileSync(RULER_PATH, "utf-8")
+
+  // Accordion tablist & tabpanel
+  assert.match(accordionSource, /role=["']tablist["']/)
+  assert.match(accordionSource, /role=["']tab["']/)
+  assert.match(accordionSource, /role=["']tabpanel["']/)
+  assert.match(accordionSource, /aria-selected=\{isActive\}/)
+  assert.match(
+    accordionSource,
+    /aria-controls=\{`timeline-panel-\$\{item\.id\}`\}/
+  )
+  assert.match(
+    accordionSource,
+    /aria-labelledby=\{`timeline-card-\$\{item\.id\}`\}/
+  )
+
+  // Keyboard navigation
+  assert.match(accordionSource, /ArrowRight/)
+  assert.match(accordionSource, /ArrowLeft/)
+  assert.match(accordionSource, /Home/)
+  assert.match(accordionSource, /End/)
+
+  // Reduced motion
+  assert.match(accordionSource, /useReducedMotion\(\)/)
+  assert.match(rulerSource, /useReducedMotion\(\)/)
+
+  // Timeline Ruler region and year jump buttons
+  assert.match(rulerSource, /role=["']region["']/)
+  assert.match(rulerSource, /TIMELINE_YEAR_MARKERS/)
+})

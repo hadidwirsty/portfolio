@@ -93,7 +93,7 @@ export function PortfolioTimeline() {
         {/* Desktop Layout (>=1024px): Sinusoidal Curved Wave */}
         <div className="hidden lg:block">
           <div
-            className="relative my-4 flex h-[240px] w-full items-center justify-center"
+            className="relative my-4 flex h-60 w-full items-center justify-center"
             onKeyDown={handleKeyDown}
             role="tablist"
             aria-label={
@@ -218,7 +218,7 @@ export function PortfolioTimeline() {
                 ? "Berkas Tonggak Terpilih"
                 : "Selected Milestone Dossier"
             }
-            className="mt-2 min-h-[175px] rounded-xl border border-border/60 bg-muted/20 p-5 backdrop-blur-xs transition-colors"
+            className="mt-2 min-h-43.75 rounded-xl border border-border/60 bg-muted/20 p-5 backdrop-blur-xs transition-colors"
           >
             <div className="flex items-center justify-between border-b border-border/40 pb-3">
               <div className="flex items-center gap-2.5">
