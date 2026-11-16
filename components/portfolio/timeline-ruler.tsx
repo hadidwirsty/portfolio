@@ -33,7 +33,7 @@ export function TimelineRuler({
         lang === "id" ? "Penggaris Waktu Proyek" : "Project Timeline Ruler"
       }
       className={cn(
-        "relative w-full pt-4 pb-6 select-none sm:pt-6 sm:pb-8",
+        "relative w-full pt-2 pb-4 select-none sm:pt-6 sm:pb-8",
         className
       )}
     >
@@ -44,7 +44,7 @@ export function TimelineRuler({
           <div
             key={pct}
             style={{ left: `${pct}%` }}
-            className="absolute top-1/2 h-1.5 w-px -translate-x-1/2 -translate-y-1/2 bg-border/40"
+            className="absolute top-1/2 h-1 w-px -translate-x-1/2 -translate-y-1/2 bg-border/40 sm:h-1.5"
             aria-hidden="true"
           />
         ))}
@@ -61,8 +61,8 @@ export function TimelineRuler({
           }}
           className="absolute top-1/2 z-20 -translate-x-1/2 -translate-y-1/2"
         >
-          {/* Thin bright vertical line matching Framer reference, without green glow bullet */}
-          <div className="h-5 w-0.5 rounded-full bg-foreground shadow-xs shadow-foreground/30 transition-colors" />
+          {/* Thin bright vertical line matching Framer reference, scaled down proportionally on mobile */}
+          <div className="h-3.5 w-0.5 rounded-full bg-foreground shadow-xs shadow-foreground/30 transition-colors sm:h-5" />
         </motion.div>
 
         {/* 3. Year Markers (2023, 2024, 2025, 2026) */}
@@ -78,7 +78,7 @@ export function TimelineRuler({
               {/* Vertical Tick Mark crossing the horizontal line */}
               <div
                 className={cn(
-                  "mx-auto h-3 w-px -translate-y-1/2 transition-colors",
+                  "mx-auto h-2 w-px -translate-y-1/2 transition-colors sm:h-3",
                   isCurrentYear
                     ? "bg-foreground"
                     : "bg-border/70 group-hover:bg-foreground"
@@ -96,7 +96,7 @@ export function TimelineRuler({
                     : `Jump to projects in ${marker.year}`
                 }
                 className={cn(
-                  "group mt-2 block font-mono text-xs font-semibold tracking-wider sm:mt-2.5 sm:text-sm",
+                  "group mt-1.5 block font-mono text-[11px] font-semibold tracking-wider sm:mt-2.5 sm:text-sm",
                   "transition-colors hover:text-foreground",
                   isCurrentYear
                     ? "font-bold text-foreground"

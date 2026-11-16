@@ -188,7 +188,7 @@ test("project-timeline-accordion implements horizontal touch swipe handling with
   )
 })
 
-test("project-timeline-accordion provides accessible previous and next buttons", () => {
+test("project-timeline-accordion provides accessible previous and next buttons with min/max disabled bounds", () => {
   const source = fs.readFileSync(COMPONENT_PATH, "utf-8")
 
   assert.match(source, /handlePrev/, "must provide previous button handler")
@@ -202,6 +202,22 @@ test("project-timeline-accordion provides accessible previous and next buttons",
     source,
     /Proyek berikutnya|Next project/,
     "must have bilingual aria-label for next button"
+  )
+  // Must disable previous button at index 0 and next button at maximum index
+  assert.match(
+    source,
+    /disabled=\{activeIndex === 0\}/,
+    "must disable previous button when at first project (01/13)"
+  )
+  assert.match(
+    source,
+    /disabled=\{activeIndex === projectTimelineItems\.length - 1\}/,
+    "must disable next button when at last project (13/13)"
+  )
+  assert.match(
+    source,
+    /preventScroll:\s*true/,
+    "must use preventScroll to avoid browser native focus auto-scrolling container"
   )
 })
 

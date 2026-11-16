@@ -171,18 +171,25 @@ export function ProjectTimelineAccordion({
     activeCardWidth,
   ])
 
+  // Ensure DOM container scrollLeft never drifts away from 0 due to browser focus auto-scroll
+  React.useEffect(() => {
+    if (containerRef.current && containerRef.current.scrollLeft !== 0) {
+      containerRef.current.scrollLeft = 0
+    }
+  }, [activeIndex])
+
   const handlePrev = () => {
-    const nextIdx =
-      (selectedIndex - 1 + projectTimelineItems.length) %
-      projectTimelineItems.length
+    if (selectedIndex <= 0) return
+    const nextIdx = selectedIndex - 1
     setSelectedIndex(nextIdx)
-    cardRefs.current[nextIdx]?.focus()
+    cardRefs.current[nextIdx]?.focus({ preventScroll: true })
   }
 
   const handleNext = () => {
-    const nextIdx = (selectedIndex + 1) % projectTimelineItems.length
+    if (selectedIndex >= projectTimelineItems.length - 1) return
+    const nextIdx = selectedIndex + 1
     setSelectedIndex(nextIdx)
-    cardRefs.current[nextIdx]?.focus()
+    cardRefs.current[nextIdx]?.focus({ preventScroll: true })
   }
 
   const handleSelectYear = (year: number) => {
@@ -191,18 +198,18 @@ export function ProjectTimelineAccordion({
     )
     if (targetIdx !== -1) {
       setSelectedIndex(targetIdx)
-      cardRefs.current[targetIdx]?.focus()
+      cardRefs.current[targetIdx]?.focus({ preventScroll: true })
     }
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     let nextIdx = activeIndex
     if (e.key === "ArrowRight") {
-      nextIdx = (activeIndex + 1) % projectTimelineItems.length
+      if (activeIndex >= projectTimelineItems.length - 1) return
+      nextIdx = activeIndex + 1
     } else if (e.key === "ArrowLeft") {
-      nextIdx =
-        (activeIndex - 1 + projectTimelineItems.length) %
-        projectTimelineItems.length
+      if (activeIndex <= 0) return
+      nextIdx = activeIndex - 1
     } else if (e.key === "Home") {
       nextIdx = 0
     } else if (e.key === "End") {
@@ -213,11 +220,12 @@ export function ProjectTimelineAccordion({
 
     e.preventDefault()
     setSelectedIndex(nextIdx)
-    cardRefs.current[nextIdx]?.focus()
+    cardRefs.current[nextIdx]?.focus({ preventScroll: true })
   }
 
   const handleCardClick = (index: number) => {
     setSelectedIndex(index)
+    cardRefs.current[index]?.focus({ preventScroll: true })
     if (onSelectProject) {
       onSelectProject(projectTimelineItems[index])
     }
@@ -306,10 +314,11 @@ export function ProjectTimelineAccordion({
                 variant="outline"
                 size="icon-sm"
                 onClick={handlePrev}
+                disabled={activeIndex === 0}
                 aria-label={
                   lang === "id" ? "Proyek sebelumnya" : "Previous project"
                 }
-                className="size-8 rounded-full border-border/70 hover:bg-muted"
+                className="size-8 rounded-full border-border/70 hover:bg-muted disabled:pointer-events-none disabled:border-border/30 disabled:opacity-30"
               >
                 <ChevronLeft className="size-4" />
               </Button>
@@ -318,10 +327,11 @@ export function ProjectTimelineAccordion({
                 variant="outline"
                 size="icon-sm"
                 onClick={handleNext}
+                disabled={activeIndex === projectTimelineItems.length - 1}
                 aria-label={
                   lang === "id" ? "Proyek berikutnya" : "Next project"
                 }
-                className="size-8 rounded-full border-border/70 hover:bg-muted"
+                className="size-8 rounded-full border-border/70 hover:bg-muted disabled:pointer-events-none disabled:border-border/30 disabled:opacity-30"
               >
                 <ChevronRight className="size-4" />
               </Button>
@@ -332,6 +342,9 @@ export function ProjectTimelineAccordion({
         {/* Accordion Viewport Container */}
         <div
           ref={containerRef}
+          onScroll={(e) => {
+            e.currentTarget.scrollLeft = 0
+          }}
           onKeyDown={handleKeyDown}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}

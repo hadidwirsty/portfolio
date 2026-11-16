@@ -122,4 +122,16 @@ test("timeline-ruler implements continuous thin track and thin bright vertical s
     /(text-foreground font-bold|font-bold text-foreground)/,
     "must highlight active year with text-foreground font-bold"
   )
+
+  // Mobile scaling: smaller scrubber bar and tick marks on mobile display
+  assert.match(
+    source,
+    /h-3\.5[\s\S]*?sm:h-5/,
+    "must scale down scrubber height to h-3.5 on mobile and sm:h-5 on larger screens"
+  )
+  assert.match(
+    source,
+    /h-2[\s\S]*?sm:h-3/,
+    "must scale down year tick marks to h-2 on mobile and sm:h-3 on larger screens"
+  )
 })
