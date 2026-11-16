@@ -41,7 +41,7 @@ test("portfolio page integrates VexooSubpageShell and PlayfulFooter", () => {
   )
 })
 
-test("portfolio page mounts PortfolioHero, PortfolioTimeline, and PortfolioCardFolder", () => {
+test("portfolio page mounts PortfolioHero, ProjectTimelineAccordion, and PortfolioCardFolder in exact order", () => {
   const source = fs.readFileSync(PAGE_PATH, "utf-8")
 
   assert.match(
@@ -51,13 +51,32 @@ test("portfolio page mounts PortfolioHero, PortfolioTimeline, and PortfolioCardF
   )
   assert.match(
     source,
-    /PortfolioTimeline/,
-    "portfolio page must mount PortfolioTimeline (Batch 2)"
+    /ProjectTimelineAccordion/,
+    "portfolio page must mount ProjectTimelineAccordion (V2)"
+  )
+  assert.doesNotMatch(
+    source,
+    /PortfolioTimeline\b/,
+    "portfolio page must NOT mount legacy PortfolioTimeline"
   )
   assert.match(
     source,
     /PortfolioCardFolder/,
-    "portfolio page must mount PortfolioCardFolder (Batch 3 & 4)"
+    "portfolio page must mount PortfolioCardFolder"
+  )
+
+  const heroIdx = source.indexOf("<PortfolioHero")
+  const accordionIdx = source.indexOf("<ProjectTimelineAccordion")
+  const cardFolderIdx = source.indexOf("<PortfolioCardFolder")
+
+  assert.ok(heroIdx > -1, "PortfolioHero must be present")
+  assert.ok(
+    accordionIdx > heroIdx,
+    "ProjectTimelineAccordion must come after PortfolioHero"
+  )
+  assert.ok(
+    cardFolderIdx > accordionIdx,
+    "PortfolioCardFolder must come after ProjectTimelineAccordion"
   )
 })
 
@@ -73,5 +92,15 @@ test("portfolio page preserves subpages.portfolio metadata SEO", () => {
     source,
     /subpages\.portfolio\.description/,
     "metadata must use subpages.portfolio.description"
+  )
+})
+
+test("portfolio page uses fluid full-width layout without restrictive max-w-5xl constraint", () => {
+  const source = fs.readFileSync(PAGE_PATH, "utf-8")
+
+  assert.doesNotMatch(
+    source,
+    /max-w-5xl/,
+    "portfolio page must not constrain content within max-w-5xl"
   )
 })
