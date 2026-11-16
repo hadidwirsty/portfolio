@@ -4,7 +4,7 @@ import type { NextRequest } from "next/server"
 import { isMaintenanceActive, isPageHidden } from "@/lib/maintenance"
 
 export const config = {
-  matcher: ["/about/:path*", "/portfolio/:path*", "/stack/:path*"],
+  matcher: ["/about/:path*", "/stack/:path*"],
 }
 
 export function proxy(request: NextRequest) {
