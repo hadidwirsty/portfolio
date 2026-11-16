@@ -1,10 +1,11 @@
 import type { Metadata } from "next"
 
 import { subpages } from "@/lib/cv-data"
-import { VexooSubpageHeader } from "@/components/vexoo-subpage-header"
-import { VexooSubpageIntro } from "@/components/vexoo-subpage-intro"
-import { ProjectsSection } from "@/components/sections/projects-section"
-import { SiteFooter } from "@/components/site-footer"
+import { VexooSubpageShell } from "@/components/vexoo-subpage-shell"
+import { PortfolioHero } from "@/components/portfolio/portfolio-hero"
+import { PortfolioTimeline } from "@/components/portfolio/portfolio-timeline"
+import { PortfolioCardFolder } from "@/components/portfolio/portfolio-card-folder"
+import { PlayfulFooter } from "@/components/playful-footer"
 
 export const metadata: Metadata = {
   title: `${subpages.portfolio.title.en} — Hadidwirsty`,
@@ -18,18 +19,14 @@ export const metadata: Metadata = {
 
 export default function PortfolioPage() {
   return (
-    <div
-      id="top"
-      className="min-h-screen bg-background font-sans text-foreground"
-    >
-      <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
-        <VexooSubpageHeader />
-        <main className="mt-10 space-y-12 sm:mt-16">
-          <VexooSubpageIntro pageKey="portfolio" />
-          <ProjectsSection />
-        </main>
-      </div>
-      <SiteFooter />
-    </div>
+    <VexooSubpageShell currentSectionKey="portfolio" footer={<PlayfulFooter />}>
+      <main className="relative z-10 flex w-full flex-1 flex-col pt-2 pb-12 sm:pt-4 sm:pb-16">
+        <div className="mx-auto w-full max-w-5xl space-y-8 sm:space-y-12">
+          <PortfolioHero />
+          <PortfolioTimeline />
+          <PortfolioCardFolder />
+        </div>
+      </main>
+    </VexooSubpageShell>
   )
 }
