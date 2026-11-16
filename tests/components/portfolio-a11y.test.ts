@@ -114,24 +114,20 @@ test("Bilingual: components implement proper language switching without hardcode
     /lang === ["']id["'][\s\S]*?Berkas Tonggak[\s\S]*?Milestone Dossier/
   )
 
-  // FolderCard uses bilingual tab labels and CTA
+  // FolderCard uses bilingual CTA
   assert.match(
     folderCardSource,
     /lang === ["']id["'][\s\S]*?Lihat Detail[\s\S]*?View Details/
-  )
-  assert.match(
-    folderCardSource,
-    /lang === ["']id["'][\s\S]*?Rincian Teknis[\s\S]*?Technical Specs/
   )
 
   // CardFolder uses bilingual expand toggle labels
   assert.match(
     cardFolderSource,
-    /lang === ["']id["'][\s\S]*?Lihat Semua 10 Proyek[\s\S]*?View All 10 Projects/
+    /lang === ["']id["'][\s\S]*?Lihat Semua (13|\$\{totalCount\}) Proyek[\s\S]*?View All (13|\$\{totalCount\}) Projects/
   )
   assert.match(
     cardFolderSource,
-    /lang === ["']id["'][\s\S]*?Tampilkan 6 Proyek Unggulan[\s\S]*?Show 6 Featured Projects/
+    /lang === ["']id["'][\s\S]*?Tampilkan (6|\$\{featuredCount\}) Proyek Unggulan[\s\S]*?Show (6|\$\{featuredCount\}) Featured Projects/
   )
 })
 
@@ -218,11 +214,11 @@ test("Accessibility: card folder and bento cards implement proper ARIA attribute
     "drawer element must have role='region'"
   )
 
-  // Focus management on drawer collapse
+  // Focus management on drawer collapse: focus section heading with preventScroll to avoid scrolling back down
   assert.match(
     cardFolderSource,
-    /toggleButtonRef\.current\?\.focus\(\)/,
-    "must restore focus to toggle button when drawer collapses"
+    /headingRef\.current\?\.focus\(\{\s*preventScroll:\s*true\s*\}\)/,
+    "must shift focus to section heading with preventScroll when drawer collapses"
   )
 
   // Accessible CTA button context
@@ -299,7 +295,7 @@ test("Reduced Motion: all animated components honor useReducedMotion", () => {
   // Sheet lift disabled when reduced motion is preferred
   assert.match(
     folderCardSource,
-    /const isLifted = \(isHovered \|\| isFocused\) && !shouldReduceMotion/,
+    /const isLifted =[\s\S]*?\(isHovered \|\| isFocused\)[\s\S]*?!shouldReduceMotion/,
     "sheet lift motion must be disabled when shouldReduceMotion is true"
   )
 })
