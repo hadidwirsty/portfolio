@@ -221,8 +221,8 @@ export const subpages = {
   portfolio: {
     title: bi("Portofolio", "Portfolio"),
     description: bi(
-      "Jelajahi 10 aplikasi web enterprise yang saya kerjakan, mulai dari manajemen aset dan layanan TI hingga keamanan siber, pengadaan, dan produk digital.",
-      "Explore 10 enterprise web applications I've worked on, spanning asset and IT service management, cybersecurity, procurement, and digital products."
+      "Jelajahi 13 aplikasi web enterprise yang saya kerjakan, mulai dari manajemen aset dan layanan TI hingga keamanan siber, pengadaan, dan produk digital.",
+      "Explore 13 enterprise web applications I've worked on, spanning asset and IT service management, cybersecurity, procurement, and digital products."
     ),
   },
   stack: {
@@ -532,7 +532,10 @@ export const projects: ProjectEntry[] = [
     id: "wbs",
     name: "Whistleblowing System (WBS)",
     period: bi("Des 2025 – Agu 2026", "Dec 2025 – Aug 2026"),
-    company: bi("PT Sigma Cipta Caraka", "PT Sigma Cipta Caraka"),
+    company: bi(
+      "PT Sigma Cipta Caraka (Tim Pengelola WBS Telkomsigma)",
+      "PT Sigma Cipta Caraka (WBS Management Team)"
+    ),
     description: bi(
       "Aplikasi Whistleblowing System (WBS) internal bagi Tim Pengelola WBS Telkomsigma untuk menangani laporan dugaan pelanggaran etika dan tata kelola perusahaan sesuai prinsip ISO 37002. Fitur utamanya meliputi dasbor analitik, penelaahan kasus bertahap, registrasi laporan dari berbagai kanal, dan pengunggahan bukti secara aman.",
       "An internal Whistleblowing System (WBS) for Telkomsigma's WBS Management Team to handle reports of suspected ethics and corporate governance violations in line with ISO 37002. Key features include analytics dashboards, multi-stage case reviews, multi-channel report registration, and secure evidence uploads."
@@ -582,7 +585,10 @@ export const projects: ProjectEntry[] = [
     id: "monara",
     name: "MONARA (Monitoring Natal-Tahun Baru dan Ramadan)",
     period: bi("Feb 2025 – Des 2025", "Feb 2025 – Dec 2025"),
-    company: bi("PT Sigma Cipta Caraka", "PT Sigma Cipta Caraka"),
+    company: bi(
+      "PT Sigma Cipta Caraka (Tim Service Desk & Operasional Layanan TI)",
+      "PT Sigma Cipta Caraka (Service Desk & IT Operations Team)"
+    ),
     description: bi(
       "Aplikasi web terpusat untuk memantau tiket layanan TI selama periode sibuk Ramadan serta Natal dan Tahun Baru. Digunakan oleh tim Service Desk dan Operasional Layanan untuk memantau sekitar 40 unit penyedia layanan melalui pembaruan data otomatis berkala.",
       "A centralized web application for monitoring IT service tickets during the busy Ramadan and Christmas–New Year periods. It supports Service Desk and Operations teams across approximately 40 service provider units, with regularly refreshed data."
@@ -632,7 +638,10 @@ export const projects: ProjectEntry[] = [
     id: "info-tender",
     name: "Info Tender (LPSE & SiRUP)",
     period: bi("Mei 2025 – Agu 2026", "May 2025 – Aug 2026"),
-    company: bi("PT Sigma Cipta Caraka", "PT Sigma Cipta Caraka"),
+    company: bi(
+      "PT Sigma Cipta Caraka (Tim Sales Support & Presales)",
+      "PT Sigma Cipta Caraka (Sales Support & Presales Team)"
+    ),
     description: bi(
       "Aplikasi web intelijen pengadaan pemerintah yang mengolah informasi dari portal LPSE dan SiRUP. Membantu tim Sales Support dan Presales menemukan peluang tender TI, membandingkan rencana pengadaan dengan tender aktif, serta mengelola konfigurasi pengambilan data otomatis (scraping).",
       "A government procurement intelligence application that aggregates data from LPSE and SiRUP. It helps Sales Support and Presales teams identify IT tender opportunities, compare procurement plans with active tenders, and manage automated data collection (scraping)."
@@ -728,7 +737,10 @@ export const projects: ProjectEntry[] = [
     id: "cis",
     name: "Enterprise Web Applications Maintenance & Operations Portal",
     period: bi("Mar 2026 – Sep 2026", "Mar 2026 – Sep 2026"),
-    company: bi("PT Sigma Cipta Caraka", "PT Sigma Cipta Caraka"),
+    company: bi(
+      "PT Sigma Cipta Caraka (Divisi Corporate Information System)",
+      "PT Sigma Cipta Caraka (Corporate Information System Division)"
+    ),
     description: bi(
       "Pemeliharaan dan peningkatan keamanan frontend pada 2 aplikasi web enterprise dalam layanan terkelola (managed services). Pekerjaan mencakup perbaikan temuan pemindaian kerentanan (XSS, CSP, dan Open Redirect), kompatibilitas SSR dengan Node.js 22, serta perbaikan alur transaksi pengadaan.",
       "Frontend maintenance and security improvements across 2 enterprise web applications under a managed services arrangement. Work included remediation of vulnerability scan findings (XSS, CSP, and Open Redirect), Node.js 22 SSR compatibility fixes, and procurement workflow improvements."
@@ -827,7 +839,10 @@ export const projects: ProjectEntry[] = [
     id: "caterine-cm",
     name: "Caterine (Change Management)",
     period: bi("Agu 2025 – Apr 2026", "Aug 2025 – Apr 2026"),
-    company: bi("PT Sigma Cipta Caraka", "PT Sigma Cipta Caraka"),
+    company: bi(
+      "PT Sigma Cipta Caraka (Tim ITSM Platform)",
+      "PT Sigma Cipta Caraka (ITSM Platform Team)"
+    ),
     description: bi(
       "Aplikasi IT Service Management (ITSM) berbasis web untuk pengelolaan layanan TI perusahaan sesuai praktik ITIL. Fitur mencakup permintaan perubahan sistem, peninjauan oleh Change Advisory Board (CAB), dan verifikasi dokumen terkait risiko.",
       "An enterprise IT Service Management (ITSM) application supporting ITIL-aligned operations, including change requests, Change Advisory Board (CAB) reviews, and risk documentation checks."
@@ -970,7 +985,10 @@ export const projects: ProjectEntry[] = [
     id: "netmonk",
     name: "Netmonk Analytics",
     period: bi("Jan 2023 – Des 2023", "Jan 2023 – Dec 2023"),
-    company: bi("PT Telkom Indonesia", "PT Telkom Indonesia"),
+    company: bi(
+      "PT Telkom Indonesia – Netmonk",
+      "PT Telkom Indonesia – Netmonk"
+    ),
     description: bi(
       "Purwarupa aplikasi analitik operasional untuk ekosistem Netmonk (PT Telkom Indonesia), dengan pemantauan pesanan layanan regional (NCX dan Scone), dasbor Metabase tertanam yang diamankan dengan JWT, serta autentikasi dual-token.",
       "An operational analytics prototype for PT Telkom Indonesia's Netmonk ecosystem, featuring regional service order tracking (NCX and Scone), JWT-secured embedded Metabase dashboards, and dual-token authentication."
