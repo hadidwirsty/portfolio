@@ -2,6 +2,10 @@ import { test } from "node:test"
 import assert from "node:assert"
 import fs from "node:fs"
 import path from "node:path"
+import {
+  FEATURED_PROJECT_IDS,
+  ADDITIONAL_PROJECT_IDS,
+} from "../../lib/portfolio-experience-filter.ts"
 
 const COMPONENT_PATH = path.resolve(
   process.cwd(),
@@ -25,7 +29,13 @@ test("portfolio-card-folder file exists and exports PortfolioCardFolder componen
 test("portfolio-card-folder curates exactly 6 featured projects in exact order", () => {
   const source = fs.readFileSync(COMPONENT_PATH, "utf-8")
 
-  // Must define the 6 featured projects in exact order
+  // Must re-export FEATURED_PROJECT_IDS from single source of truth
+  assert.match(
+    source,
+    /FEATURED_PROJECT_IDS[\s\S]*?@\/lib\/portfolio-experience-filter/,
+    "portfolio-card-folder must re-export FEATURED_PROJECT_IDS from single source of truth"
+  )
+
   const expectedSequence = [
     "hiblow-fleet",
     "is-ware",
@@ -35,18 +45,10 @@ test("portfolio-card-folder curates exactly 6 featured projects in exact order",
     "imaps",
   ]
 
-  for (const id of expectedSequence) {
-    assert.ok(
-      source.includes(`"${id}"`) || source.includes(`'${id}'`),
-      `portfolio-card-folder must include featured project id '${id}'`
-    )
-  }
-
-  // Check sequence definition
-  assert.match(
-    source,
-    /hiblow-fleet[\s\S]*?is-ware[\s\S]*?alisa[\s\S]*?wbs[\s\S]*?info-tender[\s\S]*?imaps/,
-    "featured projects must be in required order"
+  assert.deepStrictEqual(
+    FEATURED_PROJECT_IDS,
+    expectedSequence,
+    "featured projects must match required sequence"
   )
 })
 
@@ -71,23 +73,37 @@ test("portfolio-card-folder implements responsive grid and section header", () =
   )
 })
 
-test("portfolio-card-folder includes expandable drawer for all 10 projects with bilingual toggle", () => {
+test("portfolio-card-folder includes expandable drawer for all 13 projects with bilingual toggle", () => {
   const source = fs.readFileSync(COMPONENT_PATH, "utf-8")
 
-  // Must include the 4 additional projects
-  const additionalProjects = ["monara", "cart", "caterine-cm", "pis-mars"]
-  for (const id of additionalProjects) {
-    assert.ok(
-      source.includes(`"${id}"`) || source.includes(`'${id}'`),
-      `portfolio-card-folder must include additional project id '${id}'`
-    )
-  }
-
-  // Bilingual toggle labels
+  // Must re-export ADDITIONAL_PROJECT_IDS from single source of truth
   assert.match(
     source,
-    /(Lihat Semua 10 Proyek|View All 10 Projects)/,
-    "must include bilingual toggle label for viewing all 10 projects"
+    /ADDITIONAL_PROJECT_IDS[\s\S]*?@\/lib\/portfolio-experience-filter/,
+    "portfolio-card-folder must re-export ADDITIONAL_PROJECT_IDS from single source of truth"
+  )
+
+  const additionalProjects = [
+    "monara",
+    "cart",
+    "caterine-cm",
+    "pis-mars",
+    "cis",
+    "bulk-orders",
+    "netmonk",
+  ]
+
+  assert.deepStrictEqual(
+    ADDITIONAL_PROJECT_IDS,
+    additionalProjects,
+    "additional projects must match required dataset"
+  )
+
+  // Dynamic bilingual toggle labels supporting 13 projects
+  assert.match(
+    source,
+    /(Lihat Semua \$\{totalCount\} Proyek|View All \$\{totalCount\} Projects|Lihat Semua 13 Proyek|View All 13 Projects)/,
+    "must include dynamic bilingual toggle label for viewing all 13 projects"
   )
 
   // Accessible attributes
@@ -115,5 +131,98 @@ test("portfolio-card-folder integrates ProjectDetailDialog", () => {
     source,
     /selectedProject/,
     "must maintain selectedProject state for dialog"
+  )
+})
+
+test("portfolio-card-folder renders accessible work experience filter pills", () => {
+  const source = fs.readFileSync(COMPONENT_PATH, "utf-8")
+
+  // Tablist container
+  assert.match(
+    source,
+    /role=["']tablist["']/,
+    "filter pills container must have role='tablist'"
+  )
+
+  // Tab items with aria-selected
+  assert.match(
+    source,
+    /role=["']tab["']/,
+    "filter pill items must have role='tab'"
+  )
+  assert.match(
+    source,
+    /aria-selected=\{isActive\}/,
+    "filter pill items must synchronize aria-selected with active filter"
+  )
+
+  // Integrates EXPERIENCE_FILTER_DEFS
+  assert.match(
+    source,
+    /EXPERIENCE_FILTER_DEFS\.map/,
+    "must map over EXPERIENCE_FILTER_DEFS"
+  )
+
+  // State defaults to featured
+  assert.match(
+    source,
+    /React\.useState<ExperienceFilterCategory>\(["']featured["']\)/,
+    "active filter state must default to 'featured'"
+  )
+
+  // Renders visibleProjects dynamically
+  assert.match(
+    source,
+    /visibleProjects\.map/,
+    "must map over derived visibleProjects array"
+  )
+})
+
+test("portfolio-card-folder implements smooth auto-scroll to section on collapse with reduced motion support", () => {
+  const source = fs.readFileSync(COMPONENT_PATH, "utf-8")
+
+  // Stable sectionRef and headingRef
+  assert.match(
+    source,
+    /const sectionRef = React\.useRef<HTMLElement>\(null\)/,
+    "must define sectionRef for stable scroll target"
+  )
+  assert.match(
+    source,
+    /const headingRef = React\.useRef<HTMLHeadingElement>\(null\)/,
+    "must define headingRef for accessible focus transfer"
+  )
+
+  // Section element has ref and scroll margin
+  assert.match(
+    source,
+    /<section[^>]*ref=\{sectionRef\}[^>]*scroll-mt-20/,
+    "section must attach sectionRef and include responsive scroll margin for navbar clearance"
+  )
+
+  // Heading element has ref and tabIndex={-1}
+  assert.match(
+    source,
+    /<h2[^>]*ref=\{headingRef\}[^>]*tabIndex=\{-1\}/,
+    "heading must attach headingRef with tabIndex={-1} for programmatic focus"
+  )
+
+  // Collapse behavior triggers scroll and focus with preventScroll
+  assert.match(
+    source,
+    /sectionRef\.current\?\.scrollIntoView\(\{\s*behavior:\s*shouldReduceMotion\s*\?\s*["']auto["']\s*:\s*["']smooth["'],\s*block:\s*["']start["'],?\s*\}\)/,
+    "collapse handler must call scrollIntoView honoring reduced-motion"
+  )
+  assert.match(
+    source,
+    /headingRef\.current\?\.focus\(\{\s*preventScroll:\s*true\s*\}\)/,
+    "collapse handler must transfer focus with preventScroll: true to avoid bouncing back to button"
+  )
+
+  // Expand branch does not invoke scroll
+  assert.match(
+    source,
+    /if\s*\(activeFilter === ["']featured["']\)\s*\{[\s\S]*?setActiveFilter\(["']all["']\)/,
+    "expand branch must only activate 'all' filter without auto-scrolling"
   )
 })

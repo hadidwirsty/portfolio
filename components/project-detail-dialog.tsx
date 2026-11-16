@@ -7,6 +7,9 @@ import {
   CheckCircle2,
   Code2,
   ExternalLink,
+  Layers,
+  Lock,
+  X,
 } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
@@ -15,16 +18,16 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogFooter,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
 import type { ProjectEntry } from "@/lib/cv-data"
-import { ui } from "@/lib/cv-data"
-import { useT } from "@/lib/language-context"
+import { useLanguage, useT } from "@/lib/language-context"
 import { getProjectCategory } from "@/lib/projects-filter"
+import { cn } from "@/lib/utils"
 
-interface ProjectDetailDialogProps {
+export interface ProjectDetailDialogProps {
   project: ProjectEntry | null
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -35,127 +38,226 @@ export function ProjectDetailDialog({
   open,
   onOpenChange,
 }: ProjectDetailDialogProps) {
-  const roleLabel = useT(ui.role)
-  const techLabel = useT(ui.techStack)
+  const { lang } = useLanguage()
 
   if (!project) return null
 
   const category = getProjectCategory(project.id)
   const isEnterprise = category === "enterprise"
 
+  const dossierId = `DOSSIER // ${project.id.toUpperCase()}`
+  const categoryLabel = isEnterprise
+    ? lang === "id"
+      ? "Enterprise & B2B"
+      : "Enterprise & B2B"
+    : lang === "id"
+      ? "Produk Mandiri & Full-Stack"
+      : "Product & Full-Stack"
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="flex max-h-[88vh] flex-col overflow-hidden p-0 sm:max-w-2xl">
-        {/* Header with Category Badge and Period */}
-        <DialogHeader className="border-b border-border/70 bg-muted/20 p-4.5 pr-10 pb-3.5 sm:p-6 sm:pr-12 sm:pb-4">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <Badge
-              variant={isEnterprise ? "secondary" : "default"}
-              className="text-xs"
-            >
-              {isEnterprise ? "Enterprise & B2B" : "Full-Stack & Produk"}
-            </Badge>
-            <span className="flex items-center gap-1 font-mono text-xs text-muted-foreground">
-              <Calendar className="size-3" />
-              <TranslatedText entry={project.period} />
-            </span>
+      <DialogContent
+        hideCloseButton
+        className={cn(
+          "flex flex-col gap-0 overflow-hidden p-0 shadow-2xl transition-all duration-200 outline-none select-text",
+          // Mobile: Native Bottom Sheet docked at bottom-0, full width, rounded top, max-h-[88dvh]
+          "fixed inset-x-0 top-auto bottom-0 max-h-[88dvh] w-full max-w-full translate-x-0 translate-y-0 rounded-t-3xl rounded-b-none border-x-0 border-t border-b-0 border-border/80 bg-background",
+          // Tablet & Desktop: Centered dialog with generous editorial max-width (preserved)
+          "sm:top-1/2 sm:right-auto sm:bottom-auto sm:left-1/2 sm:h-auto sm:max-h-[88dvh] sm:w-[calc(100%-2.5rem)] sm:max-w-3xl sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-3xl sm:border sm:border-border/80",
+          "lg:max-h-[90dvh] lg:max-w-4xl"
+        )}
+      >
+        {/* Hidden screen-reader description for WAI-ARIA accessibility compliance */}
+        <DialogDescription className="sr-only">
+          <TranslatedText entry={project.description} />
+        </DialogDescription>
+
+        {/* 1. Header — Sticky Monochromatic & Editorial */}
+        <DialogHeader className="sticky top-0 z-20 shrink-0 border-b border-border/70 bg-background/95 px-4.5 pt-3 pb-3.5 backdrop-blur-md sm:px-8 sm:py-5">
+          {/* Mobile Bottom-Sheet Pull Handle */}
+          <div className="mx-auto mb-2 h-1 w-10 shrink-0 rounded-full bg-muted-foreground/25 sm:hidden" />
+
+          {/* Top Row: Dossier identifier, Category Badge, Project Period, and Dedicated Close Button */}
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="font-mono text-[10px] font-semibold tracking-wider text-muted-foreground uppercase sm:text-xs">
+                {dossierId}
+              </span>
+              <span className="font-mono text-xs text-muted-foreground/40">
+                •
+              </span>
+              <Badge
+                variant={isEnterprise ? "secondary" : "outline"}
+                className="font-mono text-[10px] tracking-wider text-muted-foreground uppercase"
+              >
+                {categoryLabel}
+              </Badge>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <span className="hidden items-center gap-1.5 font-mono text-xs text-muted-foreground sm:inline-flex">
+                <Calendar className="size-3.5 text-muted-foreground/80" />
+                <TranslatedText entry={project.period} />
+              </span>
+
+              <DialogClose
+                className="flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-full border border-border/70 bg-card/60 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none sm:size-10"
+                aria-label={lang === "id" ? "Tutup dialog" : "Close dialog"}
+              >
+                <X className="size-4" />
+                <span className="sr-only">
+                  {lang === "id" ? "Tutup dialog" : "Close dialog"}
+                </span>
+              </DialogClose>
+            </div>
           </div>
 
-          <DialogTitle className="mt-2 text-xl sm:text-2xl">
+          {/* Project Title with long title wrapping support */}
+          <DialogTitle className="mt-2.5 font-heading text-xl font-bold tracking-tight wrap-break-word text-foreground sm:mt-3 sm:text-2xl md:text-3xl">
             {project.name}
           </DialogTitle>
 
-          <p className="flex items-center gap-1.5 text-xs text-muted-foreground sm:text-sm">
-            <Building2 className="size-3.5 text-primary/80" />
-            <TranslatedText entry={project.company} />
-          </p>
+          {/* Metadata Sub-row: Company, Role & Period for Mobile */}
+          <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground sm:mt-1.5 sm:text-sm">
+            <p className="flex items-center gap-1.5 font-medium text-foreground/90">
+              <Building2 className="size-3.5 shrink-0 text-primary/80" />
+              <TranslatedText entry={project.company} />
+            </p>
+            <span className="font-mono text-xs text-muted-foreground/40 sm:hidden">
+              •
+            </span>
+            <span className="inline-flex items-center gap-1.5 font-mono text-xs text-muted-foreground sm:hidden">
+              <Calendar className="size-3 text-muted-foreground/80" />
+              <TranslatedText entry={project.period} />
+            </span>
+          </div>
         </DialogHeader>
 
-        {/* Scrollable Content Body */}
-        <div className="flex-1 space-y-5 overflow-y-auto px-4.5 py-4 text-sm sm:space-y-6 sm:px-6 sm:py-5">
-          {/* General Description */}
-          <div>
-            <h4 className="font-heading text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-              Ringkasan Proyek
+        {/* 2. Scrollable Body — Single Main Scroll Container with overscroll-contain */}
+        <div className="flex-1 space-y-5 overflow-y-auto overscroll-contain px-4.5 py-4 sm:space-y-8 sm:px-8 sm:py-7">
+          {/* Section A: Project Overview */}
+          <div className="space-y-2">
+            <h4 className="flex items-center gap-2 font-mono text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+              <Layers className="size-3.5 text-muted-foreground/80" />
+              {lang === "id" ? "Ringkasan Proyek" : "Project Overview"}
             </h4>
-            <p className="mt-2 leading-relaxed text-foreground/90">
+            <p className="max-w-prose font-sans text-sm leading-relaxed text-foreground/90 sm:text-base">
               <TranslatedText entry={project.description} />
             </p>
           </div>
 
-          {/* Role & Specific Scope */}
-          <div>
-            <h4 className="font-heading text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-              {roleLabel} & Tanggung Jawab
+          {/* Section B: Role & Scope */}
+          <div className="space-y-2.5">
+            <h4 className="font-mono text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+              {lang === "id"
+                ? "Peran & Lingkup Tanggung Jawab"
+                : "Role & Responsibilities"}
             </h4>
-            <p className="mt-2 text-xs leading-relaxed text-muted-foreground sm:text-sm">
-              <TranslatedText entry={project.role} />
-            </p>
+            <div className="rounded-xl border border-border/60 bg-muted/20 p-3.5 sm:p-5">
+              <p className="font-sans text-xs leading-relaxed text-foreground/85 sm:text-sm">
+                <TranslatedText entry={project.role} />
+              </p>
+            </div>
           </div>
 
-          {/* Architecture & Engineering Highlights */}
+          {/* Section C: Architecture & Engineering Highlights */}
           {project.bullets && project.bullets.length > 0 && (
-            <div>
-              <h4 className="font-heading text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-                Sorotan Arsitektur & Rekayasa
+            <div className="space-y-3">
+              <h4 className="flex items-center gap-2 font-mono text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+                <CheckCircle2 className="size-3.5 text-emerald-500" />
+                {lang === "id"
+                  ? "Sorotan Arsitektur & Rekayasa"
+                  : "Architecture & Engineering Highlights"}
               </h4>
-              <ul className="mt-2.5 space-y-2">
+              <div className="grid grid-cols-1 gap-2.5 sm:gap-3">
                 {project.bullets.map((bullet, idx) => (
-                  <li
+                  <div
                     key={idx}
-                    className="flex items-start gap-2.5 text-xs leading-relaxed text-muted-foreground sm:text-sm"
+                    className="flex items-start gap-3 rounded-xl border border-border/50 bg-card/50 p-3.5 transition-colors hover:border-border sm:p-4"
                   >
-                    <CheckCircle2 className="mt-0.5 size-3.5 shrink-0 text-emerald-500" />
-                    <span>
-                      <TranslatedText entry={bullet} />
+                    <span className="mt-0.5 shrink-0 font-mono text-[11px] font-bold text-muted-foreground/70 select-none sm:text-xs">
+                      {String(idx + 1).padStart(2, "0")}
                     </span>
-                  </li>
+                    <p className="font-sans text-xs leading-relaxed text-foreground/85 sm:text-sm">
+                      <TranslatedText entry={bullet} />
+                    </p>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
           )}
 
-          {/* Technology Stack */}
-          <div>
-            <h4 className="flex items-center gap-1.5 font-heading text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-              <Code2 className="size-3.5" />
-              {techLabel}
+          {/* Section D: Technology Stack */}
+          <div className="space-y-2.5">
+            <h4 className="flex items-center gap-2 font-mono text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+              <Code2 className="size-3.5 text-muted-foreground/80" />
+              {lang === "id" ? "Tumpukan Teknologi" : "Technology Stack"}
             </h4>
-            <div className="mt-2.5 flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-1.5 sm:gap-2">
               {project.tech.map((t) => (
-                <Badge key={t} variant="outline" className="text-xs">
+                <Badge
+                  key={t}
+                  variant="outline"
+                  className="rounded-md border-border/70 bg-muted/30 px-2.5 py-1 font-mono text-xs font-normal text-foreground/90 transition-colors hover:bg-muted/60"
+                >
                   {t}
                 </Badge>
               ))}
             </div>
           </div>
+
+          {/* Safe bottom spacer */}
+          <div className="h-2" />
         </div>
 
-        {/* Footer with Actions */}
-        <DialogFooter className="items-center border-t border-border/70 bg-muted/20 p-4 sm:justify-between">
-          {project.link ? (
-            <Button
-              variant="outline"
-              size="sm"
-              render={
-                <a
-                  href={project.link}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-1.5"
-                />
-              }
-            >
-              Kunjungi Tautan <ExternalLink className="size-3.5" />
-            </Button>
-          ) : (
-            <span className="text-xs text-muted-foreground">
-              Dokumentasi internal korporat
-            </span>
-          )}
+        {/* 3. Footer — Sticky Action Bar */}
+        <div className="sticky bottom-0 z-20 shrink-0 border-t border-border/70 bg-background/95 px-4.5 py-3 pb-[max(0.875rem,env(safe-area-inset-bottom))] backdrop-blur-md sm:px-8 sm:py-4">
+          <div className="flex flex-row items-center justify-between gap-3">
+            {project.link ? (
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-9 flex-1 cursor-pointer gap-1.5 rounded-full px-3 text-xs font-medium sm:flex-none sm:px-4"
+                render={
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center justify-center gap-1.5"
+                  />
+                }
+              >
+                <span>
+                  {lang === "id" ? "Kunjungi Tautan" : "Visit Project"}
+                </span>
+                <ExternalLink className="size-3.5 shrink-0" />
+              </Button>
+            ) : (
+              <div className="flex items-center gap-1.5 font-mono text-xs text-muted-foreground">
+                <Lock className="size-3.5 shrink-0 text-muted-foreground/70" />
+                <span className="truncate">
+                  {lang === "id"
+                    ? "Dokumentasi internal korporat"
+                    : "Internal corporate documentation"}
+                </span>
+              </div>
+            )}
 
-          <DialogClose render={<Button size="sm">Tutup</Button>} />
-        </DialogFooter>
+            <DialogClose
+              render={
+                <Button
+                  size="sm"
+                  className={cn(
+                    "h-9 cursor-pointer rounded-full font-sans text-xs font-medium",
+                    project.link ? "flex-1 sm:flex-none sm:px-6" : "px-6"
+                  )}
+                >
+                  {lang === "id" ? "Tutup" : "Close"}
+                </Button>
+              }
+            />
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   )
