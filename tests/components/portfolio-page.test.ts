@@ -41,7 +41,7 @@ test("portfolio page integrates VexooSubpageShell and PlayfulFooter", () => {
   )
 })
 
-test("portfolio page mounts PortfolioHero, ProjectTimelineAccordion, and PortfolioCardFolder in exact order", () => {
+test("portfolio page mounts PortfolioHero, ProjectTimelineAccordion, PortfolioCardFolder, and TickerStrip in exact order", () => {
   const source = fs.readFileSync(PAGE_PATH, "utf-8")
 
   assert.match(
@@ -64,10 +64,16 @@ test("portfolio page mounts PortfolioHero, ProjectTimelineAccordion, and Portfol
     /PortfolioCardFolder/,
     "portfolio page must mount PortfolioCardFolder"
   )
+  assert.match(
+    source,
+    /TickerStrip/,
+    "portfolio page must mount TickerStrip at base"
+  )
 
   const heroIdx = source.indexOf("<PortfolioHero")
   const accordionIdx = source.indexOf("<ProjectTimelineAccordion")
   const cardFolderIdx = source.indexOf("<PortfolioCardFolder")
+  const tickerIdx = source.indexOf("<TickerStrip")
 
   assert.ok(heroIdx > -1, "PortfolioHero must be present")
   assert.ok(
@@ -77,6 +83,10 @@ test("portfolio page mounts PortfolioHero, ProjectTimelineAccordion, and Portfol
   assert.ok(
     cardFolderIdx > accordionIdx,
     "PortfolioCardFolder must come after ProjectTimelineAccordion"
+  )
+  assert.ok(
+    tickerIdx > cardFolderIdx,
+    "TickerStrip must come after PortfolioCardFolder at page base"
   )
 })
 
