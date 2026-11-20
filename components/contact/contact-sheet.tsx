@@ -105,7 +105,7 @@ export function ContactSheet() {
       }
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-      className="group relative z-10 flex min-h-112 flex-1 flex-col overflow-hidden rounded-3xl border border-border/80 bg-card/8 p-4 shadow-xs backdrop-blur-[10px] transition-[border-color,background-color] duration-500 contain-[layout_style] hover:bg-card/2 sm:p-6 lg:p-8"
+      className="group relative z-10 flex min-h-112 flex-1 flex-col overflow-hidden rounded-3xl border border-border/50 bg-card/8 p-4 shadow-xs backdrop-blur-[10px] transition-[border-color,background-color] duration-500 contain-[layout_style] hover:bg-card/2 sm:p-6 lg:p-8"
     >
       <GradientMotionBackground
         seed={77}
@@ -113,7 +113,7 @@ export function ContactSheet() {
       />
 
       <div
-        className="pointer-events-none absolute inset-2 rounded-[inherit] border border-dashed border-border/80 sm:inset-3"
+        className="pointer-events-none absolute inset-2 rounded-[inherit] border border-dashed border-border/50 sm:inset-3"
         aria-hidden="true"
       />
 
@@ -130,7 +130,7 @@ export function ContactSheet() {
       <div className="relative z-10 grid flex-1 grid-cols-1 items-stretch gap-8 px-2 py-2 sm:px-4 lg:grid-cols-12 lg:gap-8 xl:gap-10">
         <div className="my-auto flex flex-col justify-center gap-5 lg:col-span-4">
           <div className="flex items-center">
-            <div className="group/badge inline-flex items-center gap-1.5 rounded-full border border-border/70 bg-foreground/5 px-2.5 py-0.5 font-pixel text-xs font-semibold tracking-wider text-muted-foreground shadow-2xs transition-all duration-300 select-none hover:border-border hover:bg-foreground/10 hover:text-foreground sm:gap-2 sm:px-3 sm:py-1">
+            <div className="group/badge inline-flex items-center gap-1.5 rounded-full border border-border/50 bg-foreground/5 px-2.5 py-0.5 font-pixel text-xs font-semibold tracking-wider text-muted-foreground shadow-2xs transition-all duration-300 select-none hover:border-border hover:bg-foreground/10 hover:text-foreground sm:gap-2 sm:px-3 sm:py-1">
               <span className="relative flex size-2 shrink-0 items-center justify-center">
                 <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75 motion-reduce:animate-none" />
                 <span className="relative inline-flex size-1.5 rounded-full bg-emerald-500 sm:size-2" />
@@ -182,7 +182,7 @@ export function ContactSheet() {
                 variant="outline"
                 size="default"
                 render={<a href={cvFile} download />}
-                className="h-11 w-1/2 rounded-full border-border/80 bg-foreground/5 text-xs font-medium text-foreground hover:border-border hover:bg-foreground/10 sm:text-sm"
+                className="h-11 w-1/2 rounded-full border-border/50 bg-foreground/5 text-xs font-medium text-foreground hover:border-border hover:bg-foreground/10 sm:text-sm"
                 title="Unduh PDF CV"
               >
                 <Download className="size-4 shrink-0" />
@@ -205,7 +205,7 @@ export function ContactSheet() {
                 size="default"
                 onClick={handleCopy}
                 aria-live="polite"
-                className="h-11 w-1/2 rounded-full border-border/80 bg-foreground/5 text-xs font-medium text-foreground hover:border-border hover:bg-foreground/10 sm:text-sm"
+                className="h-11 w-1/2 rounded-full border-border/50 bg-foreground/5 text-xs font-medium text-foreground hover:border-border hover:bg-foreground/10 sm:text-sm"
                 title="Salin alamat email ke clipboard"
               >
                 {copied ? (

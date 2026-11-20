@@ -26,11 +26,15 @@ export function TickerStrip({ className }: TickerStripProps) {
       onPointerEnter={() => setIsHovered(true)}
       onPointerLeave={() => setIsHovered(false)}
       className={cn(
-        "relative w-full overflow-hidden border-y border-dashed border-border/70 py-2.5 font-mono text-xs tracking-widest text-muted-foreground uppercase select-none",
+        "relative w-full overflow-hidden border-y border-dashed border-border/50 py-2.5 font-mono text-xs tracking-widest text-muted-foreground uppercase select-none",
         className
       )}
     >
-      <div className="flex w-max items-center mask-[linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+      <span className="sr-only">{tickerText}</span>
+      <div
+        aria-hidden="true"
+        className="flex w-max items-center mask-[linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]"
+      >
         <motion.div
           animate={
             shouldReduceMotion || isHovered

@@ -160,7 +160,7 @@ export function StatusPage({
             initial={motionInitial}
             animate={motionAnimate}
             transition={motionTransition}
-            className="relative z-10 w-full overflow-hidden rounded-[18px] border border-border/80 bg-card/75 p-5 shadow-xs backdrop-blur-xl sm:rounded-3xl sm:p-8"
+            className="relative z-10 w-full overflow-hidden rounded-[18px] border border-border/50 bg-card/75 p-5 shadow-xs backdrop-blur-xl sm:rounded-3xl sm:p-8"
           >
             <GradientMotionBackground
               seed={77}
@@ -168,7 +168,7 @@ export function StatusPage({
             />
 
             <div className="relative z-10 flex flex-col items-center gap-3.5 text-center sm:gap-5">
-              <div className="inline-flex w-fit items-center gap-2 rounded-full border border-border/70 bg-foreground/5 px-3 py-1 font-pixel text-xs font-semibold tracking-wider text-muted-foreground sm:text-sm">
+              <div className="inline-flex w-fit items-center gap-2 rounded-full border border-border/50 bg-foreground/5 px-3 py-1 font-pixel text-xs font-semibold tracking-wider text-muted-foreground sm:text-sm">
                 <span
                   className={cn(
                     "size-2 rounded-full",
@@ -194,7 +194,7 @@ export function StatusPage({
               )}
 
               {children && (
-                <div className="w-full border-t border-border/60 pt-3.5 sm:pt-4">
+                <div className="w-full border-t border-border/50 pt-3.5 sm:pt-4">
                   {children}
                 </div>
               )}

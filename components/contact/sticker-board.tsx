@@ -177,9 +177,9 @@ export function StickerBoard() {
     <div
       role="group"
       aria-label={areaLabel}
-      className="group/board relative flex w-full flex-col overflow-visible rounded-2xl border border-border/70 bg-card/60 p-3 shadow-sm backdrop-blur-md select-none sm:p-4 lg:h-full lg:min-h-120"
+      className="group/board relative flex w-full flex-col overflow-visible rounded-2xl border border-border/50 bg-card/60 p-3 shadow-sm backdrop-blur-md select-none sm:p-4 lg:h-full lg:min-h-120"
     >
-      <div className="relative mb-3 flex items-center justify-between gap-2 border-b border-border/40 pb-2.5">
+      <div className="relative mb-3 flex items-center justify-between gap-2 border-b border-border/50 pb-2.5">
         <div className="flex items-center gap-2">
           <span className="font-mono text-[10px] font-semibold tracking-wider text-muted-foreground uppercase sm:text-xs">
             CUTTING MAT // 01
@@ -254,14 +254,14 @@ export function StickerBoard() {
         }}
       >
         <div
-          className="pointer-events-none absolute top-0 left-0 z-10 flex size-5 items-center justify-center border-r border-b border-border/40 font-mono text-[8px] text-muted-foreground/60 select-none sm:size-6"
+          className="pointer-events-none absolute top-0 left-0 z-10 flex size-5 items-center justify-center border-r border-b border-border/50 font-mono text-[8px] text-muted-foreground/60 select-none sm:size-6"
           aria-hidden="true"
         >
           +
         </div>
 
         <div
-          className="pointer-events-none absolute top-0 right-0 left-5 z-10 flex h-5 items-center justify-between border-b border-border/40 px-3 font-mono text-[8px] text-muted-foreground/50 select-none sm:left-6 sm:h-6 sm:text-[9px]"
+          className="pointer-events-none absolute top-0 right-0 left-5 z-10 flex h-5 items-center justify-between border-b border-border/50 px-3 font-mono text-[8px] text-muted-foreground/50 select-none sm:left-6 sm:h-6 sm:text-[9px]"
           aria-hidden="true"
         >
           <span>00</span>
@@ -277,7 +277,7 @@ export function StickerBoard() {
         </div>
 
         <div
-          className="pointer-events-none absolute top-5 bottom-0 left-0 z-10 flex w-5 flex-col items-center justify-between border-r border-border/40 py-3 font-mono text-[8px] text-muted-foreground/50 select-none sm:top-6 sm:w-6 sm:text-[9px]"
+          className="pointer-events-none absolute top-5 bottom-0 left-0 z-10 flex w-5 flex-col items-center justify-between border-r border-border/50 py-3 font-mono text-[8px] text-muted-foreground/50 select-none sm:top-6 sm:w-6 sm:text-[9px]"
           aria-hidden="true"
         >
           <span>00</span>

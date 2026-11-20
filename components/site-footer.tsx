@@ -15,7 +15,7 @@ function SiteFooter() {
   return (
     <footer
       role="contentinfo"
-      className="border-t border-border/60 bg-background/50 text-xs text-muted-foreground backdrop-blur-sm"
+      className="border-t border-border/50 bg-background/50 text-xs text-muted-foreground backdrop-blur-sm"
     >
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 py-8 sm:flex-row sm:px-6 lg:px-8">
         {/* Kiri: Identitas & Hak Cipta */}

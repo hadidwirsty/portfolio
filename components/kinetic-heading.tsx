@@ -9,6 +9,7 @@ export interface KineticHeadingProps {
   motionKey: string
   peek?: string
   className?: string
+  as?: "h1" | "h2" | "h3" | "div"
 }
 
 const DEFAULT_PEEK = "0.3em"
@@ -51,11 +52,12 @@ export function KineticHeading({
   motionKey,
   peek = DEFAULT_PEEK,
   className,
+  as: Component = "h1",
 }: KineticHeadingProps) {
   return (
-    <div
+    <Component
       className={cn(
-        "relative flex shrink-0 justify-center overflow-visible pt-1 text-center text-4xl leading-none sm:text-6xl md:pt-2 xl:text-7xl 2xl:text-9xl",
+        "relative flex shrink-0 justify-center overflow-visible pt-1 text-center text-4xl leading-none font-normal sm:text-6xl md:pt-2 xl:text-7xl 2xl:text-9xl",
         className
       )}
       style={{
@@ -66,6 +68,6 @@ export function KineticHeading({
       <div className="pointer-events-none relative z-0">
         <HeadingText text={text} motionKey={motionKey} />
       </div>
-    </div>
+    </Component>
   )
 }

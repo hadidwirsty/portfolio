@@ -217,7 +217,7 @@ export function VexooDashboard() {
                 transition={{ duration: 0.22, ease: "easeOut" }}
                 className="flex items-center justify-center"
               >
-                <div className="group relative inline-flex items-center gap-1.5 overflow-hidden rounded-full border border-border/70 bg-card/8 px-2.5 py-0.5 font-pixel text-sm font-semibold tracking-wider text-muted-foreground shadow-2xs backdrop-blur-[10px] transition-all duration-300 select-none hover:border-border hover:bg-card/2 hover:text-foreground sm:gap-2 sm:px-3 sm:py-1">
+                <div className="group relative inline-flex items-center gap-1.5 overflow-hidden rounded-full border border-border/50 bg-card/8 px-2.5 py-0.5 font-pixel text-sm font-semibold tracking-wider text-muted-foreground shadow-2xs backdrop-blur-[10px] transition-all duration-300 select-none hover:border-border hover:bg-card/2 hover:text-foreground sm:gap-2 sm:px-3 sm:py-1">
                   <GradientMotionBackground
                     seed={77}
                     className="pointer-events-none absolute inset-0 z-0 overflow-hidden rounded-[inherit] bg-transparent transition-opacity duration-500 group-hover:opacity-25 dark:bg-transparent"
@@ -279,7 +279,7 @@ export function VexooDashboard() {
                 <Link
                   href="/about"
                   {...hoverProps("about")}
-                  className="group relative flex h-full min-h-24 w-full cursor-pointer flex-col justify-end overflow-hidden rounded-xl border border-border/80 bg-card/8 p-4 shadow-xs backdrop-blur-[10px] transition-all duration-500 hover:bg-card/2 hover:shadow-2xl hover:shadow-black/15 sm:rounded-3xl sm:p-5 dark:hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.7)]"
+                  className="group relative flex h-full min-h-24 w-full cursor-pointer flex-col justify-end overflow-hidden rounded-xl border border-border/50 bg-card/8 p-4 shadow-xs backdrop-blur-[10px] transition-all duration-500 hover:border-border hover:bg-card/2 hover:shadow-2xl hover:shadow-black/15 sm:rounded-3xl sm:p-5 dark:hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.7)]"
                 >
                   <GradientMotionBackground
                     seed={11}
@@ -306,7 +306,7 @@ export function VexooDashboard() {
                 <Link
                   href="/portfolio"
                   {...hoverProps("portfolio")}
-                  className="group relative flex h-full min-h-24 w-full cursor-pointer flex-col justify-end overflow-hidden rounded-xl border border-border/80 bg-card/8 p-4 shadow-xs backdrop-blur-[10px] transition-all duration-500 hover:bg-card/2 hover:shadow-2xl hover:shadow-black/15 sm:rounded-3xl sm:p-5 dark:hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.7)]"
+                  className="group relative flex h-full min-h-24 w-full cursor-pointer flex-col justify-end overflow-hidden rounded-xl border border-border/50 bg-card/8 p-4 shadow-xs backdrop-blur-[10px] transition-all duration-500 hover:border-border hover:bg-card/2 hover:shadow-2xl hover:shadow-black/15 sm:rounded-3xl sm:p-5 dark:hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.7)]"
                 >
                   <GradientMotionBackground
                     seed={22}
@@ -336,7 +336,7 @@ export function VexooDashboard() {
                   <Link
                     href="/contact"
                     {...hoverProps("contact")}
-                    className="group relative flex h-full w-full cursor-pointer flex-col justify-end overflow-hidden rounded-xl border border-border/80 bg-card/8 p-4 shadow-xs backdrop-blur-[10px] transition-all duration-500 hover:bg-card/2 hover:shadow-2xl hover:shadow-black/15 sm:rounded-3xl sm:p-5 dark:hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.7)]"
+                    className="group relative flex h-full w-full cursor-pointer flex-col justify-end overflow-hidden rounded-xl border border-border/50 bg-card/8 p-4 shadow-xs backdrop-blur-[10px] transition-all duration-500 hover:border-border hover:bg-card/2 hover:shadow-2xl hover:shadow-black/15 sm:rounded-3xl sm:p-5 dark:hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.7)]"
                   >
                     <GradientMotionBackground
                       seed={33}
@@ -359,7 +359,7 @@ export function VexooDashboard() {
                   {...hoverProps("greeting")}
                   whileHover={{ y: -2, transition: { duration: 0.2 } }}
                   whileTap={{ scale: 0.985 }}
-                  className="group relative col-span-1 h-full min-h-0 overflow-hidden rounded-xl border border-border/80 bg-card/8 p-2 shadow-xs backdrop-blur-[10px] transition-all duration-500 hover:bg-card/2 hover:shadow-2xl hover:shadow-black/15 sm:rounded-3xl sm:p-3 md:aspect-square md:h-full md:w-auto md:shrink-0 dark:hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.7)]"
+                  className="group relative col-span-1 h-full min-h-0 overflow-hidden rounded-xl border border-border/50 bg-card/8 p-2 shadow-xs backdrop-blur-[10px] transition-all duration-500 hover:border-border hover:bg-card/2 hover:shadow-2xl hover:shadow-black/15 sm:rounded-3xl sm:p-3 md:aspect-square md:h-full md:w-auto md:shrink-0 dark:hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.7)]"
                 >
                   <GradientMotionBackground
                     seed={44}
@@ -390,7 +390,7 @@ export function VexooDashboard() {
                   <Link
                     href="/stack"
                     {...hoverProps("stack")}
-                    className="group relative flex h-full w-full cursor-pointer flex-col justify-between overflow-hidden rounded-xl border border-border/80 bg-card/8 p-4 shadow-xs backdrop-blur-[10px] transition-all duration-500 hover:bg-card/2 hover:shadow-2xl hover:shadow-black/15 sm:rounded-3xl sm:p-5 lg:p-3.5 xl:p-4 dark:hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.7)]"
+                    className="group relative flex h-full w-full cursor-pointer flex-col justify-between overflow-hidden rounded-xl border border-border/50 bg-card/8 p-4 shadow-xs backdrop-blur-[10px] transition-all duration-500 hover:border-border hover:bg-card/2 hover:shadow-2xl hover:shadow-black/15 sm:rounded-3xl sm:p-5 lg:p-3.5 xl:p-4 dark:hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.7)]"
                     title="Lihat Tech Stack & Keahlian"
                   >
                     <GradientMotionBackground
@@ -413,7 +413,7 @@ export function VexooDashboard() {
                           {FRONTEND_STACK.map((item) => (
                             <div
                               key={`t1-${item.name}`}
-                              className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-border/40 bg-foreground/5 p-2 shadow-xs transition-transform duration-200 hover:scale-120 sm:size-11 sm:rounded-xl md:size-14 md:p-2.5 lg:size-10 lg:rounded-xl lg:p-2 xl:size-11 xl:p-2 2xl:size-15 2xl:rounded-2xl 2xl:p-3"
+                              className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-border/50 bg-foreground/5 p-2 shadow-xs transition-transform duration-200 hover:scale-120 sm:size-11 sm:rounded-xl md:size-14 md:p-2.5 lg:size-10 lg:rounded-xl lg:p-2 xl:size-11 xl:p-2 2xl:size-15 2xl:rounded-2xl 2xl:p-3"
                               title={item.name}
                             >
                               <Image
@@ -436,7 +436,7 @@ export function VexooDashboard() {
                           {FRONTEND_STACK.map((item) => (
                             <div
                               key={`t2-${item.name}`}
-                              className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-border/40 bg-foreground/5 p-2 shadow-xs transition-transform duration-200 hover:scale-120 sm:size-11 sm:rounded-xl md:size-14 md:p-2.5 lg:size-10 lg:rounded-xl lg:p-2 xl:size-11 xl:p-2 2xl:size-15 2xl:rounded-2xl 2xl:p-3"
+                              className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-border/50 bg-foreground/5 p-2 shadow-xs transition-transform duration-200 hover:scale-120 sm:size-11 sm:rounded-xl md:size-14 md:p-2.5 lg:size-10 lg:rounded-xl lg:p-2 xl:size-11 xl:p-2 2xl:size-15 2xl:rounded-2xl 2xl:p-3"
                               title={item.name}
                             >
                               <Image
@@ -475,7 +475,7 @@ export function VexooDashboard() {
                     href={cvFile}
                     download
                     {...hoverProps("resume")}
-                    className="group relative flex h-full w-full cursor-pointer flex-col justify-end overflow-hidden rounded-xl border border-border/80 bg-card/8 p-4 shadow-xs backdrop-blur-[10px] transition-all duration-500 hover:bg-card/2 hover:shadow-2xl hover:shadow-black/15 sm:rounded-3xl sm:p-5 dark:hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.7)]"
+                    className="group relative flex h-full w-full cursor-pointer flex-col justify-end overflow-hidden rounded-xl border border-border/50 bg-card/8 p-4 shadow-xs backdrop-blur-[10px] transition-all duration-500 hover:border-border hover:bg-card/2 hover:shadow-2xl hover:shadow-black/15 sm:rounded-3xl sm:p-5 dark:hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.7)]"
                     title="Unduh Resume / CV PDF"
                   >
                     <GradientMotionBackground

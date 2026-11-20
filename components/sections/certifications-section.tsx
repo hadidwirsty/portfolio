@@ -81,7 +81,7 @@ function CertificationsSection() {
           <button
             type="button"
             onClick={() => setExpanded((prev) => !prev)}
-            className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-border/80 bg-background/80 px-4 py-2 text-xs font-medium text-muted-foreground shadow-2xs transition-all duration-150 hover:bg-muted/70 hover:text-foreground"
+            className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-border/50 bg-background/80 px-4 py-2 text-xs font-medium text-muted-foreground shadow-2xs transition-all duration-150 hover:bg-muted/70 hover:text-foreground"
           >
             <span>
               {expanded
@@ -122,7 +122,7 @@ function IssuerTabButton({
         "inline-flex cursor-pointer items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-medium transition-all duration-150 select-none sm:text-sm",
         isActive
           ? "bg-primary text-primary-foreground shadow-2xs"
-          : "border border-border/80 bg-background/80 text-muted-foreground hover:bg-muted/70 hover:text-foreground"
+          : "border border-border/50 bg-background/80 text-muted-foreground hover:bg-muted/70 hover:text-foreground"
       )}
     >
       <span>{label}</span>
@@ -150,7 +150,7 @@ function CertificationCard({ cert }: { cert: CertificationEntry }) {
   const isLinkedIn = category === "linkedin"
 
   return (
-    <Card className="flex flex-col justify-between border-border/70 bg-card/70 p-4 shadow-2xs backdrop-blur-xs transition-all duration-200 hover:border-border hover:shadow-md">
+    <Card className="flex flex-col justify-between border-border/50 bg-card/70 p-4 shadow-2xs backdrop-blur-xs transition-all duration-200 hover:border-border hover:shadow-md">
       <CardContent className="flex items-start gap-3.5 p-0">
         <div
           className={cn(

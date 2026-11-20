@@ -146,8 +146,8 @@ export function PortfolioCardFolder({
 
         <p className="max-w-md font-sans text-xs leading-relaxed text-muted-foreground sm:text-right sm:text-sm">
           {lang === "id"
-            ? "Arsip map bento sistem enterprise dan produk full-stack terkurasi dengan rincian arsitektur teknis."
-            : "Curated bento folders of enterprise systems and full-stack products with deep architectural specs."}
+            ? "Kumpulan proyek yang menunjukkan pengalaman saya membangun dan meningkatkan aplikasi web untuk berbagai kebutuhan bisnis."
+            : "A selection of projects showcasing my experience building and improving web applications for diverse business needs."}
         </p>
       </div>
 
@@ -179,7 +179,7 @@ export function PortfolioCardFolder({
                 "focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:outline-none",
                 isActive
                   ? "bg-foreground font-semibold text-background shadow-xs"
-                  : "border border-border/80 bg-card/70 text-muted-foreground hover:border-foreground/30 hover:bg-muted hover:text-foreground"
+                  : "border border-border/50 bg-card/70 text-muted-foreground hover:border-foreground/30 hover:bg-muted hover:text-foreground"
               )}
             >
               <span>{def.label[lang]}</span>
@@ -229,7 +229,7 @@ export function PortfolioCardFolder({
           onClick={handleShortcutToggle}
           aria-expanded={isExpanded}
           aria-controls="all-projects-drawer"
-          className="group inline-flex cursor-pointer items-center gap-2 rounded-full border-border/80 bg-card/80 px-6 py-2.5 text-xs font-medium text-foreground shadow-xs backdrop-blur-md transition-all hover:border-foreground/40 hover:bg-card focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:text-sm"
+          className="group inline-flex cursor-pointer items-center gap-2 rounded-full border-border/50 bg-card/80 px-6 py-2.5 text-xs font-medium text-foreground shadow-xs backdrop-blur-md transition-all hover:border-foreground/40 hover:bg-card focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:text-sm"
         >
           <span>{shortcutButtonLabel}</span>
           {!isExpanded && (

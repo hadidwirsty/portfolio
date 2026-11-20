@@ -95,7 +95,7 @@ export function VexooLanguageToggle() {
           "flex size-7 cursor-pointer items-center justify-center rounded-full border transition-[background-color,border-color,color,box-shadow] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] sm:size-8",
           isLangOpen
             ? "border-foreground bg-foreground text-background shadow-md"
-            : "border-border/80 bg-background/40 text-foreground/80 hover:border-foreground/50 hover:bg-foreground/5 hover:text-foreground"
+            : "border-border/50 bg-background/40 text-foreground/80 hover:border-foreground/50 hover:bg-foreground/5 hover:text-foreground"
         )}
       >
         <Globe
@@ -141,7 +141,7 @@ export function VexooLanguageToggle() {
             }
             className="absolute top-full left-1/2 z-50 mt-2 origin-top -translate-x-1/2 min-[700px]:top-1/2 min-[700px]:right-full min-[700px]:left-auto min-[700px]:mt-0 min-[700px]:mr-2 min-[700px]:origin-right min-[700px]:translate-x-0 min-[700px]:-translate-y-1/2"
           >
-            <div className="relative flex h-7 items-center rounded-full border border-border/80 bg-background/95 p-0.5 font-sans text-xs shadow-xl backdrop-blur-md sm:h-8">
+            <div className="relative flex h-7 items-center rounded-full border border-border/50 bg-background/95 p-0.5 font-sans text-xs shadow-xl backdrop-blur-md sm:h-8">
               {/* Opsi ID */}
               <button
                 type="button"

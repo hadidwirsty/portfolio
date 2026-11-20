@@ -268,7 +268,7 @@ export function ProjectTimelineAccordion({
           : "Interactive Project Timeline"
       }
       className={cn(
-        "group relative z-10 flex w-full flex-col overflow-hidden rounded-3xl border border-border/80 bg-card/8 p-4 shadow-xs backdrop-blur-[10px] transition-[border-color,background-color] duration-500 hover:bg-card/2 sm:p-6 lg:p-8",
+        "group relative z-10 flex w-full flex-col overflow-hidden rounded-3xl border border-border/50 bg-card/8 p-4 shadow-xs backdrop-blur-[10px] transition-[border-color,background-color] duration-500 hover:bg-card/2 sm:p-6 lg:p-8",
         className
       )}
     >
@@ -293,8 +293,8 @@ export function ProjectTimelineAccordion({
             </div>
             <h2 className="mt-1 font-heading text-xl font-bold tracking-tight text-foreground sm:text-2xl">
               {lang === "id"
-                ? "Evolusi Rekayasa Seluruh Proyek Riil"
-                : "Chronological Engineering Evolution"}
+                ? "Perjalanan Pengembangan Proyek"
+                : "Project Development Journey"}
             </h2>
             <p className="mt-0.5 text-xs text-muted-foreground sm:text-sm">
               {lang === "id"
@@ -318,7 +318,7 @@ export function ProjectTimelineAccordion({
                 aria-label={
                   lang === "id" ? "Proyek sebelumnya" : "Previous project"
                 }
-                className="size-8 rounded-full border-border/70 hover:bg-muted disabled:pointer-events-none disabled:border-border/30 disabled:opacity-30"
+                className="size-8 rounded-full border-border/50 hover:bg-muted disabled:pointer-events-none disabled:border-border/50 disabled:opacity-30"
               >
                 <ChevronLeft className="size-4" />
               </Button>
@@ -331,7 +331,7 @@ export function ProjectTimelineAccordion({
                 aria-label={
                   lang === "id" ? "Proyek berikutnya" : "Next project"
                 }
-                className="size-8 rounded-full border-border/70 hover:bg-muted disabled:pointer-events-none disabled:border-border/30 disabled:opacity-30"
+                className="size-8 rounded-full border-border/50 hover:bg-muted disabled:pointer-events-none disabled:border-border/50 disabled:opacity-30"
               >
                 <ChevronRight className="size-4" />
               </Button>

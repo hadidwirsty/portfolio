@@ -64,7 +64,7 @@ export function PortfolioTimeline() {
           : "01 / My Journey & Career Milestones"
       }
     >
-      <div className="relative w-full overflow-hidden rounded-2xl border border-border/70 bg-card/75 p-4 shadow-xs backdrop-blur-md sm:p-7 lg:p-8">
+      <div className="relative w-full overflow-hidden rounded-2xl border border-border/50 bg-card/75 p-4 shadow-xs backdrop-blur-md sm:p-7 lg:p-8">
         {/* Section Header */}
         <div className="flex flex-col gap-2 border-b border-border/50 pb-4 sm:flex-row sm:items-center sm:justify-between sm:pb-5">
           <div>
@@ -218,9 +218,9 @@ export function PortfolioTimeline() {
                 ? "Berkas Tonggak Terpilih"
                 : "Selected Milestone Dossier"
             }
-            className="mt-2 min-h-43.75 rounded-xl border border-border/60 bg-muted/20 p-5 backdrop-blur-xs transition-colors"
+            className="mt-2 min-h-43.75 rounded-xl border border-border/50 bg-muted/20 p-5 backdrop-blur-xs transition-colors"
           >
-            <div className="flex items-center justify-between border-b border-border/40 pb-3">
+            <div className="flex items-center justify-between border-b border-border/50 pb-3">
               <div className="flex items-center gap-2.5">
                 <span className="font-mono text-xs font-semibold tracking-wider text-muted-foreground uppercase">
                   {lang === "id" ? "Berkas Tonggak" : "Milestone Dossier"}
@@ -345,7 +345,7 @@ export function PortfolioTimeline() {
                     </p>
 
                     {isSelected && (
-                      <div className="mt-3 space-y-1.5 border-t border-border/40 pt-2.5">
+                      <div className="mt-3 space-y-1.5 border-t border-border/50 pt-2.5">
                         {m.highlights.map((h, i) => (
                           <div
                             key={i}

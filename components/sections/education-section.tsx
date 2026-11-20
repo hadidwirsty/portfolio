@@ -33,7 +33,7 @@ function EducationCard({ entry }: { entry: EducationEntry }) {
   const isUGM = entry.id === "ugm"
 
   return (
-    <Card className="flex flex-col justify-between border-border/70 bg-card/80 p-6 shadow-2xs backdrop-blur-xs transition-all duration-200 hover:border-border hover:shadow-md">
+    <Card className="flex flex-col justify-between border-border/50 bg-card/80 p-6 shadow-2xs backdrop-blur-xs transition-all duration-200 hover:border-border hover:shadow-md">
       <div>
         <CardHeader className="flex flex-row items-start justify-between gap-3 p-0 pb-4">
           <div className="flex items-start gap-3">
@@ -70,7 +70,7 @@ function EducationCard({ entry }: { entry: EducationEntry }) {
 
           {/* Undergraduate Thesis Box */}
           {extra && (
-            <div className="mt-3 rounded-xl border border-border/60 bg-muted/40 p-3 text-xs leading-relaxed text-muted-foreground">
+            <div className="mt-3 rounded-xl border border-border/50 bg-muted/40 p-3 text-xs leading-relaxed text-muted-foreground">
               <p className="mb-1 font-medium text-foreground/90">
                 Fokus Skripsi Sarjana:
               </p>

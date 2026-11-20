@@ -19,8 +19,6 @@ const fontMono = Geist_Mono({
 const fraunces = Fraunces({
   subsets: ["latin"],
   variable: "--font-heading",
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
 })
 
 const pixelifySans = Pixelify_Sans({
