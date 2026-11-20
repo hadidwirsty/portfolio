@@ -61,9 +61,9 @@ export function ProjectDetailDialog({
         className={cn(
           "flex flex-col gap-0 overflow-hidden p-0 shadow-2xl transition-all duration-200 outline-none select-text",
           // Mobile: Native Bottom Sheet docked at bottom-0, full width, rounded top, max-h-[88dvh]
-          "fixed inset-x-0 top-auto bottom-0 max-h-[88dvh] w-full max-w-full translate-x-0 translate-y-0 rounded-t-3xl rounded-b-none border-x-0 border-t border-b-0 border-border/80 bg-background",
+          "fixed inset-x-0 top-auto bottom-0 max-h-[88dvh] w-full max-w-full translate-x-0 translate-y-0 rounded-t-3xl rounded-b-none border-x-0 border-t border-b-0 border-border/50 bg-background",
           // Tablet & Desktop: Centered dialog with generous editorial max-width (preserved)
-          "sm:top-1/2 sm:right-auto sm:bottom-auto sm:left-1/2 sm:h-auto sm:max-h-[88dvh] sm:w-[calc(100%-2.5rem)] sm:max-w-3xl sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-3xl sm:border sm:border-border/80",
+          "sm:top-1/2 sm:right-auto sm:bottom-auto sm:left-1/2 sm:h-auto sm:max-h-[88dvh] sm:w-[calc(100%-2.5rem)] sm:max-w-3xl sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-3xl sm:border sm:border-border/50",
           "lg:max-h-[90dvh] lg:max-w-4xl"
         )}
       >
@@ -73,7 +73,7 @@ export function ProjectDetailDialog({
         </DialogDescription>
 
         {/* 1. Header — Sticky Monochromatic & Editorial */}
-        <DialogHeader className="sticky top-0 z-20 shrink-0 border-b border-border/70 bg-background/95 px-4.5 pt-3 pb-3.5 backdrop-blur-md sm:px-8 sm:py-5">
+        <DialogHeader className="sticky top-0 z-20 shrink-0 border-b border-border/50 bg-background/95 px-4.5 pt-3 pb-3.5 backdrop-blur-md sm:px-8 sm:py-5">
           {/* Mobile Bottom-Sheet Pull Handle */}
           <div className="mx-auto mb-2 h-1 w-10 shrink-0 rounded-full bg-muted-foreground/25 sm:hidden" />
 
@@ -101,7 +101,7 @@ export function ProjectDetailDialog({
               </span>
 
               <DialogClose
-                className="flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-full border border-border/70 bg-card/60 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none sm:size-10"
+                className="flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-full border border-border/50 bg-card/60 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none sm:size-10"
                 aria-label={lang === "id" ? "Tutup dialog" : "Close dialog"}
               >
                 <X className="size-4" />
@@ -153,7 +153,7 @@ export function ProjectDetailDialog({
                 ? "Peran & Lingkup Tanggung Jawab"
                 : "Role & Responsibilities"}
             </h4>
-            <div className="rounded-xl border border-border/60 bg-muted/20 p-3.5 sm:p-5">
+            <div className="rounded-xl border border-border/50 bg-muted/20 p-3.5 sm:p-5">
               <p className="font-sans text-xs leading-relaxed text-foreground/85 sm:text-sm">
                 <TranslatedText entry={project.role} />
               </p>
@@ -198,7 +198,7 @@ export function ProjectDetailDialog({
                 <Badge
                   key={t}
                   variant="outline"
-                  className="rounded-md border-border/70 bg-muted/30 px-2.5 py-1 font-mono text-xs font-normal text-foreground/90 transition-colors hover:bg-muted/60"
+                  className="rounded-md border-border/50 bg-muted/30 px-2.5 py-1 font-mono text-xs font-normal text-foreground/90 transition-colors hover:bg-muted/60"
                 >
                   {t}
                 </Badge>
@@ -211,7 +211,7 @@ export function ProjectDetailDialog({
         </div>
 
         {/* 3. Footer — Sticky Action Bar */}
-        <div className="sticky bottom-0 z-20 shrink-0 border-t border-border/70 bg-background/95 px-4.5 py-3 pb-[max(0.875rem,env(safe-area-inset-bottom))] backdrop-blur-md sm:px-8 sm:py-4">
+        <div className="sticky bottom-0 z-20 shrink-0 border-t border-border/50 bg-background/95 px-4.5 py-3 pb-[max(0.875rem,env(safe-area-inset-bottom))] backdrop-blur-md sm:px-8 sm:py-4">
           <div className="flex flex-row items-center justify-between gap-3">
             {project.link ? (
               <Button

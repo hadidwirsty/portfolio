@@ -12,7 +12,7 @@ export function ContactHero() {
   return (
     <div className="relative flex w-full flex-1 flex-col justify-between">
       <div className="relative flex w-full flex-col">
-        <KineticHeading text={headingText} motionKey="contact" />
+        <KineticHeading text={headingText} motionKey="contact" as="h2" />
         <ContactSheet />
       </div>
       <div className="mt-auto py-6">

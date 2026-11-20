@@ -52,8 +52,8 @@ export const timelineMilestones: readonly TimelineMilestone[] = [
     highlights: [
       bi("IPK 3,74 / 4,00 (S.Kom.)", "GPA 3.74 / 4.00 (B.Sc. in CS)"),
       bi(
-        "Skripsi: Keamanan Akses Embed Dashboard Metabase dengan JWT",
-        "Thesis: Securing Metabase Embed Dashboards with JWT"
+        "Skripsi: Keamanan Akses Embed Dashboard Metabase dengan JSON Web Token (JWT) pada Purwarupa Web Analytics Netmonk",
+        "Thesis: Securing Access to Embed Metabase Dashboards With JSON Web Token (JWT) in Netmonk's Prototype Web Analytics"
       ),
       bi(
         "Algoritma, Struktur Data, Rekayasa Perangkat Lunak, & Jaringan Komputer",
@@ -86,8 +86,8 @@ export const timelineMilestones: readonly TimelineMilestone[] = [
         "Dual-token authentication & silent refresh via RTK Query"
       ),
       bi(
-        "Modernisasi toolchain frontend ke Vite 6 & remediasi 101 celah dependensi",
-        "Modernized frontend toolchain to Vite 6 & remediated 101 vulnerabilities"
+        "Arsitektur keamanan akses dasbor Metabase tertanam via token JWT",
+        "Secure access architecture for embedded Metabase dashboards via JWT"
       ),
     ],
     labelPosition: "bottom",
@@ -128,16 +128,16 @@ export const timelineMilestones: readonly TimelineMilestone[] = [
     period: bi("Nov 2024 – Okt 2026", "Nov 2024 – Oct 2026"),
     badge: bi("Rekayasa Enterprise", "Enterprise Engineering"),
     title: bi(
-      "Junior Programmer — 10 Aplikasi Web Enterprise",
-      "Junior Programmer — 10 Enterprise Web Applications"
+      "Junior Programmer — 10 Inisiatif Web Enterprise",
+      "Junior Programmer — 10 Enterprise Web Initiatives"
     ),
     institution: bi(
       "PT Sigma Cipta Caraka (Telkomsigma)",
       "PT Sigma Cipta Caraka (Telkomsigma)"
     ),
     summary: bi(
-      "Mengembangkan dan memelihara antarmuka serta memperkuat postur keamanan pada 10 aplikasi web enterprise untuk klien B2B dan Telkom Group menggunakan Next.js, React, Angular, Vue/Nuxt, dan Blazor dalam ekosistem Agile/Scrum.",
-      "Developed and maintained frontend interfaces and security across 10 enterprise web applications for B2B clients and Telkom Group using Next.js, React, Angular, Vue/Nuxt, and Blazor within an Agile/Scrum ecosystem."
+      "Berkontribusi dalam 10 inisiatif web enterprise bagi klien B2B dan Telkom Group yang mencakup pengembangan baru, modul fitur, purwarupa sistem (PoC), serta pemeliharaan aplikasi menggunakan Next.js, React, Angular 18, Vue, dan Blazor.",
+      "Contributed to 10 enterprise web initiatives for B2B clients and Telkom Group spanning new development, feature modules, proof of concept (PoC), and application maintenance using Next.js, React, Angular 18, Vue, and Blazor."
     ),
     highlights: [
       bi(

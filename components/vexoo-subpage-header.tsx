@@ -31,7 +31,7 @@ export function VexooSubpageHeader() {
   }, [])
 
   return (
-    <header className="flex items-center justify-between border-b border-border/60 pb-4 font-sans text-xs tracking-tight sm:text-sm">
+    <header className="flex items-center justify-between border-b border-border/50 pb-4 font-sans text-xs tracking-tight sm:text-sm">
       {/* Kiri: Tautan Home & Identitas */}
       <div className="flex items-center gap-4 sm:gap-8">
         <Link

@@ -13,7 +13,7 @@ export function PortfolioHero() {
   return (
     <section className="relative flex w-full flex-col items-center justify-center gap-4 sm:gap-6">
       <KineticHeading text={headingText} motionKey="portfolio" />
-      <p className="max-w-xl text-center font-mono text-xs leading-relaxed text-pretty text-muted-foreground lg:max-w-2xl lg:text-sm">
+      <p className="max-w-xl text-center font-mono text-xs leading-relaxed text-pretty text-muted-foreground sm:text-sm lg:max-w-2xl">
         {descriptionText}
       </p>
     </section>

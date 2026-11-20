@@ -75,7 +75,7 @@ function SkillGroupCard({
   const title = useT(group.title)
 
   return (
-    <Card className="flex flex-col justify-between border-border/70 bg-card/70 p-5 shadow-2xs backdrop-blur-xs transition-all duration-200 hover:border-border hover:shadow-md">
+    <Card className="flex flex-col justify-between border-border/50 bg-card/70 p-5 shadow-2xs backdrop-blur-xs transition-all duration-200 hover:border-border hover:shadow-md">
       <div>
         <CardHeader className="flex flex-row items-center gap-2.5 p-0 pb-3">
           <div className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-muted/70">

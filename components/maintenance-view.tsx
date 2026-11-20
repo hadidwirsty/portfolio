@@ -47,7 +47,7 @@ export function MaintenanceView() {
           <a
             href={cvFile}
             download
-            className="inline-flex h-11 w-1/2 flex-1 items-center justify-center gap-1.5 rounded-full border border-border/80 bg-card/60 px-2 font-sans text-xs font-medium whitespace-nowrap text-foreground transition-[background-color,border-color,transform] duration-200 hover:bg-card/90 focus-visible:outline-2 focus-visible:outline-ring active:scale-[0.98] sm:h-10 sm:gap-2 sm:px-4 sm:text-sm"
+            className="inline-flex h-11 w-1/2 flex-1 items-center justify-center gap-1.5 rounded-full border border-border/50 bg-card/60 px-2 font-sans text-xs font-medium whitespace-nowrap text-foreground transition-[background-color,border-color,transform] duration-200 hover:bg-card/90 focus-visible:outline-2 focus-visible:outline-ring active:scale-[0.98] sm:h-10 sm:gap-2 sm:px-4 sm:text-sm"
             title={secondaryLabel}
           >
             <Download className="size-4 shrink-0 text-muted-foreground" />

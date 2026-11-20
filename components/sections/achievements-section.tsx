@@ -42,8 +42,8 @@ function AchievementsSection() {
         {/* Organizations & Volunteering Grid */}
         <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2">
           {/* Organizations Card */}
-          <Card className="border-border/70 bg-card/80 p-6 shadow-2xs backdrop-blur-xs transition-all duration-200 hover:border-border hover:shadow-md">
-            <CardHeader className="flex flex-row items-center gap-2.5 border-b border-border/60 p-0 pb-4">
+          <Card className="border-border/50 bg-card/80 p-6 shadow-2xs backdrop-blur-xs transition-all duration-200 hover:border-border hover:shadow-md">
+            <CardHeader className="flex flex-row items-center gap-2.5 border-b border-border/50 p-0 pb-4">
               <div className="flex size-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
                 <Users className="size-4" />
               </div>
@@ -59,8 +59,8 @@ function AchievementsSection() {
           </Card>
 
           {/* Volunteering Card */}
-          <Card className="border-border/70 bg-card/80 p-6 shadow-2xs backdrop-blur-xs transition-all duration-200 hover:border-border hover:shadow-md">
-            <CardHeader className="flex flex-row items-center gap-2.5 border-b border-border/60 p-0 pb-4">
+          <Card className="border-border/50 bg-card/80 p-6 shadow-2xs backdrop-blur-xs transition-all duration-200 hover:border-border hover:shadow-md">
+            <CardHeader className="flex flex-row items-center gap-2.5 border-b border-border/50 p-0 pb-4">
               <div className="flex size-8 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
                 <HeartHandshake className="size-4" />
               </div>
@@ -90,7 +90,7 @@ function AchievementCard({
   const title = useT(item.title)
 
   return (
-    <Card className="flex flex-row items-start gap-4 border-border/70 bg-card/80 p-5 shadow-2xs backdrop-blur-xs transition-all duration-200 hover:border-border hover:shadow-md">
+    <Card className="flex flex-row items-start gap-4 border-border/50 bg-card/80 p-5 shadow-2xs backdrop-blur-xs transition-all duration-200 hover:border-border hover:shadow-md">
       <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400">
         {isFirst ? <Trophy className="size-5" /> : <Award className="size-5" />}
       </div>

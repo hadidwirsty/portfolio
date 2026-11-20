@@ -53,7 +53,7 @@ function ExperienceItem({ entry }: { entry: ExperienceEntry }) {
         <Briefcase className="size-3 text-primary" />
       </div>
 
-      <div className="rounded-2xl border border-border/70 bg-card/60 p-5 shadow-2xs backdrop-blur-xs transition-all duration-200 hover:border-border hover:bg-card sm:p-7">
+      <div className="rounded-2xl border border-border/50 bg-card/60 p-5 shadow-2xs backdrop-blur-xs transition-all duration-200 hover:border-border hover:bg-card sm:p-7">
         {/* Experience Header */}
         <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
           <div>
@@ -99,7 +99,7 @@ function ExperienceItem({ entry }: { entry: ExperienceEntry }) {
 
         {/* Related Projects Linkage */}
         {relatedProjects.length > 0 && (
-          <div className="mt-6 border-t border-border/60 pt-4">
+          <div className="mt-6 border-t border-border/50 pt-4">
             <p className="font-mono text-xs tracking-wider text-muted-foreground uppercase">
               {relatedLabel}
             </p>

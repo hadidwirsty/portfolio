@@ -372,7 +372,7 @@ export function PlayfulFooter() {
   return (
     <footer
       role="contentinfo"
-      className="@container relative flex min-h-dvh w-full flex-col justify-between overflow-hidden rounded-t-3xl border-t border-border/80 p-4 shadow-sm backdrop-blur-[10px] transition-[border-color,background-color] duration-500 contain-[layout_style] sm:p-6 md:h-auto md:min-h-0 md:py-8 lg:min-h-dvh lg:p-8"
+      className="@container relative flex min-h-dvh w-full flex-col justify-between overflow-hidden rounded-t-3xl border-t border-border/50 p-4 shadow-sm backdrop-blur-[10px] transition-[border-color,background-color] duration-500 contain-[layout_style] sm:p-6 md:h-auto md:min-h-0 md:py-8 lg:min-h-dvh lg:p-8"
     >
       <GradientMotionBackground
         seed={88}
@@ -487,7 +487,7 @@ export function PlayfulFooter() {
                 variant="outline"
                 size="default"
                 onClick={handleCopyEmail}
-                className="h-11 max-w-full rounded-full border-border/80 bg-foreground/5 px-4 text-xs font-medium text-foreground hover:border-border hover:bg-foreground/10 sm:text-sm"
+                className="h-11 max-w-full rounded-full border-border/50 bg-foreground/5 px-4 text-xs font-medium text-foreground hover:border-border hover:bg-foreground/10 sm:text-sm"
                 title={copyEmailText}
               >
                 {copied ? (
@@ -536,7 +536,7 @@ export function PlayfulFooter() {
                       title={`Kirim email ke ${profile.email}`}
                     />
                   }
-                  className="size-11 rounded-full border-border/80 bg-foreground/5 text-foreground shadow-2xs transition-all hover:scale-105 hover:border-border hover:bg-foreground/10 active:scale-95"
+                  className="size-11 rounded-full border-border/50 bg-foreground/5 text-foreground shadow-2xs transition-all hover:scale-105 hover:border-border hover:bg-foreground/10 active:scale-95"
                 >
                   <Mail className="size-4 shrink-0" />
                 </Button>
@@ -552,7 +552,7 @@ export function PlayfulFooter() {
                       title="Profil GitHub"
                     />
                   }
-                  className="size-11 rounded-full border-border/80 bg-foreground/5 text-foreground shadow-2xs transition-all hover:scale-105 hover:border-border hover:bg-foreground/10 active:scale-95"
+                  className="size-11 rounded-full border-border/50 bg-foreground/5 text-foreground shadow-2xs transition-all hover:scale-105 hover:border-border hover:bg-foreground/10 active:scale-95"
                 >
                   <GithubIcon className="size-4 shrink-0" />
                 </Button>
@@ -568,7 +568,7 @@ export function PlayfulFooter() {
                       title="Profil LinkedIn"
                     />
                   }
-                  className="size-11 rounded-full border-border/80 bg-foreground/5 text-foreground shadow-2xs transition-all hover:scale-105 hover:border-border hover:bg-foreground/10 active:scale-95"
+                  className="size-11 rounded-full border-border/50 bg-foreground/5 text-foreground shadow-2xs transition-all hover:scale-105 hover:border-border hover:bg-foreground/10 active:scale-95"
                 >
                   <LinkedinIcon className="size-4 shrink-0" />
                 </Button>
@@ -584,7 +584,7 @@ export function PlayfulFooter() {
                       title="Profil Instagram"
                     />
                   }
-                  className="size-11 rounded-full border-border/80 bg-foreground/5 text-foreground shadow-2xs transition-all hover:scale-105 hover:border-border hover:bg-foreground/10 active:scale-95"
+                  className="size-11 rounded-full border-border/50 bg-foreground/5 text-foreground shadow-2xs transition-all hover:scale-105 hover:border-border hover:bg-foreground/10 active:scale-95"
                 >
                   <InstagramIcon className="size-4 shrink-0" />
                 </Button>
@@ -604,7 +604,7 @@ export function PlayfulFooter() {
                       title="Profil Threads"
                     />
                   }
-                  className="size-11 rounded-full border-border/80 bg-foreground/5 text-foreground shadow-2xs transition-all hover:scale-105 hover:border-border hover:bg-foreground/10 active:scale-95"
+                  className="size-11 rounded-full border-border/50 bg-foreground/5 text-foreground shadow-2xs transition-all hover:scale-105 hover:border-border hover:bg-foreground/10 active:scale-95"
                 >
                   <ThreadsIcon className="size-4 shrink-0" />
                 </Button>
@@ -621,7 +621,7 @@ export function PlayfulFooter() {
                         title="Profil Strava"
                       />
                     }
-                    className="size-11 rounded-full border-border/80 bg-foreground/5 text-foreground shadow-2xs transition-all hover:scale-105 hover:border-border hover:bg-foreground/10 active:scale-95"
+                    className="size-11 rounded-full border-border/50 bg-foreground/5 text-foreground shadow-2xs transition-all hover:scale-105 hover:border-border hover:bg-foreground/10 active:scale-95"
                   >
                     <StravaIcon className="size-4 shrink-0" />
                   </Button>
@@ -639,7 +639,7 @@ export function PlayfulFooter() {
                         title="Saluran YouTube"
                       />
                     }
-                    className="size-11 rounded-full border-border/80 bg-foreground/5 text-foreground shadow-2xs transition-all hover:scale-105 hover:border-border hover:bg-foreground/10 active:scale-95"
+                    className="size-11 rounded-full border-border/50 bg-foreground/5 text-foreground shadow-2xs transition-all hover:scale-105 hover:border-border hover:bg-foreground/10 active:scale-95"
                   >
                     <YoutubeIcon className="size-4 shrink-0" />
                   </Button>
@@ -683,7 +683,7 @@ export function PlayfulFooter() {
         </div>
 
         {/* Bottom Footer */}
-        <div className="relative z-10 flex flex-col-reverse items-center justify-between gap-4 border-t border-border/60 pt-4 text-center font-mono text-xs text-muted-foreground sm:flex-row sm:pt-5 sm:text-left">
+        <div className="relative z-10 flex flex-col-reverse items-center justify-between gap-4 border-t border-border/50 pt-4 text-center font-mono text-xs text-muted-foreground sm:flex-row sm:pt-5 sm:text-left">
           <div>© 2026 {profile.name}. All rights reserved.</div>
           <button
             type="button"

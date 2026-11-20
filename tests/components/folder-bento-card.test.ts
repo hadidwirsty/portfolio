@@ -143,15 +143,15 @@ test("folder-bento-card implements physical two-layer architecture with outer ba
   // Outer frame article with inset padding and large rounded corners
   assert.match(
     source,
-    /<article[\s\S]*?(p-2\.5|p-3|p-3\.5)[\s\S]*?(rounded-\[28px\]|sm:rounded-\[32px\])/,
-    "outer article must serve as backing frame with visible inset padding and large rounded corners"
+    /<article[\s\S]*?(?:rounded-4xl[\s\S]*?(?:p-2\.5|p-3|p-3\.5)|(?:p-2\.5|p-3|p-3\.5)[\s\S]*?rounded-4xl)/,
+    "outer article must serve as backing frame with visible inset padding and large rounded-4xl corners"
   )
 
   // Inset inner card clipping inner elements
   assert.match(
     source,
-    /<div[\s\S]*?relative size-full overflow-hidden[\s\S]*?rounded-\[20px\]/,
-    "inner card must be inset and clip inner layers with overflow-hidden"
+    /<div[\s\S]*?relative size-full overflow-hidden[\s\S]*?rounded-3xl/,
+    "inner card must be inset and clip inner layers with overflow-hidden and rounded-3xl"
   )
 })
 
@@ -177,10 +177,52 @@ test("folder-bento-card separates moving reveal pocket from stationary bottom co
     "description must NOT be inside moving pocket motion.div"
   )
 
-  // Stationary bottom layer with solid backing
+  // Stationary bottom layer must be anchored with z-20 at bottom and wrap title & description outside motion.div
   assert.match(
     source,
-    /STATIONARY CONTENT LAYER[\s\S]*?z-20[\s\S]*?bg-card/,
-    "stationary content layer must be anchored with z-20 and solid card backing"
+    /<div className=["'][^"']*?absolute inset-x-0 bottom-0 z-20[^"']*?["'][\s\S]*?\{title\}[\s\S]*?\{description\}[\s\S]*?<\/div>/,
+    "stationary content container must be anchored at bottom with z-20 wrapping title and description"
+  )
+
+  // Solid backing layer must be positioned within the stationary container to prevent background image peek-through
+  assert.match(
+    source,
+    /z-20[\s\S]*?<div className=["'][^"']*?absolute inset-0 -z-10 bg-card[^"']*?["']\s*\/>[\s\S]*?\{title\}/,
+    "stationary content layer must contain a solid bg-card backing layer behind title"
+  )
+})
+
+test("folder-bento-card visual refinement: removes inner border, enlarges project number, and removes circular arrow wrapper", () => {
+  const source = fs.readFileSync(COMPONENT_PATH, "utf-8")
+
+  // 1. Inner card border removed (only outer article border remains)
+  assert.match(
+    source,
+    /<div className=["']relative size-full overflow-hidden rounded-3xl bg-card/,
+    "inner card must not have secondary border or shadow-xs"
+  )
+  assert.doesNotMatch(
+    source,
+    /relative size-full overflow-hidden rounded-3xl[^"']*?border/,
+    "inner card must NOT declare border utility"
+  )
+
+  // 2. Oversized responsive project number (starting from 60px/64px on mobile up to 96px on desktop)
+  assert.match(
+    source,
+    /font-mono text-6xl[\s\S]*?leading-none[\s\S]*?\{projectNumber\}/,
+    "project number must use oversized responsive display typography with leading-none"
+  )
+
+  // 3. ArrowUpRight without circular button wrapper
+  assert.doesNotMatch(
+    source,
+    /<div[\s\S]*?rounded-full border[\s\S]*?<ArrowUpRight/,
+    "ArrowUpRight must not be wrapped in a circular rounded-full border wrapper"
+  )
+  assert.match(
+    source,
+    /<ArrowUpRight[\s\S]*?aria-hidden=["']true["'][\s\S]*?size-(7|8|9|10)/,
+    "ArrowUpRight must render directly as an enlarged plain indicator icon"
   )
 })
