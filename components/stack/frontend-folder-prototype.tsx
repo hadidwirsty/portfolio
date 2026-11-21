@@ -127,7 +127,7 @@ export function FrontendFolderPrototype({
           ========================================================= */}
       <div
         className={cn(
-          "relative flex h-80 w-full max-w-[360px] flex-col justify-end transition-all duration-300 sm:h-86 sm:max-w-[430px] lg:h-90 lg:max-w-[450px]",
+          "relative flex h-80 w-full max-w-90 flex-col justify-end transition-all duration-300 sm:h-86 sm:max-w-107.5 lg:h-90 lg:max-w-112.5",
           isRevealed ? "scale-[1.01]" : "scale-100"
         )}
       >
@@ -320,7 +320,7 @@ export function FrontendFolderPrototype({
             <path
               d="M 0 28 L 130 28 C 150 28, 160 10, 180 10 L 336 10 C 350 10, 360 20, 360 34 L 360 180 L 0 180 Z"
               fill="url(#folder-front-grad-light)"
-              className="stroke-border/50 [filter:url(#pocket-depth-shadow-light)] transition-colors duration-200 group-hover:stroke-border dark:[fill:url(#folder-front-grad-dark)] dark:[filter:url(#pocket-depth-shadow-dark)]"
+              className="stroke-border/50 filter-[url(#pocket-depth-shadow-light)] transition-colors duration-200 group-hover:stroke-border dark:fill-[url(#folder-front-grad-dark)] dark:filter-[url(#pocket-depth-shadow-dark)]"
               strokeWidth="1.2"
             />
           </svg>
