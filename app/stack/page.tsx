@@ -1,10 +1,13 @@
 import type { Metadata } from "next"
 
+import { PlayfulFooter } from "@/components/playful-footer"
+import { CertificationFolderGrid } from "@/components/stack/certification-folder-grid"
+import { TechStackHero } from "@/components/stack/tech-stack-hero"
+import { TechnologyFolderGrid } from "@/components/stack/technology-folder-grid"
+import { TickerStrip } from "@/components/ticker-strip"
+import { VexooSubpageShell } from "@/components/vexoo-subpage-shell"
 import { subpages } from "@/lib/cv-data"
-import { VexooSubpageHeader } from "@/components/vexoo-subpage-header"
-import { VexooSubpageIntro } from "@/components/vexoo-subpage-intro"
-import { SkillsSection } from "@/components/sections/skills-section"
-import { SiteFooter } from "@/components/site-footer"
+import { shouldShowStackCertifications } from "@/lib/stack-visibility"
 
 export const metadata: Metadata = {
   title: `${subpages.stack.title.en} — Hadidwirsty`,
@@ -17,19 +20,27 @@ export const metadata: Metadata = {
 }
 
 export default function StackPage() {
+  const showCertifications = shouldShowStackCertifications()
+
   return (
-    <div
-      id="top"
-      className="min-h-screen bg-background font-sans text-foreground"
-    >
-      <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
-        <VexooSubpageHeader />
-        <main className="mt-10 space-y-12 sm:mt-16">
-          <VexooSubpageIntro pageKey="stack" />
-          <SkillsSection />
-        </main>
+    <VexooSubpageShell currentSectionKey="stack" footer={<PlayfulFooter />}>
+      <div className="relative flex w-full flex-1 flex-col justify-between">
+        <div className="relative flex w-full flex-col gap-12 sm:gap-16">
+          {/* Tech Stack Hero with Kinetic Heading & Always-Visible Core Stack */}
+          <TechStackHero />
+
+          {/* Section 01: Inside My Toolkit with 6 Interactive Technology Folders */}
+          <TechnologyFolderGrid />
+
+          {/* Section 02: Learning Archive (Development default or when explicitly enabled) */}
+          {showCertifications && <CertificationFolderGrid />}
+        </div>
+
+        {/* Global Bottom Ticker Strip */}
+        <div className="mt-auto py-6">
+          <TickerStrip />
+        </div>
       </div>
-      <SiteFooter />
-    </div>
+    </VexooSubpageShell>
   )
 }
