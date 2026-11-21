@@ -455,7 +455,7 @@ export function TechnologyPhysicalFolder({
           ========================================================= */}
       <div
         className={cn(
-          "relative flex h-80 w-full max-w-[360px] flex-col justify-end transition-all duration-300 sm:h-86 sm:max-w-[430px] lg:h-90 lg:max-w-[450px]",
+          "relative flex h-80 w-full max-w-90 flex-col justify-end transition-all duration-300 sm:h-86 sm:max-w-107.5 lg:h-90 lg:max-w-112.5",
           isRevealed ? "scale-[1.01]" : "scale-100"
         )}
       >
