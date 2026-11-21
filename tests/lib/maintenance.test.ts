@@ -10,17 +10,18 @@ import {
 } from "../../lib/maintenance.ts"
 import { resolveHeadingEmWidth } from "../../lib/status-heading.ts"
 
-test("HIDDEN_PATHS contains the exact 2 pages under maintenance", () => {
-  assert.deepEqual(Array.from(HIDDEN_PATHS), ["/about", "/stack"])
+test("HIDDEN_PATHS contains the exact 1 page under maintenance", () => {
+  assert.deepEqual(Array.from(HIDDEN_PATHS), ["/about"])
 })
 
 test("isPageHidden correctly matches hidden routes and subroutes", () => {
-  // Exact match for hidden routes
+  // Exact match for hidden routes (/about remains protected under maintenance)
   assert.equal(isPageHidden("/about"), true)
   assert.equal(isPageHidden("/about/"), true)
-  assert.equal(isPageHidden("/stack"), true)
 
-  // Released routes MUST NOT be hidden
+  // Released routes MUST NOT be hidden (/stack is now publicly released)
+  assert.equal(isPageHidden("/stack"), false)
+  assert.equal(isPageHidden("/stack/"), false)
   assert.equal(isPageHidden("/contact"), false)
   assert.equal(isPageHidden("/contact/"), false)
   assert.equal(isPageHidden("/portfolio"), false)
@@ -28,9 +29,9 @@ test("isPageHidden correctly matches hidden routes and subroutes", () => {
 
   // Subroutes under hidden pages
   assert.equal(isPageHidden("/about/team"), true)
-  assert.equal(isPageHidden("/stack/detail"), true)
 
   // Subroutes under released pages MUST NOT be hidden
+  assert.equal(isPageHidden("/stack/detail"), false)
   assert.equal(isPageHidden("/contact/form/submit"), false)
   assert.equal(isPageHidden("/portfolio/project-1"), false)
 

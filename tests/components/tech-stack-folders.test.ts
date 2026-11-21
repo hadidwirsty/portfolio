@@ -188,7 +188,7 @@ test("frontend folder prototype implements theme-aware physical folder with Grad
   )
   assert.match(
     source,
-    /dark:\[fill:url\(#folder-front-grad-dark\)\]/,
+    /dark:(?:\[fill:url\(#folder-front-grad-dark\)\]|fill-\[url\(#folder-front-grad-dark\)\])/,
     "must apply dark front pocket fill gradient override on dark mode"
   )
 
@@ -241,7 +241,7 @@ test("frontend folder prototype implements theme-aware physical folder with Grad
   // Enlarged physical folder geometry (dominates grid cell)
   assert.match(
     source,
-    /max-w-\[360px\][\s\S]*?sm:max-w-\[430px\][\s\S]*?lg:max-w-\[450px\]/,
+    /max-w-(?:\[360px\]|90)[\s\S]*?sm:max-w-(?:\[430px\]|107\.5)[\s\S]*?lg:max-w-(?:\[450px\]|112\.5)/,
     "must slightly enlarge folder width to 430-450px on desktop"
   )
   assert.match(

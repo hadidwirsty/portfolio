@@ -16,7 +16,7 @@
  *      sehingga proses perombakan desain tidak terganggu.
  */
 
-export const HIDDEN_PATHS = ["/about", "/stack"] as const
+export const HIDDEN_PATHS = ["/about"] as const
 
 export type HiddenPath = (typeof HIDDEN_PATHS)[number]
 
