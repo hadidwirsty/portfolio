@@ -550,28 +550,28 @@ test("technology physical folder defines expressive multi-layer resting stacks f
   // Category 03 (State & Data) organic multi-tier expanded placements (asymmetrical abstract scatter)
   assert.match(
     source,
-    /STATE_DATA_PLACEMENTS[\s\S]*?"tanstack-query":[\s\S]*?y:\s*-178[\s\S]*?zustand:[\s\S]*?y:\s*-115[\s\S]*?redux:[\s\S]*?y:\s*-210[\s\S]*?"react-hook-form":[\s\S]*?y:\s*-185[\s\S]*?zod:[\s\S]*?y:\s*-125/,
+    /STATE_DATA_PLACEMENTS[\s\S]*?"tanstack-query":[\s\S]*?y:\s*-178[\s\S]*?zustand:[\s\S]*?y:\s*-115[\s\S]*?redux:[\s\S]*?y:\s*-210[\s\S]*?"react-hook-form":[\s\S]*?y:\s*-185[\s\S]*?"tanstack-table":[\s\S]*?y:\s*-188[\s\S]*?recharts:[\s\S]*?y:\s*-130/,
     "State & Data placements must feature non-linear multi-depth expanded scatter (zustand at lower-tier y: -115, redux at peak y: -210)"
   )
 
   // Category 04 (Testing & Web Security) organic multi-tier expanded placements
   assert.match(
     source,
-    /TESTING_SECURITY_PLACEMENTS[\s\S]*?vitest:[\s\S]*?y:\s*-125[\s\S]*?jest:[\s\S]*?y:\s*-195[\s\S]*?rtl:[\s\S]*?y:\s*-210[\s\S]*?cypress:[\s\S]*?y:\s*-115[\s\S]*?jwt:[\s\S]*?y:\s*-168/,
+    /TESTING_SECURITY_PLACEMENTS[\s\S]*?vitest:[\s\S]*?y:\s*-125[\s\S]*?jest:[\s\S]*?y:\s*-195[\s\S]*?rtl:[\s\S]*?y:\s*-210[\s\S]*?cypress:[\s\S]*?y:\s*-115[\s\S]*?jwt:[\s\S]*?y:\s*-168[\s\S]*?zod:[\s\S]*?y:\s*-130/,
     "Testing & Security placements must feature non-linear multi-depth expanded scatter"
   )
 
   // Category 05 (Cross-Framework Engineering) organic multi-tier expanded placements
   assert.match(
     source,
-    /CROSS_FRAMEWORK_PLACEMENTS[\s\S]*?vue:[\s\S]*?y:\s*-178[\s\S]*?nuxt:[\s\S]*?y:\s*-115[\s\S]*?angular:[\s\S]*?y:\s*-210[\s\S]*?blazor:[\s\S]*?y:\s*-185[\s\S]*?nodejs:[\s\S]*?y:\s*-125/,
+    /CROSS_FRAMEWORK_PLACEMENTS[\s\S]*?vue:[\s\S]*?y:\s*-178[\s\S]*?nuxt:[\s\S]*?y:\s*-115[\s\S]*?angular:[\s\S]*?y:\s*-210[\s\S]*?blazor:[\s\S]*?y:\s*-185[\s\S]*?nodejs:[\s\S]*?y:\s*-125[\s\S]*?rxjs:[\s\S]*?y:\s*-130/,
     "Cross-Framework placements must feature non-linear multi-depth expanded scatter"
   )
 
   // Category 06 (Developer Tools & Cloud) organic multi-tier expanded placements
   assert.match(
     source,
-    /DEV_TOOLS_CLOUD_PLACEMENTS[\s\S]*?git:[\s\S]*?y:\s*-125[\s\S]*?vite:[\s\S]*?y:\s*-195[\s\S]*?postman:[\s\S]*?y:\s*-210[\s\S]*?aws:[\s\S]*?y:\s*-115[\s\S]*?"vs-code":[\s\S]*?y:\s*-168/,
+    /DEV_TOOLS_CLOUD_PLACEMENTS[\s\S]*?git:[\s\S]*?y:\s*-125[\s\S]*?vite:[\s\S]*?y:\s*-195[\s\S]*?postman:[\s\S]*?y:\s*-210[\s\S]*?aws:[\s\S]*?y:\s*-115[\s\S]*?"vs-code":[\s\S]*?y:\s*-168[\s\S]*?gitlab:[\s\S]*?y:\s*-130/,
     "Developer Tools & Cloud placements must feature non-linear multi-depth expanded scatter"
   )
 })
@@ -582,14 +582,14 @@ test("tech stack sticker registry maps all technologies with zero broken asset p
     "lib/tech-stack-sticker-assets.ts must exist"
   )
 
-  // Verify total registered keys in TECH_STICKER_REGISTRY (31 canonical active + aliases: tailwind, web-security, auth0, gitlab = 35)
+  // Verify total registered keys in TECH_STICKER_REGISTRY (36 canonical active + aliases: web-security, auth0 = 38)
   assert.strictEqual(
     Object.keys(TECH_STICKER_REGISTRY).length,
-    35,
-    "TECH_STICKER_REGISTRY must define exactly 35 technologies including verified aliases"
+    38,
+    "TECH_STICKER_REGISTRY must define exactly 38 technologies including verified aliases"
   )
 
-  // Verify all 31 technologies from TECH_CATEGORIES are registered
+  // Verify all 36 technologies from TECH_CATEGORIES are registered
   let totalTechs = 0
   for (const cat of TECH_CATEGORIES) {
     totalTechs += cat.techs.length
@@ -631,8 +631,8 @@ test("tech stack sticker registry maps all technologies with zero broken asset p
 
   assert.strictEqual(
     totalTechs,
-    31,
-    "Canonical technology stack must contain exactly 31 technologies across 6 categories"
+    36,
+    "Canonical technology stack must contain exactly 36 technologies across 6 categories"
   )
 
   // Explicit verification for Category 02 UI & Design System pixel stickers
@@ -640,14 +640,21 @@ test("tech stack sticker registry maps all technologies with zero broken asset p
   assert.ok(uiCategory, "ui-styling category must exist")
   assert.strictEqual(
     uiCategory.techs.length,
-    5,
-    "ui-styling must have exactly 5 technologies"
+    6,
+    "ui-styling must have exactly 6 technologies"
   )
-  const expectedUiIds = ["ant-design", "base-ui", "ng-zorro", "radix", "shadcn"]
+  const expectedUiIds = [
+    "ant-design",
+    "base-ui",
+    "ng-zorro",
+    "radix",
+    "shadcn",
+    "tailwind",
+  ]
   assert.deepStrictEqual(
     uiCategory.techs.map((t) => t.id),
     expectedUiIds,
-    "ui-styling must contain ant-design, base-ui, ng-zorro, radix, and shadcn in order"
+    "ui-styling must contain ant-design, base-ui, ng-zorro, radix, shadcn, and tailwind in order"
   )
   for (const id of expectedUiIds) {
     const asset = getTechStickerAsset(id)
@@ -664,20 +671,21 @@ test("tech stack sticker registry maps all technologies with zero broken asset p
   assert.ok(stateCategory, "state-data category must exist")
   assert.strictEqual(
     stateCategory.techs.length,
-    5,
-    "state-data must have exactly 5 technologies"
+    6,
+    "state-data must have exactly 6 technologies"
   )
   const expectedStateIds = [
     "tanstack-query",
     "zustand",
     "redux",
     "react-hook-form",
-    "zod",
+    "tanstack-table",
+    "recharts",
   ]
   assert.deepStrictEqual(
     stateCategory.techs.map((t) => t.id),
     expectedStateIds,
-    "state-data must contain tanstack-query, zustand, redux, react-hook-form, and zod in order"
+    "state-data must contain tanstack-query, zustand, redux, react-hook-form, tanstack-table, and recharts in order"
   )
   for (const id of expectedStateIds) {
     const asset = getTechStickerAsset(id)
@@ -696,14 +704,14 @@ test("tech stack sticker registry maps all technologies with zero broken asset p
   assert.ok(testingCategory, "testing-security category must exist")
   assert.strictEqual(
     testingCategory.techs.length,
-    5,
-    "testing-security must have exactly 5 technologies"
+    6,
+    "testing-security must have exactly 6 technologies"
   )
-  const expectedTestingIds = ["vitest", "jest", "rtl", "cypress", "jwt"]
+  const expectedTestingIds = ["vitest", "jest", "rtl", "cypress", "jwt", "zod"]
   assert.deepStrictEqual(
     testingCategory.techs.map((t) => t.id),
     expectedTestingIds,
-    "testing-security must contain vitest, jest, rtl, cypress, and jwt in order"
+    "testing-security must contain vitest, jest, rtl, cypress, jwt, and zod in order"
   )
   for (const id of expectedTestingIds) {
     const asset = getTechStickerAsset(id)
@@ -722,14 +730,21 @@ test("tech stack sticker registry maps all technologies with zero broken asset p
   assert.ok(frameworkCategory, "cross-framework category must exist")
   assert.strictEqual(
     frameworkCategory.techs.length,
-    5,
-    "cross-framework must have exactly 5 technologies"
+    6,
+    "cross-framework must have exactly 6 technologies"
   )
-  const expectedFrameworkIds = ["vue", "nuxt", "angular", "blazor", "nodejs"]
+  const expectedFrameworkIds = [
+    "vue",
+    "nuxt",
+    "angular",
+    "blazor",
+    "nodejs",
+    "rxjs",
+  ]
   assert.deepStrictEqual(
     frameworkCategory.techs.map((t) => t.id),
     expectedFrameworkIds,
-    "cross-framework must contain vue, nuxt, angular, blazor, and nodejs in order"
+    "cross-framework must contain vue, nuxt, angular, blazor, nodejs, and rxjs in order"
   )
   for (const id of expectedFrameworkIds) {
     const asset = getTechStickerAsset(id)
@@ -746,14 +761,21 @@ test("tech stack sticker registry maps all technologies with zero broken asset p
   assert.ok(toolsCategory, "dev-tools-cloud category must exist")
   assert.strictEqual(
     toolsCategory.techs.length,
-    5,
-    "dev-tools-cloud must have exactly 5 technologies"
+    6,
+    "dev-tools-cloud must have exactly 6 technologies"
   )
-  const expectedToolsIds = ["git", "vite", "postman", "aws", "vs-code"]
+  const expectedToolsIds = [
+    "git",
+    "vite",
+    "postman",
+    "aws",
+    "vs-code",
+    "gitlab",
+  ]
   assert.deepStrictEqual(
     toolsCategory.techs.map((t) => t.id),
     expectedToolsIds,
-    "dev-tools-cloud must contain git, vite, postman, aws, and vs-code in order"
+    "dev-tools-cloud must contain git, vite, postman, aws, vs-code, and gitlab in order"
   )
   for (const id of expectedToolsIds) {
     const asset = getTechStickerAsset(id)
@@ -868,7 +890,7 @@ test("calculateTooltipCoords anchors directly above each of the 6 technology sti
   }
 })
 
-test("controlled scatter generator supports all 6 categories across 31 technologies", () => {
+test("controlled scatter generator supports all 6 categories across 36 technologies", () => {
   assert.strictEqual(
     TECH_CATEGORIES.length,
     6,
@@ -933,9 +955,118 @@ test("controlled scatter generator supports all 6 categories across 31 technolog
 
   assert.strictEqual(
     totalItems,
-    31,
-    "must verify all 31 technologies across all categories"
+    36,
+    "must verify all 36 technologies across all categories"
   )
+})
+
+test("balanced 6x6 technology composition across all 6 physical folders", () => {
+  // 1. Exactly 6 categories
+  assert.strictEqual(
+    TECH_CATEGORIES.length,
+    6,
+    "Must define exactly 6 categories"
+  )
+
+  // 2. Each category has exactly 6 technologies
+  for (const cat of TECH_CATEGORIES) {
+    assert.strictEqual(
+      cat.techs.length,
+      6,
+      `Category ${cat.id} must contain exactly 6 technologies`
+    )
+  }
+
+  // 3. Exactly 36 unique technology IDs
+  const allIds = TECH_CATEGORIES.flatMap((c) => c.techs.map((t) => t.id))
+  assert.strictEqual(allIds.length, 36, "Total technologies must equal 36")
+  assert.strictEqual(
+    new Set(allIds).size,
+    36,
+    "All 36 technology IDs must be strictly unique across categories"
+  )
+
+  // 4. Folder 01 Frontend membership remains unchanged
+  const cat01 = TECH_CATEGORIES.find((c) => c.id === "frontend-development")!
+  assert.deepStrictEqual(
+    cat01.techs.map((t) => t.id),
+    ["typescript", "javascript", "react", "nextjs", "html5", "css3"],
+    "Folder 01 must maintain exact canonical frontend technologies"
+  )
+
+  // 5. Folder 02 UI & Design includes Tailwind CSS
+  const cat02 = TECH_CATEGORIES.find((c) => c.id === "ui-styling")!
+  assert.ok(
+    cat02.techs.some((t) => t.id === "tailwind"),
+    "Folder 02 must include tailwind"
+  )
+
+  // 6. Folder 03 State & Data includes TanStack Table and Recharts; Zod is NOT in Folder 03
+  const cat03 = TECH_CATEGORIES.find((c) => c.id === "state-data")!
+  assert.ok(
+    cat03.techs.some((t) => t.id === "tanstack-table"),
+    "Folder 03 must include tanstack-table"
+  )
+  assert.ok(
+    cat03.techs.some((t) => t.id === "recharts"),
+    "Folder 03 must include recharts"
+  )
+  assert.ok(
+    !cat03.techs.some((t) => t.id === "zod"),
+    "Folder 03 must NOT contain zod (moved to Folder 04)"
+  )
+
+  // 7. Folder 04 Testing & Security includes Zod
+  const cat04 = TECH_CATEGORIES.find((c) => c.id === "testing-security")!
+  assert.ok(
+    cat04.techs.some((t) => t.id === "zod"),
+    "Folder 04 must include zod"
+  )
+
+  // 8. Folder 05 Cross-Framework includes RxJS
+  const cat05 = TECH_CATEGORIES.find((c) => c.id === "cross-framework")!
+  assert.ok(
+    cat05.techs.some((t) => t.id === "rxjs"),
+    "Folder 05 must include rxjs"
+  )
+
+  // 9. Folder 06 Tools & Cloud includes GitLab
+  const cat06 = TECH_CATEGORIES.find((c) => c.id === "dev-tools-cloud")!
+  assert.ok(
+    cat06.techs.some((t) => t.id === "gitlab"),
+    "Folder 06 must include gitlab"
+  )
+
+  // 10. Exclusions: ngrx, github-actions, auth0, antigravity-ide NOT present
+  const excludedIds = [
+    "ngrx",
+    "github-actions",
+    "auth0",
+    "antigravity",
+    "antigravity-ide",
+  ]
+  for (const excl of excludedIds) {
+    assert.ok(
+      !allIds.includes(excl),
+      `Excluded item '${excl}' must NOT be in any active folder`
+    )
+  }
+
+  // 11. All 36 stickers physically exist on disk
+  for (const id of allIds) {
+    const asset = getTechStickerAsset(id)
+    assert.strictEqual(
+      asset.status,
+      "PIXEL_STICKER_AVAILABLE",
+      `${id} must have authentic pixel sticker`
+    )
+    assert.ok(asset.stickerPath, `${id} must have stickerPath defined`)
+    const fullPath = path.resolve(process.cwd(), "public" + asset.stickerPath)
+    assert.ok(
+      fs.existsSync(fullPath),
+      `Sticker for ${id} must exist at ${fullPath}`
+    )
+  }
 })
 
 test("controlled scatter produces distinct, collision-free organic arrangements on consecutive sessions", () => {
@@ -1084,5 +1215,65 @@ test("technology physical folder component integrates controlled scatter lifecyc
     source,
     /if\s*\(!isRevealed\)\s*\{\s*setSessionIndex\(\(prev\)\s*=>\s*prev\s*\+\s*1\)/,
     "must advance sessionIndex only when transitioning from closed to open"
+  )
+})
+
+test("canonical pixel-art sticker promotion verifies canonical paths and blazor-server mapping", () => {
+  // 1. Blazor Server mapping
+  const blazorAsset = getTechStickerAsset("blazor")
+  assert.strictEqual(
+    blazorAsset.stickerPath,
+    "/images/pixel-art-sticker/blazor-server-icon-sticker.png",
+    "blazor must map to blazor-server-icon-sticker.png"
+  )
+  const blazorFile = path.resolve(
+    process.cwd(),
+    "public" + blazorAsset.stickerPath
+  )
+  assert.ok(
+    fs.existsSync(blazorFile),
+    "blazor-server-icon-sticker.png must exist in public/"
+  )
+
+  // 2. Recharts mapping
+  const rechartsAsset = getTechStickerAsset("recharts")
+  assert.strictEqual(
+    rechartsAsset.stickerPath,
+    "/images/pixel-art-sticker/recharts-icon-sticker.png",
+    "recharts must map to recharts-icon-sticker.png"
+  )
+  const rechartsFile = path.resolve(
+    process.cwd(),
+    "public" + rechartsAsset.stickerPath
+  )
+  assert.ok(
+    fs.existsSync(rechartsFile),
+    "recharts-icon-sticker.png must exist in public/"
+  )
+
+  // 3. TanStack Table mapping
+  const tableAsset = getTechStickerAsset("tanstack-table")
+  assert.strictEqual(
+    tableAsset.stickerPath,
+    "/images/pixel-art-sticker/tanstack-table-icon-sticker.png",
+    "tanstack-table must map to tanstack-table-icon-sticker.png"
+  )
+  const tableFile = path.resolve(
+    process.cwd(),
+    "public" + tableAsset.stickerPath
+  )
+  assert.ok(
+    fs.existsSync(tableFile),
+    "tanstack-table-icon-sticker.png must exist in public/"
+  )
+
+  // 4. DotNet asset preserved as separate reserved asset
+  const dotnetFile = path.resolve(
+    process.cwd(),
+    "public/images/pixel-art-sticker/dotnet-icon-sticker.png"
+  )
+  assert.ok(
+    fs.existsSync(dotnetFile),
+    "dotnet-icon-sticker.png must remain preserved"
   )
 })

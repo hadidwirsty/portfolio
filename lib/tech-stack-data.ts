@@ -164,6 +164,21 @@ export const TECH_CATEGORIES: TechCategory[] = [
         category: "ui-styling",
         verifiedIn: ["Portfolio CV", "Modern Accessible UI Components"],
       },
+      {
+        id: "tailwind",
+        name: "Tailwind CSS",
+        category: "ui-styling",
+        icon: "/icons/skills/tailwind.svg",
+        verifiedIn: [
+          "Info Tender",
+          "MONARA",
+          "WBS Internal",
+          "HiBlow Fleet",
+          "Tumbuhin Digital",
+          "Portfolio CV",
+        ],
+        isCore: true,
+      },
     ],
   },
   {
@@ -171,8 +186,8 @@ export const TECH_CATEGORIES: TechCategory[] = [
     index: "03",
     title: bi("Manajemen State & Data", "State & Data Management"),
     description: bi(
-      "Sinkronisasi cache server, penanganan formulir performa tinggi, dan validasi skema bertipe ketat.",
-      "Server cache synchronization, high-performance form state, and strict schema validation."
+      "Sinkronisasi cache server, penanganan formulir, tabel data enterprise, dan visualisasi interaktif.",
+      "Server cache synchronization, high-performance forms, enterprise data tables, and interactive visualizations."
     ),
     techs: [
       {
@@ -200,20 +215,42 @@ export const TECH_CATEGORIES: TechCategory[] = [
         verifiedIn: ["Enterprise form orchestration"],
       },
       {
-        id: "zod",
-        name: "Zod",
+        id: "tanstack-table",
+        name: "TanStack Table",
         category: "state-data",
-        verifiedIn: ["Schema validation & contract inference"],
+        verifiedIn: [
+          "Info Tender LPSE",
+          "MONARA 2.0",
+          "IS-WARE PoC",
+          "WBS Internal",
+          "HiBlow Fleet",
+          "Tumbuhin Digital",
+        ],
+      },
+      {
+        id: "recharts",
+        name: "Recharts",
+        category: "state-data",
+        verifiedIn: [
+          "Info Tender LPSE Analytics",
+          "MONARA 2.0 Incident Charts",
+          "WBS Internal Analytics",
+          "HiBlow Fleet FinTech Charts",
+          "Tumbuhin Digital Analytics",
+        ],
       },
     ],
   },
   {
     id: "testing-security",
     index: "04",
-    title: bi("Pengujian & Keamanan Web", "Testing & Web Security"),
+    title: bi(
+      "Pengujian, Validasi & Keamanan",
+      "Testing, Validation & Security"
+    ),
     description: bi(
-      "Pengujian unit otomatis dan hardening keamanan web sisi klien (XSS, CSP, validasi berkas biner).",
-      "Automated unit testing and client-side web security hardening (XSS, CSP, binary validation)."
+      "Pengujian unit otomatis, validasi skema runtime, dan penguatan keamanan aplikasi web (JWT, pencegahan XSS, CSP).",
+      "Automated unit testing, runtime schema validation, and web security hardening (JWT, XSS mitigation, CSP)."
     ),
     techs: [
       {
@@ -250,15 +287,28 @@ export const TECH_CATEGORIES: TechCategory[] = [
           "Netmonk RTK Query",
         ],
       },
+      {
+        id: "zod",
+        name: "Zod",
+        category: "testing-security",
+        verifiedIn: [
+          "Contract inference & form schema validation",
+          "Server Actions runtime type safety",
+          "HiBlow Fleet & WBS Internal",
+        ],
+      },
     ],
   },
   {
     id: "cross-framework",
     index: "05",
-    title: bi("Pengembangan Lintas Framework", "Cross-Framework Engineering"),
+    title: bi(
+      "Framework & Pemrograman Reaktif",
+      "Frameworks & Reactive Programming"
+    ),
     description: bi(
-      "Pengalaman rekayasa aplikasi enterprise berskala nasional di luar ekosistem React.",
-      "Architectural experience on nationwide enterprise applications beyond React."
+      "Pengalaman rekayasa aplikasi enterprise berskala nasional di luar ekosistem React serta pemrograman reaktif.",
+      "Architectural experience on nationwide enterprise applications beyond React and reactive programming."
     ),
     techs: [
       {
@@ -298,6 +348,16 @@ export const TECH_CATEGORIES: TechCategory[] = [
           "Dicoding Backend Expert",
         ],
       },
+      {
+        id: "rxjs",
+        name: "RxJS",
+        category: "cross-framework",
+        verifiedIn: [
+          "IMAPS BPJS Kesehatan (Observables, async pipes)",
+          "Angular 18 reactive state services",
+          "Debounced search & API orchestration",
+        ],
+      },
     ],
   },
   {
@@ -305,8 +365,8 @@ export const TECH_CATEGORIES: TechCategory[] = [
     index: "06",
     title: bi("Peralatan Pengembang & Cloud", "Developer Tools & Cloud"),
     description: bi(
-      "Alat kolaborasi kode, bundler berkecepatan tinggi, pengujian REST API, dan komputasi awan.",
-      "Code collaboration, high-speed bundlers, REST API testing, and cloud fundamentals."
+      "Kolaborasi kode, kontrol versi terdistribusi, bundler berkecepatan tinggi, pengujian REST API, dan komputasi awan.",
+      "Code collaboration, distributed version control, high-speed bundlers, REST API testing, and cloud fundamentals."
     ),
     techs: [
       {
@@ -340,6 +400,16 @@ export const TECH_CATEGORIES: TechCategory[] = [
         name: "VS Code",
         category: "dev-tools-cloud",
         verifiedIn: ["Primary development environment & TypeScript IDE"],
+      },
+      {
+        id: "gitlab",
+        name: "GitLab",
+        category: "dev-tools-cloud",
+        icon: "/icons/skills/git.svg",
+        verifiedIn: [
+          "Telkomsigma enterprise GitLab repositories",
+          "Branching workflows & daily collaborative development",
+        ],
       },
     ],
   },

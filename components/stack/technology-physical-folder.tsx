@@ -85,6 +85,10 @@ export const UI_STYLING_PLACEMENTS: Record<string, StickerPlacement> = {
     resting: { x: 108, y: -74, rotate: -8, zIndex: 10 },
     expanded: { x: 118, y: -168, rotate: -8, zIndex: 25 },
   },
+  tailwind: {
+    resting: { x: 130, y: -76, rotate: 9, zIndex: 10 },
+    expanded: { x: 126, y: -130, rotate: 10, zIndex: 23 },
+  },
 }
 
 /**
@@ -108,9 +112,13 @@ export const STATE_DATA_PLACEMENTS: Record<string, StickerPlacement> = {
     resting: { x: 54, y: -66, rotate: 6, zIndex: 15 },
     expanded: { x: 78, y: -185, rotate: 7, zIndex: 25 },
   },
-  zod: {
-    resting: { x: 108, y: -74, rotate: -8, zIndex: 10 },
-    expanded: { x: 128, y: -125, rotate: -12, zIndex: 21 },
+  "tanstack-table": {
+    resting: { x: 88, y: -66, rotate: -5, zIndex: 13 },
+    expanded: { x: 82, y: -188, rotate: -7, zIndex: 25 },
+  },
+  recharts: {
+    resting: { x: 130, y: -76, rotate: 9, zIndex: 10 },
+    expanded: { x: 126, y: -130, rotate: 10, zIndex: 23 },
   },
 }
 
@@ -139,6 +147,10 @@ export const TESTING_SECURITY_PLACEMENTS: Record<string, StickerPlacement> = {
     resting: { x: 108, y: -74, rotate: -8, zIndex: 10 },
     expanded: { x: 118, y: -168, rotate: -8, zIndex: 25 },
   },
+  zod: {
+    resting: { x: 130, y: -76, rotate: 9, zIndex: 10 },
+    expanded: { x: 126, y: -130, rotate: 10, zIndex: 23 },
+  },
 }
 
 /**
@@ -166,6 +178,10 @@ export const CROSS_FRAMEWORK_PLACEMENTS: Record<string, StickerPlacement> = {
     resting: { x: 108, y: -74, rotate: -8, zIndex: 10 },
     expanded: { x: 128, y: -125, rotate: -12, zIndex: 21 },
   },
+  rxjs: {
+    resting: { x: 130, y: -76, rotate: 9, zIndex: 10 },
+    expanded: { x: 126, y: -130, rotate: 10, zIndex: 23 },
+  },
 }
 
 /**
@@ -192,6 +208,10 @@ export const DEV_TOOLS_CLOUD_PLACEMENTS: Record<string, StickerPlacement> = {
   "vs-code": {
     resting: { x: 108, y: -74, rotate: -8, zIndex: 10 },
     expanded: { x: 118, y: -168, rotate: -8, zIndex: 25 },
+  },
+  gitlab: {
+    resting: { x: 130, y: -76, rotate: 9, zIndex: 10 },
+    expanded: { x: 126, y: -130, rotate: 10, zIndex: 23 },
   },
 }
 
@@ -241,6 +261,33 @@ const FIVE_ITEM_PRESETS: StickerPlacement[] = [
   },
 ]
 
+const SIX_ITEM_PRESETS: StickerPlacement[] = [
+  {
+    resting: { x: -115, y: -74, rotate: -8, zIndex: 11 },
+    expanded: { x: -128, y: -125, rotate: -12, zIndex: 21 },
+  },
+  {
+    resting: { x: -70, y: -64, rotate: 4, zIndex: 14 },
+    expanded: { x: -78, y: -195, rotate: 8, zIndex: 24 },
+  },
+  {
+    resting: { x: -14, y: -72, rotate: -3, zIndex: 15 },
+    expanded: { x: -12, y: -210, rotate: -4, zIndex: 26 },
+  },
+  {
+    resting: { x: 42, y: -80, rotate: 6, zIndex: 12 },
+    expanded: { x: 38, y: -115, rotate: 9, zIndex: 22 },
+  },
+  {
+    resting: { x: 88, y: -66, rotate: -5, zIndex: 13 },
+    expanded: { x: 82, y: -188, rotate: -7, zIndex: 25 },
+  },
+  {
+    resting: { x: 130, y: -76, rotate: 9, zIndex: 10 },
+    expanded: { x: 126, y: -130, rotate: 10, zIndex: 23 },
+  },
+]
+
 /**
  * Resolves placement for a given technology within its category.
  */
@@ -283,6 +330,10 @@ export function getStickerPlacement(
 
   if (total === 5) {
     return FIVE_ITEM_PRESETS[index % 5]
+  }
+
+  if (total === 6) {
+    return SIX_ITEM_PRESETS[index % 6]
   }
 
   // Fallback linear spread for generic counts
@@ -329,29 +380,29 @@ const CATEGORY_HEADER_MAP: Record<string, CategoryHeaderCopy> = {
   "state-data": {
     title: { id: "State & Data", en: "State & Data" },
     subtitle: {
-      id: "Cache, Formulir & Validasi",
-      en: "Cache, Forms & Validation",
+      id: "State, Formulir, Tabel & Visualisasi",
+      en: "State, Forms, Tables & Visualization",
     },
   },
   "testing-security": {
     title: { id: "Pengujian", en: "Testing" },
     subtitle: {
-      id: "Pengujian Unit & Keamanan Web",
-      en: "Unit Testing & Web Security",
+      id: "Pengujian, Validasi & Keamanan",
+      en: "Testing, Validation & Security",
     },
   },
   "cross-framework": {
     title: { id: "Framework", en: "Frameworks" },
     subtitle: {
-      id: "Enterprise & Lintas Framework",
-      en: "Enterprise & Cross-Framework",
+      id: "Framework & Pemrograman Reaktif",
+      en: "Frameworks & Reactive Programming",
     },
   },
   "dev-tools-cloud": {
     title: { id: "Tools & Cloud", en: "Tools & Cloud" },
     subtitle: {
-      id: "Toolchain, API & Cloud",
-      en: "Toolchain, APIs & Cloud",
+      id: "GitLab, Toolchain & Cloud",
+      en: "GitLab, Toolchains & Cloud",
     },
   },
 }

@@ -56,7 +56,8 @@ interview-prep.md
 .cv_personal_config.json
 .banned_words.json
 cv_templates/
-scripts/
+scripts/*
+!scripts/normalize-pixel-stickers.py
 evidence-report.md
 scratch/
 

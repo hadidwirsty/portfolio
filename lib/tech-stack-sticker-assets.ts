@@ -161,12 +161,20 @@ export const TECH_STICKER_REGISTRY: Record<string, TechStickerAssetInfo> = {
     stickerPath: "/images/pixel-art-sticker/react-hook-form-icon-sticker.png",
     fallbackKind: "sticker",
   },
-  zod: {
-    techId: "zod",
-    name: "Zod",
+  "tanstack-table": {
+    techId: "tanstack-table",
+    name: "TanStack Table",
     category: "state-data",
     status: "PIXEL_STICKER_AVAILABLE",
-    stickerPath: "/images/pixel-art-sticker/zod-icon-sticker.png",
+    stickerPath: "/images/pixel-art-sticker/tanstack-table-icon-sticker.png",
+    fallbackKind: "sticker",
+  },
+  recharts: {
+    techId: "recharts",
+    name: "Recharts",
+    category: "state-data",
+    status: "PIXEL_STICKER_AVAILABLE",
+    stickerPath: "/images/pixel-art-sticker/recharts-icon-sticker.png",
     fallbackKind: "sticker",
   },
 
@@ -178,7 +186,7 @@ export const TECH_STICKER_REGISTRY: Record<string, TechStickerAssetInfo> = {
     name: "Vitest",
     category: "testing-security",
     status: "PIXEL_STICKER_AVAILABLE",
-    stickerPath: "/images/pixel-art-sticker/normalized/vitest-icon-sticker.png",
+    stickerPath: "/images/pixel-art-sticker/vitest-icon-sticker.png",
     fallbackKind: "sticker",
   },
   jest: {
@@ -186,7 +194,7 @@ export const TECH_STICKER_REGISTRY: Record<string, TechStickerAssetInfo> = {
     name: "Jest",
     category: "testing-security",
     status: "PIXEL_STICKER_AVAILABLE",
-    stickerPath: "/images/pixel-art-sticker/normalized/jest-icon-sticker.png",
+    stickerPath: "/images/pixel-art-sticker/jest-icon-sticker.png",
     fallbackKind: "sticker",
   },
   rtl: {
@@ -194,8 +202,7 @@ export const TECH_STICKER_REGISTRY: Record<string, TechStickerAssetInfo> = {
     name: "Testing Library",
     category: "testing-security",
     status: "PIXEL_STICKER_AVAILABLE",
-    stickerPath:
-      "/images/pixel-art-sticker/normalized/testing-library-icon-sticker.png",
+    stickerPath: "/images/pixel-art-sticker/testing-library-icon-sticker.png",
     fallbackKind: "sticker",
   },
   cypress: {
@@ -203,8 +210,7 @@ export const TECH_STICKER_REGISTRY: Record<string, TechStickerAssetInfo> = {
     name: "Cypress",
     category: "testing-security",
     status: "PIXEL_STICKER_AVAILABLE",
-    stickerPath:
-      "/images/pixel-art-sticker/normalized/cypress-icon-sticker.png",
+    stickerPath: "/images/pixel-art-sticker/cypress-icon-sticker.png",
     fallbackKind: "sticker",
   },
   jwt: {
@@ -212,7 +218,15 @@ export const TECH_STICKER_REGISTRY: Record<string, TechStickerAssetInfo> = {
     name: "JSON Web Token",
     category: "testing-security",
     status: "PIXEL_STICKER_AVAILABLE",
-    stickerPath: "/images/pixel-art-sticker/normalized/jwt-icon-sticker.png",
+    stickerPath: "/images/pixel-art-sticker/jwt-icon-sticker.png",
+    fallbackKind: "sticker",
+  },
+  zod: {
+    techId: "zod",
+    name: "Zod",
+    category: "testing-security",
+    status: "PIXEL_STICKER_AVAILABLE",
+    stickerPath: "/images/pixel-art-sticker/zod-icon-sticker.png",
     fallbackKind: "sticker",
   },
   "web-security": {
@@ -220,7 +234,7 @@ export const TECH_STICKER_REGISTRY: Record<string, TechStickerAssetInfo> = {
     name: "Web Security",
     category: "testing-security",
     status: "PIXEL_STICKER_AVAILABLE",
-    stickerPath: "/images/pixel-art-sticker/normalized/jwt-icon-sticker.png",
+    stickerPath: "/images/pixel-art-sticker/jwt-icon-sticker.png",
     fallbackKind: "sticker",
   },
   auth0: {
@@ -228,7 +242,7 @@ export const TECH_STICKER_REGISTRY: Record<string, TechStickerAssetInfo> = {
     name: "Auth0",
     category: "testing-security",
     status: "PIXEL_STICKER_AVAILABLE",
-    stickerPath: "/images/pixel-art-sticker/normalized/auth0-icon-sticker.png",
+    stickerPath: "/images/pixel-art-sticker/auth0-icon-sticker.png",
     fallbackKind: "sticker",
   },
 
@@ -240,7 +254,7 @@ export const TECH_STICKER_REGISTRY: Record<string, TechStickerAssetInfo> = {
     name: "Vue.js",
     category: "cross-framework",
     status: "PIXEL_STICKER_AVAILABLE",
-    stickerPath: "/images/pixel-art-sticker/normalized/vuejs-icon-sticker.png",
+    stickerPath: "/images/pixel-art-sticker/vuejs-icon-sticker.png",
     fallbackKind: "sticker",
   },
   nuxt: {
@@ -248,7 +262,7 @@ export const TECH_STICKER_REGISTRY: Record<string, TechStickerAssetInfo> = {
     name: "Nuxt 3",
     category: "cross-framework",
     status: "PIXEL_STICKER_AVAILABLE",
-    stickerPath: "/images/pixel-art-sticker/normalized/nuxt-icon-sticker.png",
+    stickerPath: "/images/pixel-art-sticker/nuxt-icon-sticker.png",
     fallbackKind: "sticker",
   },
   angular: {
@@ -256,8 +270,7 @@ export const TECH_STICKER_REGISTRY: Record<string, TechStickerAssetInfo> = {
     name: "Angular 18",
     category: "cross-framework",
     status: "PIXEL_STICKER_AVAILABLE",
-    stickerPath:
-      "/images/pixel-art-sticker/normalized/angular-icon-sticker.png",
+    stickerPath: "/images/pixel-art-sticker/angular-icon-sticker.png",
     fallbackKind: "sticker",
   },
   blazor: {
@@ -265,7 +278,7 @@ export const TECH_STICKER_REGISTRY: Record<string, TechStickerAssetInfo> = {
     name: "Blazor Server",
     category: "cross-framework",
     status: "PIXEL_STICKER_AVAILABLE",
-    stickerPath: "/images/pixel-art-sticker/normalized/dotnet-icon-sticker.png",
+    stickerPath: "/images/pixel-art-sticker/blazor-server-icon-sticker.png",
     fallbackKind: "sticker",
   },
   nodejs: {
@@ -273,7 +286,15 @@ export const TECH_STICKER_REGISTRY: Record<string, TechStickerAssetInfo> = {
     name: "Node.js",
     category: "cross-framework",
     status: "PIXEL_STICKER_AVAILABLE",
-    stickerPath: "/images/pixel-art-sticker/normalized/nodejs-icon-sticker.png",
+    stickerPath: "/images/pixel-art-sticker/nodejs-icon-sticker.png",
+    fallbackKind: "sticker",
+  },
+  rxjs: {
+    techId: "rxjs",
+    name: "RxJS",
+    category: "cross-framework",
+    status: "PIXEL_STICKER_AVAILABLE",
+    stickerPath: "/images/pixel-art-sticker/rxjs-icon-sticker.png",
     fallbackKind: "sticker",
   },
 
@@ -285,7 +306,7 @@ export const TECH_STICKER_REGISTRY: Record<string, TechStickerAssetInfo> = {
     name: "Git",
     category: "dev-tools-cloud",
     status: "PIXEL_STICKER_AVAILABLE",
-    stickerPath: "/images/pixel-art-sticker/normalized/git-icon-sticker.png",
+    stickerPath: "/images/pixel-art-sticker/git-icon-sticker.png",
     fallbackKind: "sticker",
   },
   vite: {
@@ -293,7 +314,7 @@ export const TECH_STICKER_REGISTRY: Record<string, TechStickerAssetInfo> = {
     name: "Vite",
     category: "dev-tools-cloud",
     status: "PIXEL_STICKER_AVAILABLE",
-    stickerPath: "/images/pixel-art-sticker/normalized/vite-icon-sticker.png",
+    stickerPath: "/images/pixel-art-sticker/vite-icon-sticker.png",
     fallbackKind: "sticker",
   },
   postman: {
@@ -301,8 +322,7 @@ export const TECH_STICKER_REGISTRY: Record<string, TechStickerAssetInfo> = {
     name: "Postman",
     category: "dev-tools-cloud",
     status: "PIXEL_STICKER_AVAILABLE",
-    stickerPath:
-      "/images/pixel-art-sticker/normalized/postman-icon-sticker.png",
+    stickerPath: "/images/pixel-art-sticker/postman-icon-sticker.png",
     fallbackKind: "sticker",
   },
   aws: {
@@ -310,7 +330,7 @@ export const TECH_STICKER_REGISTRY: Record<string, TechStickerAssetInfo> = {
     name: "AWS Cloud",
     category: "dev-tools-cloud",
     status: "PIXEL_STICKER_AVAILABLE",
-    stickerPath: "/images/pixel-art-sticker/normalized/aws-icon-sticker.png",
+    stickerPath: "/images/pixel-art-sticker/aws-icon-sticker.png",
     fallbackKind: "sticker",
   },
   "vs-code": {
@@ -318,8 +338,7 @@ export const TECH_STICKER_REGISTRY: Record<string, TechStickerAssetInfo> = {
     name: "VS Code",
     category: "dev-tools-cloud",
     status: "PIXEL_STICKER_AVAILABLE",
-    stickerPath:
-      "/images/pixel-art-sticker/normalized/vs-code-icon-sticker.png",
+    stickerPath: "/images/pixel-art-sticker/vs-code-icon-sticker.png",
     fallbackKind: "sticker",
   },
   gitlab: {
@@ -327,7 +346,7 @@ export const TECH_STICKER_REGISTRY: Record<string, TechStickerAssetInfo> = {
     name: "GitLab",
     category: "dev-tools-cloud",
     status: "PIXEL_STICKER_AVAILABLE",
-    stickerPath: "/images/pixel-art-sticker/normalized/gitlab-icon-sticker.png",
+    stickerPath: "/images/pixel-art-sticker/gitlab-icon-sticker.png",
     fallbackKind: "sticker",
   },
 }

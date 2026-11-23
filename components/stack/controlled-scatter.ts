@@ -254,37 +254,53 @@ const CANONICAL_RESTING_PRESETS: Record<
   string,
   { x: number; y: number; rotate: number; zIndex: number }
 > = {
+  // Category 01: Frontend
   typescript: { x: -115, y: -74, rotate: -8, zIndex: 11 },
   javascript: { x: -70, y: -64, rotate: 4, zIndex: 14 },
   react: { x: -14, y: -72, rotate: -3, zIndex: 15 },
   nextjs: { x: 42, y: -80, rotate: 6, zIndex: 12 },
   html5: { x: 88, y: -66, rotate: -5, zIndex: 13 },
   css3: { x: 130, y: -76, rotate: 9, zIndex: 10 },
-  "ant-design": { x: -108, y: -76, rotate: -10, zIndex: 11 },
-  "base-ui": { x: -54, y: -64, rotate: 4, zIndex: 14 },
-  "ng-zorro": { x: 0, y: -82, rotate: -2, zIndex: 12 },
-  radix: { x: 54, y: -66, rotate: 6, zIndex: 15 },
-  shadcn: { x: 108, y: -74, rotate: -8, zIndex: 10 },
-  "tanstack-query": { x: -108, y: -76, rotate: -10, zIndex: 11 },
-  zustand: { x: -54, y: -64, rotate: 4, zIndex: 14 },
-  redux: { x: 0, y: -82, rotate: -2, zIndex: 12 },
-  "react-hook-form": { x: 54, y: -66, rotate: 6, zIndex: 15 },
-  zod: { x: 108, y: -74, rotate: -8, zIndex: 10 },
-  vitest: { x: -108, y: -76, rotate: -10, zIndex: 11 },
-  jest: { x: -54, y: -64, rotate: 4, zIndex: 14 },
-  rtl: { x: 0, y: -82, rotate: -2, zIndex: 12 },
-  cypress: { x: 54, y: -66, rotate: 6, zIndex: 15 },
-  jwt: { x: 108, y: -74, rotate: -8, zIndex: 10 },
-  vue: { x: -108, y: -76, rotate: -10, zIndex: 11 },
-  nuxt: { x: -54, y: -64, rotate: 4, zIndex: 14 },
-  angular: { x: 0, y: -82, rotate: -2, zIndex: 12 },
-  blazor: { x: 54, y: -66, rotate: 6, zIndex: 15 },
-  nodejs: { x: 108, y: -74, rotate: -8, zIndex: 10 },
-  git: { x: -108, y: -76, rotate: -10, zIndex: 11 },
-  vite: { x: -54, y: -64, rotate: 4, zIndex: 14 },
-  postman: { x: 0, y: -82, rotate: -2, zIndex: 12 },
-  aws: { x: 54, y: -66, rotate: 6, zIndex: 15 },
-  "vs-code": { x: 108, y: -74, rotate: -8, zIndex: 10 },
+
+  // Category 02: UI & Design
+  "ant-design": { x: -115, y: -74, rotate: -8, zIndex: 11 },
+  "base-ui": { x: -70, y: -64, rotate: 4, zIndex: 14 },
+  "ng-zorro": { x: -14, y: -72, rotate: -3, zIndex: 15 },
+  radix: { x: 42, y: -80, rotate: 6, zIndex: 12 },
+  shadcn: { x: 88, y: -66, rotate: -5, zIndex: 13 },
+  tailwind: { x: 130, y: -76, rotate: 9, zIndex: 10 },
+
+  // Category 03: State & Data
+  "tanstack-query": { x: -115, y: -74, rotate: -8, zIndex: 11 },
+  zustand: { x: -70, y: -64, rotate: 4, zIndex: 14 },
+  redux: { x: -14, y: -72, rotate: -3, zIndex: 15 },
+  "react-hook-form": { x: 42, y: -80, rotate: 6, zIndex: 12 },
+  "tanstack-table": { x: 88, y: -66, rotate: -5, zIndex: 13 },
+  recharts: { x: 130, y: -76, rotate: 9, zIndex: 10 },
+
+  // Category 04: Testing & Security
+  vitest: { x: -115, y: -74, rotate: -8, zIndex: 11 },
+  jest: { x: -70, y: -64, rotate: 4, zIndex: 14 },
+  rtl: { x: -14, y: -72, rotate: -3, zIndex: 15 },
+  cypress: { x: 42, y: -80, rotate: 6, zIndex: 12 },
+  jwt: { x: 88, y: -66, rotate: -5, zIndex: 13 },
+  zod: { x: 130, y: -76, rotate: 9, zIndex: 10 },
+
+  // Category 05: Cross-Framework
+  vue: { x: -115, y: -74, rotate: -8, zIndex: 11 },
+  nuxt: { x: -70, y: -64, rotate: 4, zIndex: 14 },
+  angular: { x: -14, y: -72, rotate: -3, zIndex: 15 },
+  blazor: { x: 42, y: -80, rotate: 6, zIndex: 12 },
+  nodejs: { x: 88, y: -66, rotate: -5, zIndex: 13 },
+  rxjs: { x: 130, y: -76, rotate: 9, zIndex: 10 },
+
+  // Category 06: Developer Tools & Cloud
+  git: { x: -115, y: -74, rotate: -8, zIndex: 11 },
+  vite: { x: -70, y: -64, rotate: 4, zIndex: 14 },
+  postman: { x: -14, y: -72, rotate: -3, zIndex: 15 },
+  aws: { x: 42, y: -80, rotate: 6, zIndex: 12 },
+  "vs-code": { x: 88, y: -66, rotate: -5, zIndex: 13 },
+  gitlab: { x: 130, y: -76, rotate: 9, zIndex: 10 },
 }
 
 export function calculateCategoryCoords(
