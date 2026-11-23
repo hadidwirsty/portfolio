@@ -1277,3 +1277,128 @@ test("canonical pixel-art sticker promotion verifies canonical paths and blazor-
     "dotnet-icon-sticker.png must remain preserved"
   )
 })
+
+test("Phase 2.7B content refinement verifies sanitized evidence, shadcn/ui name, and hero copy", () => {
+  // 1. Exact 6x6 category membership & 36 unique technology IDs
+  assert.strictEqual(
+    TECH_CATEGORIES.length,
+    6,
+    "must have exactly 6 categories"
+  )
+  for (const cat of TECH_CATEGORIES) {
+    assert.strictEqual(
+      cat.techs.length,
+      6,
+      `category ${cat.id} must contain exactly 6 technologies`
+    )
+  }
+  const allIds = TECH_CATEGORIES.flatMap((c) => c.techs.map((t) => t.id))
+  assert.strictEqual(allIds.length, 36, "must have exactly 36 technologies")
+  assert.strictEqual(
+    new Set(allIds).size,
+    36,
+    "all 36 technology IDs must be unique"
+  )
+
+  // 2. Correct shadcn/ui display name
+  const shadcnTech = TECH_CATEGORIES.flatMap((c) => c.techs).find(
+    (t) => t.id === "shadcn"
+  )
+  assert.ok(shadcnTech, "shadcn tech must exist")
+  assert.strictEqual(
+    shadcnTech.name,
+    "shadcn/ui",
+    "shadcn display name must be 'shadcn/ui'"
+  )
+  const shadcnAsset = getTechStickerAsset("shadcn")
+  assert.strictEqual(
+    shadcnAsset.name,
+    "shadcn/ui",
+    "shadcn asset display name must be 'shadcn/ui'"
+  )
+
+  // 3. Hero bilingual copy
+  assert.strictEqual(
+    TECH_STACK_HERO.description.id,
+    "Teknologi, framework, dan praktik pengembangan yang mendukung pekerjaan saya.",
+    "Hero ID copy must reflect engineering practices without phantom learning archive promise"
+  )
+  assert.strictEqual(
+    TECH_STACK_HERO.description.en,
+    "The tools, frameworks, and engineering practices behind my work.",
+    "Hero EN copy must reflect engineering practices without phantom learning archive promise"
+  )
+
+  // 4. Category 05 English wording
+  const crossCat = TECH_CATEGORIES.find((c) => c.id === "cross-framework")
+  assert.ok(crossCat, "cross-framework category must exist")
+  assert.match(
+    crossCat.description.en,
+    /^Engineering experience on nationwide enterprise applications/,
+    "cross-framework description.en must use 'Engineering experience' instead of 'Architectural experience'"
+  )
+
+  // 5. TypeScript verifiedIn: no numeric 'All Projects' claim, only specific public references
+  const tsTech = TECH_CATEGORIES.flatMap((c) => c.techs).find(
+    (t) => t.id === "typescript"
+  )
+  assert.ok(tsTech, "typescript tech must exist")
+  for (const item of tsTech.verifiedIn) {
+    assert.ok(
+      !item.toLowerCase().includes("all 13") &&
+        !item.toLowerCase().includes("all projects"),
+      `typescript verifiedIn must not claim '${item}'`
+    )
+  }
+  assert.ok(
+    tsTech.verifiedIn.includes("HiBlow Fleet"),
+    "typescript verifiedIn must reference HiBlow Fleet"
+  )
+  assert.ok(
+    tsTech.verifiedIn.includes("Telkomsigma"),
+    "typescript verifiedIn must preserve Telkomsigma context"
+  )
+
+  // 6. React verifiedIn: referential integrity to public project allowlist
+  const reactTech = TECH_CATEGORIES.flatMap((c) => c.techs).find(
+    (t) => t.id === "react"
+  )
+  assert.ok(reactTech, "react tech must exist")
+  const publicAllowedProjects = [
+    "HiBlow Fleet",
+    "MONARA",
+    "Alisa",
+    "Alisa 2.0",
+    "IS-WARE",
+    "WBS",
+    "WBS Internal",
+    "Info Tender",
+    "Bulk Orders",
+    "Netmonk",
+    "Netmonk Analytics",
+  ]
+  for (const ref of reactTech.verifiedIn) {
+    assert.ok(
+      publicAllowedProjects.includes(ref),
+      `react verifiedIn item '${ref}' must be in public allowed projects`
+    )
+  }
+  assert.ok(
+    reactTech.verifiedIn.includes("HiBlow Fleet"),
+    "react verifiedIn must reference HiBlow Fleet"
+  )
+
+  // 7. AWS Cloud learning context
+  const awsTech = TECH_CATEGORIES.flatMap((c) => c.techs).find(
+    (t) => t.id === "aws"
+  )
+  assert.ok(awsTech, "aws tech must exist")
+  assert.deepStrictEqual(
+    awsTech.verifiedIn,
+    [
+      "Dicoding — Belajar Dasar AWS Cloud",
+      "Cloud Practitioner Essentials (S3 & EC2 Fundamentals)",
+    ],
+    "aws verifiedIn must reflect verified learning context"
+  )
+})

@@ -56,8 +56,8 @@ export const CORE_STACK: CoreStackItem[] = [
 export const TECH_STACK_HERO = {
   title: bi("Di Balik Pengembangan.", "Behind the Build."),
   description: bi(
-    "Teknologi yang saya gunakan dan proses pembelajaran yang mendukung pekerjaan saya.",
-    "The technologies I work with and the learning behind my work."
+    "Teknologi, framework, dan praktik pengembangan yang mendukung pekerjaan saya.",
+    "The tools, frameworks, and engineering practices behind my work."
   ),
   coreHeading: bi("Ekosistem Utama", "Primary Ecosystem"),
   sectionIndex: "01 / TECHNOLOGIES",
@@ -83,7 +83,14 @@ export const TECH_CATEGORIES: TechCategory[] = [
         name: "TypeScript",
         category: "frontend-development",
         icon: "/icons/skills/typescript.svg",
-        verifiedIn: ["All 13 Projects", "Telkomsigma", "UGM CS"],
+        verifiedIn: [
+          "HiBlow Fleet",
+          "WBS Internal",
+          "MONARA",
+          "Info Tender",
+          "Telkomsigma",
+          "UGM CS",
+        ],
         isCore: true,
       },
       {
@@ -98,7 +105,13 @@ export const TECH_CATEGORIES: TechCategory[] = [
         name: "React",
         category: "frontend-development",
         icon: "/icons/skills/react.svg",
-        verifiedIn: ["Monara", "Alisa", "IS-WARE", "Portal Kemitraan", "WBS"],
+        verifiedIn: [
+          "HiBlow Fleet",
+          "MONARA",
+          "Alisa 2.0",
+          "IS-WARE",
+          "WBS Internal",
+        ],
         isCore: true,
       },
       {
@@ -160,7 +173,7 @@ export const TECH_CATEGORIES: TechCategory[] = [
       },
       {
         id: "shadcn",
-        name: "Shadcn",
+        name: "shadcn/ui",
         category: "ui-styling",
         verifiedIn: ["Portfolio CV", "Modern Accessible UI Components"],
       },
@@ -194,13 +207,25 @@ export const TECH_CATEGORIES: TechCategory[] = [
         id: "tanstack-query",
         name: "TanStack Query",
         category: "state-data",
-        verifiedIn: ["Server state caching across enterprise apps"],
+        verifiedIn: [
+          "Info Tender",
+          "MONARA",
+          "WBS Internal",
+          "IS-WARE",
+          "Bulk Orders",
+        ],
       },
       {
         id: "zustand",
         name: "Zustand",
         category: "state-data",
-        verifiedIn: ["Lightweight client state store"],
+        verifiedIn: [
+          "Info Tender",
+          "MONARA",
+          "IS-WARE",
+          "Alisa 2.0",
+          "Bulk Orders",
+        ],
       },
       {
         id: "redux",
@@ -212,7 +237,13 @@ export const TECH_CATEGORIES: TechCategory[] = [
         id: "react-hook-form",
         name: "React Hook Form",
         category: "state-data",
-        verifiedIn: ["Enterprise form orchestration"],
+        verifiedIn: [
+          "WBS Internal",
+          "MONARA",
+          "Info Tender",
+          "IS-WARE",
+          "Bulk Orders",
+        ],
       },
       {
         id: "tanstack-table",
@@ -257,7 +288,10 @@ export const TECH_CATEGORIES: TechCategory[] = [
         id: "vitest",
         name: "Vitest",
         category: "testing-security",
-        verifiedIn: ["Frontend automated test suite"],
+        verifiedIn: [
+          "HiBlow Fleet (297 unit tests)",
+          "Portfolio CV Test Suite",
+        ],
       },
       {
         id: "jest",
@@ -308,7 +342,7 @@ export const TECH_CATEGORIES: TechCategory[] = [
     ),
     description: bi(
       "Pengalaman rekayasa aplikasi enterprise berskala nasional di luar ekosistem React serta pemrograman reaktif.",
-      "Architectural experience on nationwide enterprise applications beyond React and reactive programming."
+      "Engineering experience on nationwide enterprise applications beyond React and reactive programming."
     ),
     techs: [
       {
@@ -381,7 +415,7 @@ export const TECH_CATEGORIES: TechCategory[] = [
         name: "Vite",
         category: "dev-tools-cloud",
         icon: "/icons/skills/vite.svg",
-        verifiedIn: ["Modern frontend build toolchain"],
+        verifiedIn: ["Info Tender", "Alisa 2.0", "Caterine ITSM"],
       },
       {
         id: "postman",
@@ -393,7 +427,10 @@ export const TECH_CATEGORIES: TechCategory[] = [
         id: "aws",
         name: "AWS Cloud",
         category: "dev-tools-cloud",
-        verifiedIn: ["S3 cloud storage & EC2 fundamentals"],
+        verifiedIn: [
+          "Dicoding — Belajar Dasar AWS Cloud",
+          "Cloud Practitioner Essentials (S3 & EC2 Fundamentals)",
+        ],
       },
       {
         id: "vs-code",

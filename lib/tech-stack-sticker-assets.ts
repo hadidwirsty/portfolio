@@ -119,7 +119,7 @@ export const TECH_STICKER_REGISTRY: Record<string, TechStickerAssetInfo> = {
   },
   shadcn: {
     techId: "shadcn",
-    name: "Shadcn",
+    name: "shadcn/ui",
     category: "ui-styling",
     status: "PIXEL_STICKER_AVAILABLE",
     stickerPath: "/images/pixel-art-sticker/shadcn-icon-sticker.png",
