@@ -198,6 +198,16 @@ html.theme-switching *::after {
   }
 }
 
+@utility sticker-tooltip {
+  @apply rounded-full border border-border/80 bg-popover px-2 py-0.5 font-mono text-[10px] leading-4 font-medium text-popover-foreground shadow-md sm:text-[11px];
+}
+
+@keyframes stack-ticker-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 @keyframes gradient-blob-float {
   0% {
     transform: translate(calc(-50% - var(--blob-tx, 0px)), calc(-50% - var(--blob-ty, 0px))) rotate(var(--blob-rot, 0deg));

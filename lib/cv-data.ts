@@ -155,6 +155,7 @@ export const ui = {
     "AYO TERHUBUNG · TERBUKA UNTUK PELUANG KERJA · SEMARANG ·",
     "LET'S CONNECT · OPEN TO WORK · SEMARANG ·"
   ),
+  pauseTicker: bi("Jeda teks berjalan", "Pause scrolling text"),
   navigation: bi("Navigasi", "Navigation"),
   connect: bi("Mari Terhubung", "Connect"),
   basedIn: bi("Berdomisili di", "Based in"),

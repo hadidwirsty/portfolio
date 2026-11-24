@@ -11,30 +11,69 @@ export interface TechnologyFolderGridProps {
   className?: string
 }
 
+type FolderInteraction = {
+  pinned: string | null
+  hover: { id: string; dismissed: boolean } | null
+}
+
+type FolderAction = {
+  type: "enter" | "leave" | "activate" | "dismiss"
+  id: string
+}
+
+export function previewedFolder(state: FolderInteraction) {
+  return state.hover && !state.hover.dismissed ? state.hover.id : null
+}
+
+export function updateFolderInteraction(
+  state: FolderInteraction,
+  { type, id }: FolderAction
+): FolderInteraction {
+  const { pinned, hover } = state
+  const dismissedHover = hover?.id === id ? { id, dismissed: true } : hover
+  switch (type) {
+    case "enter":
+      return hover?.id === id
+        ? state
+        : { pinned, hover: { id, dismissed: pinned === id } }
+    case "leave":
+      return hover?.id === id ? { pinned, hover: null } : state
+    case "activate":
+      return { pinned: pinned === id ? null : id, hover: dismissedHover }
+    case "dismiss":
+      return { pinned: pinned === id ? null : pinned, hover: dismissedHover }
+  }
+}
+
 export function TechnologyFolderGrid({ className }: TechnologyFolderGridProps) {
-  const [activePinnedId, setActivePinnedId] = React.useState<string | null>(
-    null
-  )
+  const [folders, dispatch] = React.useReducer(updateFolderInteraction, {
+    pinned: null,
+    hover: null,
+  })
+  const preview = previewedFolder(folders)
 
   const sectionIndex = TECH_STACK_HERO.sectionIndex
   const sectionTitle = useT(TECH_STACK_HERO.sectionTitle)
   const sectionSubtitle = useT(TECH_STACK_HERO.sectionSubtitle)
 
-  // Global Escape key handler to close any active folder
+  // A pointer preview can own Escape while keyboard focus is still on the body.
   React.useEffect(() => {
-    const handleGlobalKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && activePinnedId !== null) {
-        setActivePinnedId(null)
-      }
+    if (!preview) return
+    const { body } = document
+    const dismissPreview = (event: KeyboardEvent) => {
+      if (
+        event.key !== "Escape" ||
+        event.defaultPrevented ||
+        event.target !== body ||
+        document.activeElement !== body
+      )
+        return
+      event.preventDefault()
+      dispatch({ type: "dismiss", id: preview })
     }
-
-    window.addEventListener("keydown", handleGlobalKeyDown)
-    return () => window.removeEventListener("keydown", handleGlobalKeyDown)
-  }, [activePinnedId])
-
-  const handleToggle = (id: string) => {
-    setActivePinnedId((current) => (current === id ? null : id))
-  }
+    body.addEventListener("keydown", dismissPreview)
+    return () => body.removeEventListener("keydown", dismissPreview)
+  }, [preview])
 
   return (
     <section
@@ -71,8 +110,10 @@ export function TechnologyFolderGrid({ className }: TechnologyFolderGridProps) {
           <TechnologyPhysicalFolder
             key={category.id}
             category={category}
-            isPinned={activePinnedId === category.id}
-            onTogglePin={() => handleToggle(category.id)}
+            isRevealed={
+              folders.pinned === category.id || preview === category.id
+            }
+            onInteraction={(type) => dispatch({ type, id: category.id })}
           />
         ))}
       </div>

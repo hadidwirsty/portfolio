@@ -38,7 +38,7 @@ export default function StackPage() {
 
         {/* Global Bottom Ticker Strip */}
         <div className="mt-auto py-6">
-          <TickerStrip />
+          <TickerStrip showPauseControl />
         </div>
       </div>
     </VexooSubpageShell>

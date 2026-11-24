@@ -251,7 +251,7 @@ export function InteractiveSticker({
       <div
         id={tooltipId}
         role="tooltip"
-        className={`pointer-events-none absolute ${tooltipPositionClass} left-1/2 z-50 -translate-x-1/2 rounded-full border border-background/20 bg-foreground px-2 py-0.5 font-mono text-[10px] font-medium whitespace-nowrap text-background shadow-md transition-opacity duration-150 sm:text-[11px]`}
+        className={`pointer-events-none absolute ${tooltipPositionClass} left-1/2 z-50 -translate-x-1/2 sticker-tooltip whitespace-nowrap transition-opacity duration-150`}
       >
         {popoverText}
       </div>

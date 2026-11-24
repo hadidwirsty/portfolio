@@ -2,12 +2,15 @@
 
 import * as React from "react"
 import Image from "next/image"
-import { motion, useReducedMotion } from "framer-motion"
+import { motion } from "framer-motion"
 import { ShieldCheck } from "lucide-react"
 
 import {
-  generateControlledScatterLayout,
-  type StickerPosition,
+  fitScatterToArea,
+  scatterSessionAfterReveal,
+  stickerHalfExtent,
+  tooltipBridgeHeight,
+  type StickerArea,
 } from "@/components/stack/controlled-scatter"
 import { GradientMotionBackground } from "@/components/ui/gradient-motion-background"
 import { useLanguage } from "@/lib/language-context"
@@ -20,8 +23,8 @@ import { cn } from "@/lib/utils"
 
 export interface TechnologyPhysicalFolderProps {
   category: TechCategory
-  isPinned: boolean
-  onTogglePin: () => void
+  isRevealed: boolean
+  onInteraction: (type: "enter" | "leave" | "activate" | "dismiss") => void
   className?: string
 }
 
@@ -407,33 +410,145 @@ const CATEGORY_HEADER_MAP: Record<string, CategoryHeaderCopy> = {
   },
 }
 
+type TechnologyLabel = { hovered: string | null; focused: string | null }
+type LabelEvent =
+  { type: "hover" | "focus"; id: string } | { type: "leave" | "blur" | "close" }
+
+const emptyLabel: TechnologyLabel = { hovered: null, focused: null }
+
+export function updateTechnologyLabel(
+  state: TechnologyLabel,
+  event: LabelEvent
+): TechnologyLabel {
+  switch (event.type) {
+    case "hover":
+      return { ...state, hovered: event.id }
+    case "focus":
+      return { hovered: null, focused: event.id }
+    case "leave":
+      return { ...state, hovered: null }
+    case "blur":
+      return { ...state, focused: null }
+    case "close":
+      return emptyLabel
+  }
+}
+
+const reducedMotionQuery = "(prefers-reduced-motion: reduce)"
+
+function subscribeToReducedMotion(onChange: () => void) {
+  const preference = window.matchMedia(reducedMotionQuery)
+  preference.addEventListener("change", onChange)
+  return () => preference.removeEventListener("change", onChange)
+}
+
 export function TechnologyPhysicalFolder({
   category,
-  isPinned,
-  onTogglePin,
+  isRevealed,
+  onInteraction,
   className,
 }: TechnologyPhysicalFolderProps) {
   const { lang } = useLanguage()
-  const shouldReduceMotion = useReducedMotion() ?? false
-  const [isHovered, setIsHovered] = React.useState(false)
-  const [hoveredTechId, setHoveredTechId] = React.useState<string | null>(null)
+  const shouldReduceMotion = React.useSyncExternalStore(
+    subscribeToReducedMotion,
+    () => window.matchMedia(reducedMotionQuery).matches,
+    () => false
+  )
+  const trigger = React.useRef<HTMLButtonElement>(null)
+  const stage = React.useRef<HTMLDivElement>(null)
+  const firstSticker = React.useRef<HTMLDivElement>(null)
+  const labelSizer = React.useRef<HTMLDivElement>(null)
+  const [area, setArea] = React.useState<StickerArea>({
+    width: 320,
+    height: 264,
+    sticker: 72,
+    labelHeight: 22,
+  })
+
+  React.useLayoutEffect(() => {
+    const panel = stage.current
+    const sticker = firstSticker.current
+    const labels = labelSizer.current
+    if (!panel || !sticker || !labels) return
+
+    const observer = new ResizeObserver(() => {
+      const next = {
+        width: panel.clientWidth,
+        height: panel.clientHeight,
+        sticker: sticker.offsetWidth,
+        labelHeight: labels.offsetHeight,
+      }
+      if (!next.width || !next.height || !next.sticker || !next.labelHeight)
+        return
+      setArea((previous) =>
+        previous.width === next.width &&
+        previous.height === next.height &&
+        previous.sticker === next.sticker &&
+        previous.labelHeight === next.labelHeight
+          ? previous
+          : next
+      )
+    })
+    observer.observe(panel)
+    observer.observe(sticker)
+    observer.observe(labels)
+    return () => observer.disconnect()
+  }, [])
+  const pointerInside = React.useRef(false)
+  const [label, updateLabel] = React.useReducer(
+    updateTechnologyLabel,
+    emptyLabel
+  )
+  const activeTechId = label.hovered ?? label.focused
   const [sessionIndex, setSessionIndex] = React.useState(0)
-  const prevRevealedRef = React.useRef(false)
+  const [wasRevealed, setWasRevealed] = React.useState(isRevealed)
+  if (wasRevealed !== isRevealed) {
+    setWasRevealed(isRevealed)
+    if (isRevealed)
+      setSessionIndex(
+        scatterSessionAfterReveal(sessionIndex, wasRevealed, isRevealed)
+      )
+    else updateLabel({ type: "close" })
+  }
 
-  const isRevealed = isPinned || isHovered
-
-  // Synchronize open session layout generation when transitioning from closed to open
-  React.useEffect(() => {
-    if (isRevealed && !prevRevealedRef.current) {
-      setSessionIndex((prev) => prev + 1)
+  React.useLayoutEffect(() => {
+    if (!isRevealed && stage.current?.contains(document.activeElement)) {
+      trigger.current?.focus({ preventScroll: true })
     }
-    prevRevealedRef.current = isRevealed
   }, [isRevealed])
 
   // Active controlled organic scatter layout computed for this open session
-  const activeScatterPositions = React.useMemo(() => {
-    return generateControlledScatterLayout(category, sessionIndex)
-  }, [category, sessionIndex])
+  const scatter = React.useMemo(
+    () => fitScatterToArea(category, sessionIndex, area, shouldReduceMotion),
+    [category, sessionIndex, area, shouldReduceMotion]
+  )
+
+  const restingPosition = (tech: TechItem, index: number) => {
+    const { x, y, rotate, zIndex } = getStickerPlacement(
+      tech.id,
+      index,
+      category.techs.length,
+      category.id
+    ).resting
+    const angle = shouldReduceMotion ? 0 : rotate
+    const scale = Math.min(
+      shouldReduceMotion ? 1 : 0.98,
+      Math.max(1, area.width - 8) /
+        (2 * stickerHalfExtent(area.sticker, angle, 1))
+    )
+    const limit = Math.max(
+      0,
+      area.width / 2 - 4 - stickerHalfExtent(area.sticker, angle, scale)
+    )
+    return {
+      x: Math.max(-limit, Math.min(limit, x)),
+      y,
+      rotate: angle,
+      zIndex,
+      scale,
+      hoverScale: scale,
+    }
+  }
 
   // Category copy
   const headerCopy = CATEGORY_HEADER_MAP[category.id] ?? {
@@ -444,26 +559,11 @@ export function TechnologyPhysicalFolder({
   const displaySubtitle =
     lang === "id" ? headerCopy.subtitle.id : headerCopy.subtitle.en
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.target === e.currentTarget && (e.key === "Enter" || e.key === " ")) {
-      e.preventDefault()
-      if (!isRevealed) {
-        setSessionIndex((prev) => prev + 1)
-      }
-      onTogglePin()
-    }
-  }
-
-  const ariaActionHint = isPinned
-    ? lang === "id"
-      ? "Klik untuk melepas pin"
-      : "Click to unpin"
-    : lang === "id"
-      ? "Arahkan untuk melihat, klik untuk mengunci"
-      : "Hover to reveal, click to pin"
-
-  const techNamesSummary = category.techs.map((t) => t.name).join(", ")
-  const ariaLabel = `${displayTitle} (${category.techs.length} technologies: ${techNamesSummary}) — ${ariaActionHint}`
+  const stageId = `tech-folder-stage-${category.id}`
+  const canPreview = (event: React.PointerEvent) =>
+    (event.pointerType === "mouse" || event.pointerType === "pen") &&
+    event.buttons === 0 &&
+    window.matchMedia("(any-hover: hover)").matches
 
   // Seed variation: Category 01 uses exact canonical seed 42, others offset deterministically
   const folderSeed =
@@ -473,40 +573,68 @@ export function TechnologyPhysicalFolder({
 
   return (
     <article
-      tabIndex={0}
-      role="button"
-      aria-expanded={isRevealed}
-      aria-controls={`tech-folder-stage-${category.id}`}
-      aria-label={ariaLabel}
-      onClick={() => {
-        if (!isRevealed) {
-          setSessionIndex((prev) => prev + 1)
+      onPointerEnter={(event) => {
+        if (canPreview(event) && !pointerInside.current) {
+          pointerInside.current = true
+          onInteraction("enter")
         }
-        onTogglePin()
       }}
-      onKeyDown={handleKeyDown}
-      onMouseEnter={() => {
-        if (!isRevealed) {
-          setSessionIndex((prev) => prev + 1)
-        }
-        setIsHovered(true)
+      onPointerLeave={(event) => {
+        if (event.pointerType === "touch") return
+        pointerInside.current = false
+        updateLabel({ type: "leave" })
+        if (!stage.current?.contains(document.activeElement))
+          onInteraction("leave")
       }}
-      onMouseLeave={() => {
-        setIsHovered(false)
-        setHoveredTechId(null)
+      onBlur={(event) => {
+        if (
+          !pointerInside.current &&
+          !stage.current?.contains(event.relatedTarget)
+        )
+          onInteraction("leave")
       }}
+      onKeyDown={(event) => {
+        const focused = event.currentTarget.ownerDocument.activeElement
+        if (
+          event.key !== "Escape" ||
+          event.defaultPrevented ||
+          !isRevealed ||
+          event.target !== focused ||
+          !event.currentTarget.contains(focused)
+        )
+          return
+        event.preventDefault()
+        if (stage.current?.contains(focused))
+          trigger.current?.focus({ preventScroll: true })
+        onInteraction("dismiss")
+      }}
+      style={
+        scatter.extraHeight ? { paddingTop: scatter.extraHeight } : undefined
+      }
       className={cn(
-        "group relative flex h-98 w-full cursor-pointer flex-col items-center justify-end select-none sm:h-102 lg:h-106",
-        "rounded-3xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:outline-none",
+        "group relative box-content flex h-98 w-full flex-col items-center justify-end select-none sm:h-102 lg:h-106",
         className
       )}
     >
+      <button
+        ref={trigger}
+        type="button"
+        aria-label={
+          lang === "id"
+            ? `Folder teknologi ${displayTitle}`
+            : `${displayTitle} technology folder`
+        }
+        aria-expanded={isRevealed}
+        aria-controls={stageId}
+        onClick={() => onInteraction("activate")}
+        className="absolute inset-0 cursor-pointer rounded-3xl focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:outline-none"
+      />
       {/* =========================================================
           1. PHYSICAL FOLDER CONTAINER (Enlarged Silhouette)
           ========================================================= */}
       <div
         className={cn(
-          "relative flex h-80 w-full max-w-90 flex-col justify-end transition-all duration-300 sm:h-86 sm:max-w-107.5 lg:h-90 lg:max-w-112.5",
+          "pointer-events-none relative flex h-80 w-full max-w-90 flex-col justify-end transition-transform duration-300 motion-reduce:scale-100 motion-reduce:transition-none sm:h-86 sm:max-w-107.5 lg:h-90 lg:max-w-112.5",
           isRevealed ? "scale-[1.01]" : "scale-100"
         )}
       >
@@ -539,7 +667,7 @@ export function TechnologyPhysicalFolder({
               seed={folderSeed}
               speed={28}
               blurAmount={45}
-              className="size-full rounded-none"
+              className="size-full rounded-none motion-reduce:transition-none"
             />
           </div>
 
@@ -553,7 +681,7 @@ export function TechnologyPhysicalFolder({
             <path
               d="M 0 32 C 0 14, 14 0, 32 0 L 140 0 C 158 0, 168 18, 186 18 L 328 18 C 346 18, 360 32, 360 50 L 360 280 L 0 280 Z"
               fill="none"
-              className="stroke-border/50 transition-colors duration-200 group-hover:stroke-border"
+              className="stroke-border/50 transition-colors duration-200 group-hover:stroke-border motion-reduce:transition-none"
               strokeWidth="1.2"
             />
           </svg>
@@ -563,25 +691,38 @@ export function TechnologyPhysicalFolder({
             1B. PIXEL-ART STICKER / LOGO LAYER (Resting & Scatter)
             ========================================================= */}
         <div
-          id={`tech-folder-stage-${category.id}`}
-          className="pointer-events-none absolute inset-x-0 bottom-32 z-10 flex items-center justify-center sm:bottom-36"
+          id={stageId}
+          ref={stage}
+          aria-hidden={!isRevealed}
+          className="pointer-events-none absolute inset-x-0 bottom-32 z-10 h-66 sm:bottom-36 lg:h-70"
         >
-          <div className="relative size-full">
+          <div
+            ref={labelSizer}
+            aria-hidden="true"
+            className="pointer-events-none invisible absolute inset-x-[6px] bottom-0 grid"
+          >
+            {category.techs.map((tech) => (
+              <span
+                key={tech.id}
+                className="col-start-1 row-start-1 max-w-full justify-self-center sticker-tooltip text-center [overflow-wrap:anywhere]"
+              >
+                {tech.name}
+              </span>
+            ))}
+          </div>
+          <ul
+            aria-label={displayTitle}
+            className="absolute inset-x-0 bottom-0 list-none"
+          >
             {category.techs.map((tech, index) => {
-              const isTechHovered = hoveredTechId === tech.id
+              const isTechHovered = activeTechId === tech.id
               const assetInfo = getTechStickerAsset(tech.id)
-              const coords = calculateCategoryCoords(
-                tech.id,
-                index,
-                category.techs.length,
-                category.id,
-                isRevealed,
-                shouldReduceMotion,
-                activeScatterPositions
-              )
+              const coords =
+                (isRevealed ? scatter.positions[tech.id] : undefined) ??
+                restingPosition(tech, index)
 
               return (
-                <motion.div
+                <motion.li
                   key={tech.id}
                   className={cn(
                     "absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center",
@@ -592,32 +733,65 @@ export function TechnologyPhysicalFolder({
                     x: coords.x,
                     y: coords.y,
                     rotate: coords.rotate,
-                    scale: isTechHovered ? coords.scale * 1.12 : coords.scale,
+                    scale: isTechHovered ? coords.hoverScale : coords.scale,
                     zIndex: isTechHovered ? 35 : coords.zIndex,
                   }}
-                  transition={{
-                    type: shouldReduceMotion ? "tween" : "spring",
-                    stiffness: 300,
-                    damping: 24,
-                    mass: 0.8,
-                    duration: shouldReduceMotion ? 0 : 0.4,
-                  }}
-                  onMouseEnter={() => setHoveredTechId(tech.id)}
-                  onMouseLeave={() => setHoveredTechId(null)}
+                  transition={
+                    shouldReduceMotion
+                      ? { duration: 0 }
+                      : {
+                          type: "spring",
+                          stiffness: 300,
+                          damping: 24,
+                          mass: 0.8,
+                          duration: 0.4,
+                        }
+                  }
                 >
-                  {/* Artwork presentation */}
-                  <div className="relative flex items-center justify-center select-none">
-                    <TechItemArtwork
-                      tech={tech}
-                      assetInfo={assetInfo}
-                      isHovered={isTechHovered}
-                    />
-                    <span className="sr-only">{tech.name}</span>
+                  <div
+                    ref={index === 0 ? firstSticker : undefined}
+                    role="img"
+                    aria-labelledby={`tech-name-${tech.id}`}
+                    tabIndex={isRevealed ? 0 : -1}
+                    className="relative flex items-center justify-center rounded-lg select-none focus-visible:shadow-[0_0_0_4px_white] focus-visible:outline-2 focus-visible:outline-[#17171a] forced-colors:focus-visible:outline-[Highlight]"
+                    onPointerEnter={(event) => {
+                      if (canPreview(event))
+                        updateLabel({ type: "hover", id: tech.id })
+                    }}
+                    onPointerLeave={(event) => {
+                      if (!(
+                        event.relatedTarget instanceof Element &&
+                        event.relatedTarget
+                          .closest("[data-tech-label]")
+                          ?.getAttribute("data-tech-label") === tech.id
+                      )) {
+                        updateLabel({ type: "leave" })
+                      }
+                    }}
+                    onFocus={() => {
+                      updateLabel({ type: "focus", id: tech.id })
+                    }}
+                    onBlur={() => updateLabel({ type: "blur" })}
+                    onClick={(event) => {
+                      event.currentTarget.focus({ preventScroll: true })
+                      updateLabel({ type: "focus", id: tech.id })
+                    }}
+                  >
+                    <div aria-hidden="true">
+                      <TechItemArtwork
+                        tech={tech}
+                        assetInfo={assetInfo}
+                        isHovered={isTechHovered}
+                      />
+                    </div>
+                    <span id={`tech-name-${tech.id}`} className="sr-only">
+                      {tech.name}
+                    </span>
                   </div>
-                </motion.div>
+                </motion.li>
               )
             })}
-          </div>
+          </ul>
         </div>
 
         {/* =========================================================
@@ -686,7 +860,7 @@ export function TechnologyPhysicalFolder({
             <path
               d="M 0 28 L 130 28 C 150 28, 160 10, 180 10 L 336 10 C 350 10, 360 20, 360 34 L 360 180 L 0 180 Z"
               fill={`url(#folder-front-grad-light-${category.id})`}
-              className="stroke-border/50 transition-colors duration-200 group-hover:stroke-border dark:hidden"
+              className="stroke-border/50 transition-colors duration-200 group-hover:stroke-border motion-reduce:transition-none dark:hidden"
               style={{
                 filter: `url(#pocket-depth-shadow-light-${category.id})`,
               }}
@@ -696,7 +870,7 @@ export function TechnologyPhysicalFolder({
             <path
               d="M 0 28 L 130 28 C 150 28, 160 10, 180 10 L 336 10 C 350 10, 360 20, 360 34 L 360 180 L 0 180 Z"
               fill={`url(#folder-front-grad-dark-${category.id})`}
-              className="hidden stroke-border/50 transition-colors duration-200 group-hover:stroke-border dark:block"
+              className="hidden stroke-border/50 transition-colors duration-200 group-hover:stroke-border motion-reduce:transition-none dark:block"
               style={{
                 filter: `url(#pocket-depth-shadow-dark-${category.id})`,
               }}
@@ -709,61 +883,61 @@ export function TechnologyPhysicalFolder({
             1D. FRONT POCKET CONTENT (Minimal Typography: Title + Subtitle Only)
             ========================================================= */}
         <div className="relative z-30 flex flex-col justify-end p-6 pb-5 select-none sm:p-7 sm:pb-6 lg:p-8">
-          <h3 className="font-heading text-2xl leading-tight font-bold tracking-tight text-foreground transition-colors group-hover:text-primary sm:text-3xl">
+          <h3 className="font-heading text-2xl leading-tight font-bold tracking-tight text-foreground transition-colors group-hover:text-primary motion-reduce:transition-none sm:text-3xl">
             {displayTitle}
           </h3>
-          <p className="mt-1 font-sans text-xs font-medium tracking-wide text-muted-foreground/80 sm:text-sm">
+          <p className="mt-1 font-sans text-xs font-medium tracking-wide text-[#52525b] sm:text-sm dark:text-[#b0b0ba]">
             {displaySubtitle}
           </p>
         </div>
 
         {/* =========================================================
-            1E. DEDICATED TOOLTIP OVERLAY (z-40: Centered Directly Above Hovered Sticker)
+            1E. DEDICATED TOOLTIP OVERLAY (z-40: Reserved Above Each Sticker Row)
             ========================================================= */}
-        {isRevealed && hoveredTechId && (
+        {isRevealed && activeTechId && (
           <div className="pointer-events-none absolute inset-x-0 bottom-32 z-40 flex items-center justify-center sm:bottom-36">
             <div className="relative size-full">
-              {category.techs.map((tech, index) => {
-                if (tech.id !== hoveredTechId) return null
-                const tooltipCoords = calculateCategoryTooltipCoords(
-                  tech.id,
-                  index,
-                  category.techs.length,
-                  category.id,
-                  isRevealed,
-                  shouldReduceMotion,
-                  activeScatterPositions
-                )
+              {category.techs.map((tech) => {
+                const position = scatter.positions[tech.id]
+                if (tech.id !== activeTechId || !position) return null
+                const leftSpace = area.width / 2 + position.x - 6
+                const rightSpace = area.width / 2 - position.x - 6
 
                 return (
                   <motion.div
-                    key={`tooltip-${tech.id}`}
-                    className="pointer-events-none absolute top-1/2 left-1/2 z-40"
-                    initial={{
-                      opacity: 0,
-                      scale: 0.9,
-                      x: tooltipCoords.x,
-                      y: tooltipCoords.y + 4,
+                    key={tech.id}
+                    aria-hidden="true"
+                    data-tech-label={tech.id}
+                    className="pointer-events-none absolute z-40"
+                    style={{
+                      left: `calc(50% + ${position.x}px)`,
+                      top: position.tooltipY,
                     }}
-                    animate={{
-                      opacity: 1,
-                      scale: 1,
-                      x: tooltipCoords.x,
-                      y: tooltipCoords.y,
+                    initial={shouldReduceMotion ? false : { opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: shouldReduceMotion ? 0 : 0.15 }}
+                    onPointerEnter={(event) => {
+                      if (canPreview(event))
+                        updateLabel({ type: "hover", id: tech.id })
                     }}
-                    exit={{
-                      opacity: 0,
-                      scale: 0.9,
-                      x: tooltipCoords.x,
-                      y: tooltipCoords.y + 4,
-                    }}
-                    transition={{ duration: 0.15 }}
+                    onPointerLeave={() => updateLabel({ type: "leave" })}
                   >
-                    <div className="flex -translate-x-1/2 -translate-y-full flex-col items-center">
-                      <span className="rounded-md border border-border/80 bg-popover/95 px-2.5 py-1 font-mono text-[11px] font-semibold whitespace-nowrap text-popover-foreground shadow-md backdrop-blur-md">
-                        {tech.name}
-                      </span>
-                    </div>
+                    <span
+                      className="pointer-events-auto block w-max sticker-tooltip text-center [overflow-wrap:anywhere]"
+                      style={{
+                        maxWidth: Math.max(1, area.width - 12),
+                        translate: `clamp(${-leftSpace}px, -50%, calc(${rightSpace}px - 100%)) -100%`,
+                      }}
+                    >
+                      {tech.name}
+                    </span>
+                    <span
+                      className="pointer-events-auto absolute top-0 left-0 -translate-x-1/2"
+                      style={{
+                        width: Math.min(12, area.sticker * position.scale),
+                        height: tooltipBridgeHeight(position, area.sticker),
+                      }}
+                    />
                   </motion.div>
                 )
               })}
@@ -794,14 +968,14 @@ function TechItemArtwork({
     return (
       <Image
         src={assetInfo.stickerPath}
-        alt={tech.name}
+        alt=""
         width={96}
         height={96}
         unoptimized
         className={cn(
-          "size-18 object-contain filter transition-transform duration-200 [image-rendering:pixelated] sm:size-20 lg:size-22",
+          "size-18 object-contain filter [image-rendering:pixelated] sm:size-20 lg:size-22",
           "drop-shadow-[0_4px_8px_rgba(0,0,0,0.35)] dark:drop-shadow-[0_4px_10px_rgba(0,0,0,0.6)]",
-          isHovered && "scale-110 drop-shadow-[0_6px_14px_rgba(0,0,0,0.5)]"
+          isHovered && "drop-shadow-[0_6px_14px_rgba(0,0,0,0.5)]"
         )}
       />
     )
@@ -812,9 +986,9 @@ function TechItemArtwork({
   return (
     <div
       className={cn(
-        "relative flex size-18 items-center justify-center transition-transform duration-200 select-none sm:size-20 lg:size-22",
+        "relative flex size-18 items-center justify-center select-none sm:size-20 lg:size-22",
         "drop-shadow-[0_4px_8px_rgba(0,0,0,0.35)] dark:drop-shadow-[0_4px_10px_rgba(0,0,0,0.6)]",
-        isHovered && "scale-110 drop-shadow-[0_6px_14px_rgba(0,0,0,0.5)]"
+        isHovered && "drop-shadow-[0_6px_14px_rgba(0,0,0,0.5)]"
       )}
     >
       {renderTransparentEmblem(tech.id)}
@@ -1041,84 +1215,5 @@ function renderTransparentEmblem(techId: string) {
           <span>{techId}</span>
         </div>
       )
-  }
-}
-
-/**
- * Calculates deterministic or controlled session coordinates for items across all categories.
- */
-export function calculateCategoryCoords(
-  techId: string,
-  index: number,
-  total: number,
-  categoryId: string,
-  isRevealed: boolean,
-  shouldReduceMotion: boolean,
-  activeScatterPositions?: Record<string, StickerPosition>
-) {
-  const placement = getStickerPlacement(techId, index, total, categoryId)
-
-  if (shouldReduceMotion) {
-    const targetX =
-      isRevealed && activeScatterPositions?.[techId]
-        ? activeScatterPositions[techId].x
-        : placement.expanded.x
-    return {
-      x: isRevealed ? targetX : placement.resting.x,
-      y: isRevealed ? -115 : placement.resting.y,
-      rotate: 0,
-      scale: 1,
-      zIndex: isRevealed
-        ? (activeScatterPositions?.[techId]?.zIndex ??
-          placement.expanded.zIndex)
-        : placement.resting.zIndex,
-    }
-  }
-
-  if (isRevealed) {
-    const active = activeScatterPositions?.[techId]
-    return {
-      x: active ? active.x : placement.expanded.x,
-      y: active ? active.y : placement.expanded.y,
-      rotate: active ? active.rotate : placement.expanded.rotate,
-      scale: 1.08,
-      zIndex: active ? active.zIndex : placement.expanded.zIndex,
-    }
-  }
-
-  return {
-    x: placement.resting.x,
-    y: placement.resting.y,
-    rotate: placement.resting.rotate,
-    scale: 0.98,
-    zIndex: placement.resting.zIndex,
-  }
-}
-
-/**
- * Calculates tooltip anchor coordinates centered directly above the specified item.
- */
-export function calculateCategoryTooltipCoords(
-  techId: string,
-  index: number,
-  total: number,
-  categoryId: string,
-  isRevealed: boolean,
-  shouldReduceMotion: boolean,
-  activeScatterPositions?: Record<string, StickerPosition>
-) {
-  const coords = calculateCategoryCoords(
-    techId,
-    index,
-    total,
-    categoryId,
-    isRevealed,
-    shouldReduceMotion,
-    activeScatterPositions
-  )
-  const verticalOffset = 56
-  return {
-    x: coords.x,
-    y: coords.y - verticalOffset,
   }
 }

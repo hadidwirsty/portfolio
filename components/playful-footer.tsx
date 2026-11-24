@@ -394,7 +394,7 @@ export function PlayfulFooter() {
                 />
                 <div
                   role="tooltip"
-                  className="pointer-events-none absolute -top-8 left-1/2 z-50 -translate-x-1/2 rounded-full border border-background/20 bg-foreground px-2 py-0.5 font-mono text-[10px] font-medium whitespace-nowrap text-background opacity-0 shadow-md transition-all duration-150 group-hover/avatar:opacity-100 sm:text-[11px]"
+                  className="pointer-events-none absolute -top-8 left-1/2 z-50 -translate-x-1/2 sticker-tooltip whitespace-nowrap opacity-0 transition-all duration-150 group-hover/avatar:opacity-100"
                 >
                   <span>{lang === "id" ? "Halo" : "Hi"}</span>{" "}
                   <span className="animate-wave-hand inline-block select-none">

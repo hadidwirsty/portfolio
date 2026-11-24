@@ -2,6 +2,9 @@ import { test } from "node:test"
 import assert from "node:assert"
 import fs from "node:fs"
 import path from "node:path"
+import { createRequire } from "node:module"
+import { createElement } from "react"
+import { renderToStaticMarkup } from "react-dom/server"
 
 import {
   CORE_STACK,
@@ -18,8 +21,10 @@ import {
   SCATTER_BOUNDS,
   SIX_ITEM_FORMATIONS,
   FIVE_ITEM_FORMATIONS,
-  calculateCategoryCoords,
-  calculateCategoryTooltipCoords,
+  fitScatterToArea,
+  scatterSessionAfterReveal,
+  stickerHalfExtent,
+  tooltipBridgeHeight,
 } from "../../components/stack/controlled-scatter.ts"
 
 const DATA_PATH = path.resolve(process.cwd(), "lib/tech-stack-data.ts")
@@ -399,20 +404,6 @@ test("technology folder grid rolls out TechnologyPhysicalFolder to all 6 categor
     "must NOT render legacy TechnologyFolder on active /stack grid"
   )
 
-  // Active pinned id state
-  assert.match(
-    source,
-    /const \[activePinnedId,\s*setActivePinnedId\]\s*=\s*React\.useState<string \| null>\(\s*null\s*\)/,
-    "must maintain single activePinnedId state defaulting to null"
-  )
-
-  // Global Escape key listener
-  assert.match(
-    source,
-    /e\.key === ["']Escape["']/,
-    "must listen for Escape key to close active folder"
-  )
-
   // 3-tier responsive grid
   assert.match(
     source,
@@ -453,17 +444,6 @@ test("technology physical folder component implements unified silhouette, masked
     /DEDICATED TOOLTIP OVERLAY[\s\S]*?z-40/,
     "must render dedicated tooltip overlay at z-40 above pocket"
   )
-  assert.match(
-    source,
-    /calculateCategoryTooltipCoords\(/,
-    "must compute anchor coordinates via calculateCategoryTooltipCoords"
-  )
-  assert.match(
-    source,
-    /-translate-x-1\/2\s+-translate-y-full/,
-    "must anchor bottom-center of tooltip above target point"
-  )
-
   // Dual-path theme-aware front pocket: dark mode MUST be dark, light mode MUST be light
   assert.match(
     source,
@@ -849,7 +829,11 @@ test("app/stack/page.tsx integrates VexooSubpageShell, new Toolkit folders, and 
 
   // PlayfulFooter and TickerStrip
   assert.match(source, /<PlayfulFooter \/>/, "must provide PlayfulFooter")
-  assert.match(source, /<TickerStrip \/>/, "must provide bottom TickerStrip")
+  assert.match(
+    source,
+    /<TickerStrip showPauseControl \/>/,
+    "must provide bottom TickerStrip"
+  )
 })
 
 test("calculateTooltipCoords anchors directly above each of the 6 technology stickers", () => {
@@ -897,9 +881,9 @@ test("controlled scatter generator supports all 6 categories across 36 technolog
     "must support exactly 6 categories"
   )
   assert.strictEqual(
-    SIX_ITEM_FORMATIONS.length >= 4,
-    true,
-    "must define at least 4 curated formations for 6-item categories"
+    SIX_ITEM_FORMATIONS.length,
+    4,
+    "must define exactly 4 curated formations for 6-item categories"
   )
   assert.strictEqual(
     FIVE_ITEM_FORMATIONS.length >= 4,
@@ -1094,128 +1078,421 @@ test("controlled scatter produces distinct, collision-free organic arrangements 
   }
 })
 
-test("controlled scatter preserves deterministic resting positions when closed and respects reduced motion", () => {
-  const cat = TECH_CATEGORIES[0] // Frontend
-  const tech = cat.techs[0] // TypeScript
-
-  // 1. Closed state always returns deterministic resting placement regardless of activeScatterPositions
-  const restingCoords1 = calculateCategoryCoords(
-    tech.id,
-    0,
-    cat.techs.length,
-    cat.id,
-    false, // isRevealed = false
+test("controlled scatter preserves canonical closed resting placements across sessions", () => {
+  const category = TECH_CATEGORIES[0]
+  const tech = category.techs[0]
+  const resting = () =>
+    getStickerPlacement(tech.id, 0, category.techs.length, category.id).resting
+  assert.deepEqual(resting(), { x: -115, y: -74, rotate: -8, zIndex: 11 })
+  fitScatterToArea(
+    category,
+    3,
+    { width: 320, height: 264, sticker: 72, labelHeight: 22 },
     false
   )
-  const restingCoords2 = calculateCategoryCoords(
-    tech.id,
-    0,
-    cat.techs.length,
-    cat.id,
-    false, // isRevealed = false
-    false,
-    { [tech.id]: { x: 99, y: -200, rotate: 12, zIndex: 30 } } // dummy active positions
-  )
+  assert.deepEqual(resting(), { x: -115, y: -74, rotate: -8, zIndex: 11 })
+})
 
-  assert.deepStrictEqual(
-    restingCoords1,
-    restingCoords2,
-    "closed state must ignore active scatter positions and strictly use canonical resting coordinates"
-  )
-  assert.strictEqual(restingCoords1.x, -115)
-  assert.strictEqual(restingCoords1.y, -74)
-  assert.strictEqual(restingCoords1.rotate, -8)
+test("measured tooltip bands and pointer bridges do not cover another sticker", () => {
+  for (const area of [
+    { width: 56, height: 264, sticker: 72, labelHeight: 54 },
+    { width: 220, height: 264, sticker: 72, labelHeight: 38 },
+    { width: 306, height: 280, sticker: 88, labelHeight: 22 },
+    { width: 320, height: 264, sticker: 72, labelHeight: 22 },
+  ]) {
+    for (const category of TECH_CATEGORIES) {
+      for (const reducedMotion of [false, true]) {
+        for (let session = 1; session <= 4; session++) {
+          const layout = fitScatterToArea(
+            category,
+            session,
+            area,
+            reducedMotion
+          )
+          const items = Object.values(layout.positions)
+          for (const item of items) {
+            const labelTop = item.tooltipY - area.labelHeight
+            assert.ok(labelTop >= -area.height - layout.extraHeight + 6 - 1e-9)
+            const bridgeBottom =
+              item.tooltipY + tooltipBridgeHeight(item, area.sticker)
+            const bridgeHalf = Math.min(12, area.sticker * item.scale) / 2
 
-  // 2. Reduced motion suppresses rotation to 0 and clamps vertical movement to -115
-  const reducedMotionCoords = calculateCategoryCoords(
-    tech.id,
-    0,
-    cat.techs.length,
-    cat.id,
-    true, // isRevealed = true
-    true // shouldReduceMotion = true
+            for (const neighbor of items) {
+              const half = stickerHalfExtent(
+                area.sticker,
+                neighbor.rotate,
+                neighbor.hoverScale
+              )
+              const top = neighbor.y - half
+              const bottom = neighbor.y + half
+              // Test the label using the entire card width, so any horizontal clamp is safe.
+              assert.ok(
+                item.tooltipY <= top - 6 + 1e-9 || labelTop >= bottom + 6 - 1e-9
+              )
+              if (neighbor === item) continue
+              assert.ok(
+                bridgeBottom <= top + 1e-9 ||
+                  item.tooltipY >= bottom - 1e-9 ||
+                  Math.abs(item.x - neighbor.x) >= bridgeHalf + half - 1e-9
+              )
+            }
+          }
+        }
+      }
+    }
+  }
+})
+
+test("responsive scatter fits all six hover footprints for each formation and reserves additional height if needed", () => {
+  for (const category of TECH_CATEGORIES) {
+    for (const width of [56, 96, 155, 220, 260, 288, 320, 360, 430]) {
+      for (const sticker of [72, 80, 88]) {
+        const area = {
+          width,
+          height: sticker === 88 ? 280 : 264,
+          sticker,
+          labelHeight: 22,
+        }
+        for (const reducedMotion of [false, true]) {
+          for (
+            let session = 0;
+            session < SIX_ITEM_FORMATIONS.length;
+            session++
+          ) {
+            const layout = fitScatterToArea(
+              category,
+              session,
+              area,
+              reducedMotion
+            )
+            assert.deepEqual(
+              layout,
+              fitScatterToArea(category, session, area, reducedMotion)
+            )
+            const items = Object.values(layout.positions)
+            assert.equal(items.length, 6)
+            if (width === 96) assert.ok(layout.extraHeight > 0)
+
+            for (const [index, item] of items.entries()) {
+              assert.ok(Object.values(item).every(Number.isFinite))
+              const half = stickerHalfExtent(
+                sticker,
+                item.rotate,
+                item.hoverScale
+              )
+              if (width >= sticker + 16) assert.ok(item.scale >= 1 - 1e-9)
+              assert.ok(Math.abs(item.x) + half <= width / 2 - 8 + 1e-9)
+              assert.ok(
+                item.y - half >=
+                  -area.height -
+                    layout.extraHeight +
+                    area.labelHeight +
+                    12 -
+                    1e-9
+              )
+              assert.ok(item.y + half <= -72 + 1e-9)
+              for (const other of items.slice(0, index)) {
+                const min =
+                  half +
+                  stickerHalfExtent(sticker, other.rotate, other.hoverScale) +
+                  10 -
+                  1e-9
+                assert.ok(
+                  Math.abs(item.x - other.x) >= min ||
+                    Math.abs(item.y - other.y) >= min
+                )
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+})
+
+test("four spatial formations survive tight two- and three-column layouts, with a stable one-column fallback", () => {
+  const cases = [
+    { width: 220, height: 264, sticker: 72, labelHeight: 22, columns: 2 },
+    { width: 260, height: 264, sticker: 72, labelHeight: 22, columns: 3 },
+    { width: 294, height: 264, sticker: 80, labelHeight: 22, columns: 3 },
+    { width: 306, height: 280, sticker: 88, labelHeight: 22, columns: 3 },
+    { width: 430, height: 280, sticker: 88, labelHeight: 22, columns: 3 },
+    { width: 56, height: 264, sticker: 72, labelHeight: 54, columns: 1 },
+  ]
+  for (const category of TECH_CATEGORIES) {
+    for (const area of cases) {
+      const still = fitScatterToArea(category, 1, area, true)
+      const footprints = new Set<string>()
+      const heights = new Set<number>()
+      for (let session = 1; session <= 4; session++) {
+        assert.deepEqual(fitScatterToArea(category, session, area, true), still)
+        const normal = fitScatterToArea(category, session, area, false)
+        heights.add(normal.extraHeight)
+        footprints.add(
+          JSON.stringify(
+            Object.values(normal.positions)
+              .map(({ x, y }) => [Math.round(x), Math.round(y)])
+              .sort()
+          )
+        )
+      }
+      assert.equal(
+        footprints.size,
+        area.columns === 1 ? 1 : 4,
+        `${category.id} at ${area.width}px`
+      )
+      assert.equal(heights.size, 1)
+      for (const item of Object.values(still.positions)) {
+        assert.equal(item.rotate, 0)
+        assert.equal(item.hoverScale, item.scale)
+      }
+    }
+  }
+})
+
+// Node strips types from .ts files. Use the installed ESLint TSX loader for
+// the actual components, with the same project alias used by Next.js.
+const requireFromTest = createRequire(import.meta.url)
+const jitiPath = requireFromTest.resolve("jiti", {
+  paths: [requireFromTest.resolve("eslint")],
+})
+const loadTsx = requireFromTest(jitiPath).createJiti(import.meta.url, {
+  jsx: true,
+  fsCache: false,
+  alias: { "@": process.cwd() },
+})
+const { updateFolderInteraction: transition, previewedFolder } = loadTsx(
+  GRID_PATH
+) as typeof import("../../components/stack/technology-folder-grid")
+const { TechnologyPhysicalFolder, updateTechnologyLabel, getStickerPlacement } =
+  loadTsx(
+    PHYSICAL_FOLDER_PATH
+  ) as typeof import("../../components/stack/technology-physical-folder")
+const { LanguageProvider } = loadTsx(
+  "@/lib/language-context"
+) as typeof import("../../lib/language-context")
+
+const closed = { pinned: null, hover: null }
+const frontend = TECH_CATEGORIES[0]
+
+test("scatter session advances only on a genuine reveal, including preview-to-pin and reopening", () => {
+  const id = frontend.id
+  let folders = closed as ReturnType<typeof transition>
+  let session = 0
+  const revealed = () =>
+    folders.pinned === id || previewedFolder(folders) === id
+  const dispatch = (type: "enter" | "leave" | "activate" | "dismiss") => {
+    const before = revealed()
+    folders = transition(folders, { type, id })
+    session = scatterSessionAfterReveal(session, before, revealed())
+  }
+
+  dispatch("enter")
+  assert.equal(session, 1)
+  const area = { width: 320, height: 264, sticker: 72, labelHeight: 22 }
+  const preview = fitScatterToArea(frontend, session, area, false)
+  dispatch("activate")
+  dispatch("leave")
+  assert.equal(session, 1)
+  assert.deepEqual(fitScatterToArea(frontend, session, area, false), preview)
+  dispatch("dismiss")
+  assert.equal(session, 1)
+  assert.equal(revealed(), false)
+  dispatch("activate")
+  assert.equal(session, 2)
+  assert.notDeepEqual(fitScatterToArea(frontend, session, area, false), preview)
+})
+
+test("rendered subtitle tokens meet 4.5:1 across both opaque pocket gradients", () => {
+  const html = renderToStaticMarkup(
+    createElement(
+      LanguageProvider,
+      null,
+      createElement(TechnologyPhysicalFolder, {
+        category: frontend,
+        isRevealed: false,
+        onInteraction: () => {},
+      })
+    )
   )
-  assert.strictEqual(
-    reducedMotionCoords.rotate,
-    0,
-    "reduced motion must zero out rotation"
+  const colors = html.match(
+    /text-\[(#[a-f0-9]{6})\][^"]*dark:text-\[(#[a-f0-9]{6})\]/
   )
-  assert.strictEqual(
-    reducedMotionCoords.y,
-    -115,
-    "reduced motion must restrict vertical elevation to -115"
+  assert.ok(colors)
+  const luminance = (hex: string) =>
+    [0.2126, 0.7152, 0.0722].reduce((sum, weight, index) => {
+      const channel =
+        Number.parseInt(hex.slice(1 + index * 2, 3 + index * 2), 16) / 255
+      return (
+        sum +
+        weight *
+          (channel <= 0.04045
+            ? channel / 12.92
+            : ((channel + 0.055) / 1.055) ** 2.4)
+      )
+    }, 0)
+  const gradients = [
+    ...html.matchAll(
+      /<linearGradient id="folder-front-grad-(dark|light)-[^"]*"[^>]*>(.*?)<\/linearGradient>/g
+    ),
+  ]
+  assert.equal(gradients.length, 2)
+  for (const [, theme, svg] of gradients) {
+    const text = luminance(colors[theme === "light" ? 1 : 2])
+    const stops = [...svg.matchAll(/stop-color="(#[a-f0-9]{6})"/g)]
+    assert.equal(stops.length, 2)
+    for (const [, color] of stops) {
+      const background = luminance(color)
+      const ratio =
+        (Math.max(text, background) + 0.05) /
+        (Math.min(text, background) + 0.05)
+      assert.ok(ratio >= 4.5, `${theme} ${color}: ${ratio}`)
+    }
+  }
+})
+
+test("ticker pause is exposed as a native toggle only in the opt-in ticker", () => {
+  const { TickerStrip } = loadTsx(
+    "@/components/ticker-strip"
+  ) as typeof import("../../components/ticker-strip")
+  const render = (showPauseControl: boolean) =>
+    renderToStaticMarkup(
+      createElement(
+        LanguageProvider,
+        null,
+        createElement(TickerStrip, { showPauseControl })
+      )
+    )
+  const stack = render(true)
+  assert.match(
+    stack,
+    /<button type="button" aria-label="Jeda teks berjalan" aria-pressed="false"/
+  )
+  assert.ok(stack.includes("animation-play-state:paused"))
+  assert.ok(!render(false).includes("<button"))
+})
+
+test("a preview pins on activation and a second activation closes it under a stationary pointer", () => {
+  const id = frontend.id
+  const preview = transition(closed, { type: "enter", id })
+  assert.equal(previewedFolder(preview), id)
+  const pinned = transition(preview, { type: "activate", id })
+  assert.equal(pinned.pinned, id)
+  const dismissed = transition(pinned, { type: "activate", id })
+  assert.equal(dismissed.pinned, null)
+  assert.equal(
+    previewedFolder(transition(dismissed, { type: "enter", id })),
+    null
   )
 })
 
-test("tooltip coordinates dynamically follow active session sticker positions", () => {
-  const cat = TECH_CATEGORIES[1] // UI & Styling
-  const tech = cat.techs[2] // NG-ZORRO
+test("Escape dismisses both pin and hover-only preview until a new pointer visit", () => {
+  const id = frontend.id
+  for (const type of ["activate", "enter"] as const) {
+    const open = transition(closed, { type, id })
+    const dismissed = transition(open, { type: "dismiss", id })
+    assert.equal(dismissed.pinned, null)
+    assert.equal(previewedFolder(dismissed), null)
+    if (type === "enter") {
+      assert.equal(
+        previewedFolder(transition(dismissed, { type: "enter", id })),
+        null
+      )
+    }
+    const outside = transition(dismissed, { type: "leave", id })
+    assert.equal(
+      previewedFolder(transition(outside, { type: "enter", id })),
+      id
+    )
+  }
+})
 
-  const customLayout = generateControlledScatterLayout(cat, 3)
-  const activePos = customLayout[tech.id]
+test("a second folder can preview alongside one pin and replace the pin without reopening the old folder", () => {
+  const id = frontend.id
+  const other = TECH_CATEGORIES[1].id
+  const pinned = transition(closed, { type: "activate", id })
+  const both = transition(pinned, { type: "enter", id: other })
+  assert.equal(both.pinned, id)
+  assert.equal(previewedFolder(both), other)
+  assert.equal(transition(both, { type: "dismiss", id: other }).pinned, id)
+  const switched = transition(both, { type: "activate", id: other })
+  assert.equal(switched.pinned, other)
+  assert.equal(previewedFolder(switched), null)
+  assert.deepEqual(transition(switched, { type: "leave", id }), switched)
+})
 
-  const tooltipCoords = calculateCategoryTooltipCoords(
-    tech.id,
-    2,
-    cat.techs.length,
-    cat.id,
-    true,
-    false,
-    customLayout
-  )
+test("dismissing one folder preserves the other folder's pin or preview", () => {
+  const id = frontend.id
+  const other = TECH_CATEGORIES[1].id
+  const pinned = transition(closed, { type: "activate", id })
+  const both = transition(pinned, { type: "enter", id: other })
 
-  // Tooltip must be centered horizontally on the sticker and offset 56px above
-  assert.strictEqual(
-    tooltipCoords.x,
-    activePos.x,
-    "tooltip X must match active sticker X"
-  )
-  assert.strictEqual(
-    tooltipCoords.y,
-    activePos.y - 56,
-    "tooltip Y must be exactly 56px above active sticker Y"
+  const dismissedPin = transition(both, { type: "dismiss", id })
+  assert.equal(dismissedPin.pinned, null)
+  assert.equal(previewedFolder(dismissedPin), other)
+
+  const dismissedPreview = transition(both, { type: "dismiss", id: other })
+  assert.equal(dismissedPreview.pinned, id)
+  assert.equal(previewedFolder(dismissedPreview), null)
+  assert.deepEqual(
+    transition(dismissedPreview, { type: "enter", id: other }),
+    dismissedPreview
   )
 })
 
-test("technology physical folder component integrates controlled scatter lifecycle and state stability", () => {
-  assert.ok(
-    fs.existsSync(PHYSICAL_FOLDER_PATH),
-    "technology-physical-folder.tsx must exist"
+test("sticker focus and tap selection outlive pointer exit, allow another hover label, and clear on close", () => {
+  const focused = updateTechnologyLabel(
+    { hovered: "react", focused: null },
+    { type: "focus", id: "css3" }
   )
-  const source = fs.readFileSync(PHYSICAL_FOLDER_PATH, "utf-8")
+  assert.deepEqual(focused, { hovered: null, focused: "css3" })
+  const hovered = updateTechnologyLabel(focused, { type: "hover", id: "html5" })
+  assert.equal(hovered.hovered ?? hovered.focused, "html5")
+  const left = updateTechnologyLabel(hovered, { type: "leave" })
+  assert.equal(left.hovered ?? left.focused, "css3")
+  assert.deepEqual(updateTechnologyLabel(left, { type: "blur" }), {
+    hovered: null,
+    focused: null,
+  })
+  assert.deepEqual(updateTechnologyLabel(hovered, { type: "close" }), {
+    hovered: null,
+    focused: null,
+  })
+})
 
-  // Controlled scatter generator import
-  assert.match(
-    source,
-    /generateControlledScatterLayout/,
-    "must import generateControlledScatterLayout"
-  )
-
-  // Session state and ref tracking
-  assert.match(
-    source,
-    /const\s+\[sessionIndex,\s*setSessionIndex\]\s*=\s*React\.useState\(0\)/,
-    "must track sessionIndex via React.useState"
-  )
-  assert.match(
-    source,
-    /const\s+prevRevealedRef\s*=\s*React\.useRef\(false\)/,
-    "must track prevRevealedRef to detect closed-to-open transitions"
-  )
-
-  // Memoized session layout
-  assert.match(
-    source,
-    /const\s+activeScatterPositions\s*=\s*React\.useMemo\(/,
-    "must memoize activeScatterPositions for the open session"
-  )
-
-  // Event handlers trigger session layout only when transitioning from closed to open
-  assert.match(
-    source,
-    /if\s*\(!isRevealed\)\s*\{\s*setSessionIndex\(\(prev\)\s*=>\s*prev\s*\+\s*1\)/,
-    "must advance sessionIndex only when transitioning from closed to open"
-  )
+test("rendered native disclosure and six independently named stickers expose the correct tab order in both states", () => {
+  for (const isRevealed of [false, true]) {
+    const folder = createElement(TechnologyPhysicalFolder, {
+      category: frontend,
+      isRevealed,
+      onInteraction: () => {},
+    })
+    const html = renderToStaticMarkup(
+      createElement(LanguageProvider, null, folder)
+    )
+    const stageId = `tech-folder-stage-${frontend.id}`
+    assert.match(html, /<article[^>]*><button type="button"/)
+    assert.ok(
+      html.includes(`aria-expanded="${isRevealed}" aria-controls="${stageId}"`)
+    )
+    assert.ok(html.includes(`id="${stageId}" aria-hidden="${!isRevealed}"`))
+    assert.ok(html.indexOf("</button>") < html.indexOf("<ul"))
+    assert.equal((html.match(/<li[ >]/g) ?? []).length, 6)
+    for (const tech of frontend.techs) {
+      assert.ok(
+        html.includes(
+          `aria-labelledby="tech-name-${tech.id}" tabindex="${isRevealed ? 0 : -1}"`
+        ),
+        tech.name
+      )
+      assert.ok(
+        html.includes(
+          `id="tech-name-${tech.id}" class="sr-only">${tech.name}</span>`
+        )
+      )
+    }
+    assert.equal((html.match(/alt=""/g) ?? []).length, 6)
+  }
 })
 
 test("canonical pixel-art sticker promotion verifies canonical paths and blazor-server mapping", () => {

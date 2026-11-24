@@ -245,139 +245,141 @@ export function generateControlledScatterLayout(
   return result
 }
 
-export interface StickerPlacement {
-  resting: { x: number; y: number; rotate: number; zIndex: number }
-  expanded: { x: number; y: number; rotate: number; zIndex: number }
+export interface StickerArea {
+  width: number
+  height: number
+  sticker: number
+  labelHeight: number
 }
 
-const CANONICAL_RESTING_PRESETS: Record<
-  string,
-  { x: number; y: number; rotate: number; zIndex: number }
-> = {
-  // Category 01: Frontend
-  typescript: { x: -115, y: -74, rotate: -8, zIndex: 11 },
-  javascript: { x: -70, y: -64, rotate: 4, zIndex: 14 },
-  react: { x: -14, y: -72, rotate: -3, zIndex: 15 },
-  nextjs: { x: 42, y: -80, rotate: 6, zIndex: 12 },
-  html5: { x: 88, y: -66, rotate: -5, zIndex: 13 },
-  css3: { x: 130, y: -76, rotate: 9, zIndex: 10 },
-
-  // Category 02: UI & Design
-  "ant-design": { x: -115, y: -74, rotate: -8, zIndex: 11 },
-  "base-ui": { x: -70, y: -64, rotate: 4, zIndex: 14 },
-  "ng-zorro": { x: -14, y: -72, rotate: -3, zIndex: 15 },
-  radix: { x: 42, y: -80, rotate: 6, zIndex: 12 },
-  shadcn: { x: 88, y: -66, rotate: -5, zIndex: 13 },
-  tailwind: { x: 130, y: -76, rotate: 9, zIndex: 10 },
-
-  // Category 03: State & Data
-  "tanstack-query": { x: -115, y: -74, rotate: -8, zIndex: 11 },
-  zustand: { x: -70, y: -64, rotate: 4, zIndex: 14 },
-  redux: { x: -14, y: -72, rotate: -3, zIndex: 15 },
-  "react-hook-form": { x: 42, y: -80, rotate: 6, zIndex: 12 },
-  "tanstack-table": { x: 88, y: -66, rotate: -5, zIndex: 13 },
-  recharts: { x: 130, y: -76, rotate: 9, zIndex: 10 },
-
-  // Category 04: Testing & Security
-  vitest: { x: -115, y: -74, rotate: -8, zIndex: 11 },
-  jest: { x: -70, y: -64, rotate: 4, zIndex: 14 },
-  rtl: { x: -14, y: -72, rotate: -3, zIndex: 15 },
-  cypress: { x: 42, y: -80, rotate: 6, zIndex: 12 },
-  jwt: { x: 88, y: -66, rotate: -5, zIndex: 13 },
-  zod: { x: 130, y: -76, rotate: 9, zIndex: 10 },
-
-  // Category 05: Cross-Framework
-  vue: { x: -115, y: -74, rotate: -8, zIndex: 11 },
-  nuxt: { x: -70, y: -64, rotate: 4, zIndex: 14 },
-  angular: { x: -14, y: -72, rotate: -3, zIndex: 15 },
-  blazor: { x: 42, y: -80, rotate: 6, zIndex: 12 },
-  nodejs: { x: 88, y: -66, rotate: -5, zIndex: 13 },
-  rxjs: { x: 130, y: -76, rotate: 9, zIndex: 10 },
-
-  // Category 06: Developer Tools & Cloud
-  git: { x: -115, y: -74, rotate: -8, zIndex: 11 },
-  vite: { x: -70, y: -64, rotate: 4, zIndex: 14 },
-  postman: { x: -14, y: -72, rotate: -3, zIndex: 15 },
-  aws: { x: 42, y: -80, rotate: 6, zIndex: 12 },
-  "vs-code": { x: 88, y: -66, rotate: -5, zIndex: 13 },
-  gitlab: { x: 130, y: -76, rotate: 9, zIndex: 10 },
+export interface FittedSticker extends StickerPosition {
+  scale: number
+  hoverScale: number
+  tooltipY: number
 }
 
-export function calculateCategoryCoords(
-  techId: string,
-  index: number,
-  total: number,
-  categoryId: string,
-  isRevealed: boolean,
-  shouldReduceMotion: boolean,
-  activeScatterPositions?: Record<string, StickerPosition>
+const EDGE = 8
+const GAP = 10
+const LABEL_GAP = 6
+const MAX_STAGGER = 12
+const FORMATION_STAGGER = [
+  [0, 12, 4],
+  [12, 0, 8],
+  [4, 12, 0],
+  [0, 5, 12],
+]
+// Largest pocket height (216px) minus the 144px sticker anchor offset.
+const POCKET_CLEARANCE = 72
+const OPEN_SCALE = 1.08
+const HOVER_SCALE = OPEN_SCALE * 1.12 * 1.1
+
+export function stickerHalfExtent(
+  sticker: number,
+  rotate: number,
+  scale: number
 ) {
-  const restingFallback = CANONICAL_RESTING_PRESETS[techId] ?? {
-    x: 0,
-    y: -74,
-    rotate: 0,
-    zIndex: 10 + index,
-  }
+  const radians = (Math.abs(rotate) * Math.PI) / 180
+  return (
+    (sticker *
+      scale *
+      (Math.abs(Math.cos(radians)) + Math.abs(Math.sin(radians)))) /
+    2
+  )
+}
 
-  if (shouldReduceMotion) {
-    const targetX =
-      isRevealed && activeScatterPositions?.[techId]
-        ? activeScatterPositions[techId].x
-        : 0
-    return {
-      x: isRevealed ? targetX : restingFallback.x,
-      y: isRevealed ? -115 : restingFallback.y,
-      rotate: 0,
-      scale: 1,
-      zIndex: isRevealed
-        ? (activeScatterPositions?.[techId]?.zIndex ?? 20 + index)
-        : restingFallback.zIndex,
-    }
-  }
+export function scatterSessionAfterReveal(
+  session: number,
+  wasRevealed: boolean,
+  isRevealed: boolean
+) {
+  return isRevealed && !wasRevealed ? session + 1 : session
+}
 
-  if (isRevealed) {
-    const active = activeScatterPositions?.[techId]
-    if (active) {
-      return {
-        x: active.x,
-        y: active.y,
-        rotate: active.rotate,
-        scale: 1.08,
-        zIndex: active.zIndex,
+export function fitScatterToArea(
+  category: TechCategory,
+  session: number,
+  area: StickerArea,
+  reducedMotion: boolean
+) {
+  const { width, height, sticker, labelHeight } = area
+  const seeded = reducedMotion
+    ? null
+    : generateControlledScatterLayout(category, session)
+  const preferred = category.techs.map(({ id }, index) => ({
+    id,
+    ...(seeded?.[id] ?? { x: index, y: 0, rotate: 0, zIndex: 20 + index }),
+  }))
+  const positions: Record<string, FittedSticker> = {}
+  if (preferred.length === 0) return { positions, extraHeight: 0 }
+
+  const usableWidth = Math.max(1, width - 2 * Math.min(EDGE, width / 4))
+  const columns = Math.min(
+    preferred.length,
+    3,
+    Math.max(1, Math.floor((usableWidth + GAP) / (sticker + GAP)))
+  )
+  const rows = Math.ceil(preferred.length / columns)
+  const cellWidth = (usableWidth + GAP) / columns
+  const stagger =
+    seeded && columns > 1
+      ? FORMATION_STAGGER[Math.abs(session) % FORMATION_STAGGER.length]
+      : null
+  const staggerSpace = stagger ? MAX_STAGGER : 0
+  // Every row has a label band above all of its stickers. Reserve it for the
+  // tallest actual label, including when line wrapping is needed.
+  const labelBand = staggerSpace + labelHeight + LABEL_GAP * 2
+  const preferredSize = stagger ? sticker * 1.16 : sticker
+  const displaySize = Math.max(1, Math.min(preferredSize, cellWidth - GAP))
+  const cellHeight = Math.max(
+    displaySize,
+    (height - POCKET_CLEARANCE) / rows - labelBand
+  )
+  const rowPitch = cellHeight + labelBand
+  const extraHeight = Math.max(
+    0,
+    Math.ceil(rows * rowPitch + POCKET_CLEARANCE - height)
+  )
+  const cellExtent = Math.max(1, Math.min(cellWidth - GAP, cellHeight))
+  const ordered = preferred.sort((a, b) => a.x - b.x)
+
+  for (let column = 0; column < columns; column++) {
+    const group = reducedMotion
+      ? ordered.filter((_, index) => index % columns === column)
+      : ordered.slice(column * rows, (column + 1) * rows)
+    group.sort((a, b) => a.y - b.y)
+    for (const [row, item] of group.entries()) {
+      const rotationBudget = cellExtent / (sticker * (seeded ? OPEN_SCALE : 1))
+      const angleLimit = Math.max(0, ((rotationBudget - 1) * 180) / Math.PI)
+      const rotate = clamp(item.rotate, -angleLimit, angleLimit)
+      const maximumScale =
+        cellExtent / (2 * stickerHalfExtent(sticker, rotate, 1))
+      const scale = Math.min(reducedMotion ? 1 : OPEN_SCALE, maximumScale)
+      const hoverScale = reducedMotion
+        ? scale
+        : Math.min(HOVER_SCALE, maximumScale)
+      const slackX = Math.max(
+        0,
+        (cellWidth - GAP) / 2 - stickerHalfExtent(sticker, rotate, hoverScale)
+      )
+      const rowBottom = -POCKET_CLEARANCE - (rows - row - 1) * rowPitch
+      positions[item.id] = {
+        x:
+          (column - (columns - 1) / 2) * cellWidth +
+          (seeded ? (item.x / 132) * Math.min(6, slackX) : 0),
+        y: rowBottom - cellHeight / 2 - (stagger?.[column] ?? 0),
+        tooltipY: rowBottom - cellHeight - staggerSpace - LABEL_GAP,
+        rotate,
+        zIndex: item.zIndex,
+        scale,
+        hoverScale,
       }
     }
   }
 
-  return {
-    x: restingFallback.x,
-    y: restingFallback.y,
-    rotate: restingFallback.rotate,
-    scale: 0.98,
-    zIndex: restingFallback.zIndex,
-  }
+  return { positions, extraHeight }
 }
 
-export function calculateCategoryTooltipCoords(
-  techId: string,
-  index: number,
-  total: number,
-  categoryId: string,
-  isRevealed: boolean,
-  shouldReduceMotion: boolean,
-  activeScatterPositions?: Record<string, StickerPosition>
-) {
-  const coords = calculateCategoryCoords(
-    techId,
-    index,
-    total,
-    categoryId,
-    isRevealed,
-    shouldReduceMotion,
-    activeScatterPositions
-  )
-  const verticalOffset = 56
-  return {
-    x: coords.x,
-    y: coords.y - verticalOffset,
-  }
+/** Keep the hover path inside the label's own column down to the artwork. */
+export function tooltipBridgeHeight(position: FittedSticker, sticker: number) {
+  return position.y - (sticker * position.scale) / 2 - position.tooltipY + 2
 }
