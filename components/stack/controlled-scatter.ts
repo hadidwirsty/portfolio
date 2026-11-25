@@ -4,7 +4,7 @@
  * per open session while strictly preserving deterministic resting positions.
  */
 
-import type { TechCategory } from "@/lib/tech-stack-data"
+import type { PublicTechCategory } from "@/lib/public-tech-stack"
 
 export interface StickerPosition {
   x: number
@@ -175,7 +175,7 @@ export function validateScatterLayout(
  * @returns Map of techId to StickerPosition
  */
 export function generateControlledScatterLayout(
-  category: TechCategory,
+  category: PublicTechCategory,
   sessionIndex: number
 ): Record<string, StickerPosition> {
   const techs = category.techs
@@ -296,7 +296,7 @@ export function scatterSessionAfterReveal(
 }
 
 export function fitScatterToArea(
-  category: TechCategory,
+  category: PublicTechCategory,
   session: number,
   area: StickerArea,
   reducedMotion: boolean

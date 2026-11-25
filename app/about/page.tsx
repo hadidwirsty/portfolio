@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 
 import { subpages } from "@/lib/cv-data"
+import { publicExperience } from "@/lib/public-experience-data"
 import { VexooSubpageHeader } from "@/components/vexoo-subpage-header"
 import { VexooSubpageIntro } from "@/components/vexoo-subpage-intro"
 import { ExperienceSection } from "@/components/sections/experience-section"
@@ -29,7 +30,7 @@ export default function AboutPage() {
         <VexooSubpageHeader />
         <main className="mt-10 space-y-16 sm:mt-16">
           <VexooSubpageIntro pageKey="about" />
-          <ExperienceSection />
+          <ExperienceSection entries={publicExperience} />
           <EducationSection />
           <AchievementsSection />
           <CertificationsSection />

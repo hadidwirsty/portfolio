@@ -151,7 +151,7 @@ export const TECH_CATEGORIES: TechCategory[] = [
         id: "ant-design",
         name: "Ant Design",
         category: "ui-styling",
-        verifiedIn: ["Alisa 2.0 Infomedia", "IMAPS BPJS Kesehatan"],
+        verifiedIn: ["Alisa 2.0 Infomedia"],
       },
       {
         id: "base-ui",
@@ -288,10 +288,7 @@ export const TECH_CATEGORIES: TechCategory[] = [
         id: "vitest",
         name: "Vitest",
         category: "testing-security",
-        verifiedIn: [
-          "HiBlow Fleet (297 unit tests)",
-          "Portfolio CV Test Suite",
-        ],
+        verifiedIn: ["HiBlow Fleet (297 unit tests)"],
       },
       {
         id: "jest",

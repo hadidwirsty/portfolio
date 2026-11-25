@@ -363,7 +363,7 @@ test("project-timeline-accordion removes category badge from active card and use
 
   // Active card panel must not render category badge pill
   const activePanelMatch = source.match(
-    /id=\{`timeline-panel-\$\{item\.id\}`\}[\s\S]*?<\/motion\.div>/
+    /id=\{`timeline-panel-\$\{item\.ref\}`\}[\s\S]*?<\/motion\.div>/
   )
   assert.ok(activePanelMatch, "must render active card panel")
   const activePanelSource = activePanelMatch[0]

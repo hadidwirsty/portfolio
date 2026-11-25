@@ -139,8 +139,8 @@ test("tech stack hero renders KineticHeading, subtitle, and always-visible core 
   // Core stack rendering
   assert.match(
     source,
-    /CORE_STACK\.map/,
-    "must map over CORE_STACK technologies"
+    /hero\.coreStack\.map/,
+    "must map over the projected core technologies"
   )
 
   // Dark mode subtle border convention: border-border/50 -> hover:border-border
@@ -811,13 +811,17 @@ test("app/stack/page.tsx integrates VexooSubpageShell, new Toolkit folders, and 
   )
 
   // TechStackHero mounted
-  assert.match(source, /<TechStackHero \/>/, "must mount TechStackHero")
+  assert.match(
+    source,
+    /<TechStackHero hero=\{publicTechStack\.hero\} \/>/,
+    "must mount TechStackHero with public display data"
+  )
 
   // TechnologyFolderGrid mounted
   assert.match(
     source,
-    /<TechnologyFolderGrid \/>/,
-    "must mount TechnologyFolderGrid"
+    /<TechnologyFolderGrid toolkit=\{publicTechStack\.toolkit\} \/>/,
+    "must mount TechnologyFolderGrid with public display data"
   )
 
   // Unified Section 02 Learning Archive mounted

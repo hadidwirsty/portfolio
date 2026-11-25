@@ -1,6 +1,10 @@
 import type { Metadata } from "next"
 
 import { subpages } from "@/lib/cv-data"
+import {
+  publicProjectTimelineItems,
+  publicSelectedWorks,
+} from "@/lib/public-portfolio-data"
 import { VexooSubpageShell } from "@/components/vexoo-subpage-shell"
 import { PortfolioHero } from "@/components/portfolio/portfolio-hero"
 import { ProjectTimelineAccordion } from "@/components/portfolio/project-timeline-accordion"
@@ -24,8 +28,10 @@ export default function PortfolioPage() {
       <div className="relative flex w-full flex-1 flex-col justify-between">
         <div className="relative flex w-full flex-col gap-4 sm:gap-6">
           <PortfolioHero />
-          <ProjectTimelineAccordion />
-          <PortfolioCardFolder />
+          <ProjectTimelineAccordion
+            projectTimelineItems={publicProjectTimelineItems}
+          />
+          <PortfolioCardFolder selectedWorks={publicSelectedWorks} />
         </div>
         <div className="mt-auto py-6">
           <TickerStrip />

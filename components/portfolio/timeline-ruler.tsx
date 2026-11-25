@@ -7,7 +7,7 @@ import { useLanguage } from "@/lib/language-context"
 import {
   TIMELINE_YEAR_MARKERS,
   getTimelineRulerPosition,
-} from "@/lib/portfolio-project-timeline-data"
+} from "@/lib/portfolio-timeline-ruler"
 import { cn } from "@/lib/utils"
 
 export interface TimelineRulerProps {

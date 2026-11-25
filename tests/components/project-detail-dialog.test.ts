@@ -2,7 +2,7 @@ import test from "node:test"
 import assert from "node:assert"
 import fs from "node:fs"
 import path from "node:path"
-import { projects } from "../../lib/cv-data.ts"
+import { projects } from "../../lib/cv-professional-data.ts"
 import { getProjectCategory } from "../../lib/projects-filter.ts"
 
 const COMPONENT_PATH = path.resolve(
@@ -244,7 +244,7 @@ test("Selected Works owns ProjectDetailDialog and passes selection & dialog open
   // Pass isDialogOpen to cards for hover suppression
   assert.match(
     cardFolderSource,
-    /isDialogOpen=\{dialogOpen && selectedProject\?\.id === project\.id\}/,
+    /isDialogOpen=\{dialogOpen && selectedProject\?\.ref === project\.ref\}/,
     "must pass isDialogOpen to FolderBentoCards for hover suppression preservation"
   )
 })

@@ -1,6 +1,6 @@
 import test from "node:test"
 import assert from "node:assert"
-import { projects } from "../../lib/cv-data.ts"
+import { projects } from "../../lib/cv-professional-data.ts"
 import {
   filterProjects,
   getProjectCategory,

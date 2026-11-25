@@ -5,12 +5,12 @@ import Image from "next/image"
 
 import { KineticHeading } from "@/components/kinetic-heading"
 import { useT } from "@/lib/language-context"
-import { CORE_STACK, TECH_STACK_HERO } from "@/lib/tech-stack-data"
+import type { PublicTechHero } from "@/lib/public-tech-stack"
 
-export function TechStackHero() {
-  const title = useT(TECH_STACK_HERO.title)
-  const description = useT(TECH_STACK_HERO.description)
-  const coreHeading = useT(TECH_STACK_HERO.coreHeading)
+export function TechStackHero({ hero }: { hero: PublicTechHero }) {
+  const title = useT(hero.title)
+  const description = useT(hero.description)
+  const coreHeading = useT(hero.coreHeading)
 
   return (
     <header className="relative flex w-full flex-col items-center pt-2 sm:pt-6">
@@ -41,7 +41,7 @@ export function TechStackHero() {
           aria-label={coreHeading}
           className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3"
         >
-          {CORE_STACK.map((item) => (
+          {hero.coreStack.map((item) => (
             <div
               key={item.name}
               className="flex items-center gap-2 rounded-full border border-border/50 bg-card/60 px-3.5 py-1.5 font-mono text-xs font-medium text-foreground shadow-2xs backdrop-blur-sm transition-all duration-300 hover:border-border hover:bg-card/90"

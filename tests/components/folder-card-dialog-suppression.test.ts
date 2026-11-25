@@ -27,8 +27,8 @@ test("portfolio-card-folder passes isDialogOpen state to all FolderBentoCards", 
 
   assert.match(
     source,
-    /isDialogOpen=\{dialogOpen && selectedProject\?\.id === project\.id\}/,
-    "portfolio-card-folder must synchronize isDialogOpen with dialogOpen and selectedProject.id for featured and additional projects"
+    /isDialogOpen=\{dialogOpen && selectedProject\?\.ref === project\.ref\}/,
+    "portfolio-card-folder must synchronize isDialogOpen with dialogOpen and the selected public project reference for featured and additional projects"
   )
 })
 

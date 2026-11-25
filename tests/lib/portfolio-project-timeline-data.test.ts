@@ -16,7 +16,7 @@ import {
   getProjectTimelineItemById,
   type ProjectTimelineItem,
 } from "../../lib/portfolio-project-timeline-data.ts"
-import { projects } from "../../lib/cv-data.ts"
+import { projects } from "../../lib/cv-professional-data.ts"
 
 // ---------------------------------------------------------------------------
 // 1. Data Integrity & Mapping Tests

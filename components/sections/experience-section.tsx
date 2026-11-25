@@ -5,16 +5,15 @@ import { Briefcase, Building2, Calendar, MapPin } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { SectionHeading } from "@/components/section-heading"
-import {
-  experience,
-  nav,
-  projects,
-  ui,
-  type ExperienceEntry,
-} from "@/lib/cv-data"
+import { nav, ui } from "@/lib/cv-data"
 import { useT } from "@/lib/language-context"
+import type { PublicExperienceEntry } from "@/lib/public-experience-data"
 
-function ExperienceSection() {
+function ExperienceSection({
+  entries,
+}: {
+  entries: readonly PublicExperienceEntry[]
+}) {
   return (
     <section
       id="experience"
@@ -25,7 +24,7 @@ function ExperienceSection() {
       {/* Stepper Timeline Container */}
       <div className="relative pl-8 before:absolute before:top-3 before:bottom-3 before:left-3.5 before:w-0.5 before:bg-border/80 sm:pl-10 sm:before:left-4.5">
         <div className="flex flex-col gap-12 sm:gap-16">
-          {experience.map((entry) => (
+          {entries.map((entry) => (
             <ExperienceItem key={entry.id} entry={entry} />
           ))}
         </div>
@@ -34,17 +33,13 @@ function ExperienceSection() {
   )
 }
 
-function ExperienceItem({ entry }: { entry: ExperienceEntry }) {
+function ExperienceItem({ entry }: { entry: PublicExperienceEntry }) {
   const role = useT(entry.role)
   const period = useT(entry.period)
   const location = useT(entry.location)
   const employmentType = useT(entry.employmentType)
   const summary = useT(entry.summary ?? { id: "", en: "" })
   const relatedLabel = useT(ui.keyProjects)
-
-  const relatedProjects = projects.filter((p) =>
-    entry.projectIds.includes(p.id)
-  )
 
   return (
     <div className="group relative">
@@ -98,15 +93,15 @@ function ExperienceItem({ entry }: { entry: ExperienceEntry }) {
         </ul>
 
         {/* Related Projects Linkage */}
-        {relatedProjects.length > 0 && (
+        {entry.relatedProjects.length > 0 && (
           <div className="mt-6 border-t border-border/50 pt-4">
             <p className="font-mono text-xs tracking-wider text-muted-foreground uppercase">
               {relatedLabel}
             </p>
             <div className="mt-2.5 flex flex-wrap gap-1.5">
-              {relatedProjects.map((p) => (
+              {entry.relatedProjects.map((p) => (
                 <a
-                  key={p.id}
+                  key={p.ref}
                   href="#projects"
                   className="inline-block transition-transform duration-150 hover:-translate-y-0.5"
                   title={`Lihat proyek ${p.name} di seksi Proyek`}
@@ -127,7 +122,11 @@ function ExperienceItem({ entry }: { entry: ExperienceEntry }) {
   )
 }
 
-function PointItem({ point }: { point: ExperienceEntry["points"][number] }) {
+function PointItem({
+  point,
+}: {
+  point: PublicExperienceEntry["points"][number]
+}) {
   const text = useT(point)
 
   return (

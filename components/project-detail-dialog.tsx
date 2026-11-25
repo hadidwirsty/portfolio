@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import {
   Building2,
   Calendar,
@@ -14,6 +15,7 @@ import {
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { replaceContextualFragment } from "@/hooks/use-contextual-fragment"
 import {
   Dialog,
   DialogClose,
@@ -22,30 +24,34 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import type { ProjectEntry } from "@/lib/cv-data"
+import type { PublicProjectCard } from "@/lib/public-portfolio-data"
 import { useLanguage, useT } from "@/lib/language-context"
-import { getProjectCategory } from "@/lib/projects-filter"
+import {
+  getProjectFragment,
+  getSkillFragment,
+} from "@/lib/skills-portfolio-navigation"
 import { cn } from "@/lib/utils"
 
 export interface ProjectDetailDialogProps {
-  project: ProjectEntry | null
+  project: PublicProjectCard | null
   open: boolean
   onOpenChange: (open: boolean) => void
+  onOpenChangeComplete?: (open: boolean) => void
 }
 
 export function ProjectDetailDialog({
   project,
   open,
   onOpenChange,
+  onOpenChangeComplete,
 }: ProjectDetailDialogProps) {
   const { lang } = useLanguage()
 
   if (!project) return null
 
-  const category = getProjectCategory(project.id)
-  const isEnterprise = category === "enterprise"
+  const isEnterprise = project.category === "enterprise"
 
-  const dossierId = `DOSSIER // ${project.id.toUpperCase()}`
+  const dossierId = `DOSSIER // ${project.dossierCode}`
   const categoryLabel = isEnterprise
     ? lang === "id"
       ? "Enterprise & B2B"
@@ -55,7 +61,11 @@ export function ProjectDetailDialog({
       : "Product & Full-Stack"
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog
+      open={open}
+      onOpenChange={onOpenChange}
+      onOpenChangeComplete={onOpenChangeComplete}
+    >
       <DialogContent
         hideCloseButton
         className={cn(
@@ -198,9 +208,31 @@ export function ProjectDetailDialog({
                 <Badge
                   key={t}
                   variant="outline"
-                  className="rounded-md border-border/50 bg-muted/30 px-2.5 py-1 font-mono text-xs font-normal text-foreground/90 transition-colors hover:bg-muted/60"
+                  className="max-w-full rounded-md border-border/50 bg-muted/30 px-2.5 py-1 font-mono text-xs font-normal whitespace-normal text-foreground/90"
                 >
-                  {t}
+                  <span>
+                    {project.technologyLinks[t]?.map(({ text, techId }) =>
+                      techId ? (
+                        <Link
+                          key={text}
+                          href={`/stack${getSkillFragment(techId)}`}
+                          scroll={false}
+                          data-skip-page-transition=""
+                          onNavigate={() =>
+                            replaceContextualFragment(
+                              getProjectFragment(project.ref)
+                            )
+                          }
+                          aria-label={`${text} — ${lang === "id" ? "Lihat proyek terkait" : "View related projects"}`}
+                          className="inline-flex min-h-6 min-w-6 items-center rounded-sm underline underline-offset-2 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                        >
+                          {text}
+                        </Link>
+                      ) : (
+                        <React.Fragment key={text}>{text}</React.Fragment>
+                      )
+                    ) ?? t}
+                  </span>
                 </Badge>
               ))}
             </div>

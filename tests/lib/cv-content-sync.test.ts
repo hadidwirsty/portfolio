@@ -2,19 +2,15 @@ import { test } from "node:test"
 import assert from "node:assert"
 import fs from "node:fs"
 import path from "node:path"
-import {
-  profile,
-  experience,
-  education,
-  projects,
-  subpages,
-} from "../../lib/cv-data.ts"
+import { profile, education, subpages } from "../../lib/cv-data.ts"
+import { experience, projects } from "../../lib/cv-professional-data.ts"
 import { timelineMilestones } from "../../lib/portfolio-timeline-data.ts"
 import {
   projectTimelineItems,
   getProjectTimelineItemById,
 } from "../../lib/portfolio-project-timeline-data.ts"
 import { PROJECT_WORK_AFFILIATION } from "../../lib/portfolio-experience-filter.ts"
+import { TECH_CATEGORIES } from "../../lib/tech-stack-data.ts"
 
 // ---------------------------------------------------------------------------
 // 1. CV Language-to-File Mapping and Public PDF Integrity
@@ -296,6 +292,62 @@ test("Chronology guard: Netmonk 2023 internship does not claim post-internship V
 // ---------------------------------------------------------------------------
 // 7. Project Timeline Item Tech Stack Accuracy
 // ---------------------------------------------------------------------------
+
+test("IMAPS attributes Angular 18, NG-ZORRO, and RxJS without claiming Ant Design React", () => {
+  const imaps = projects.find((project) => project.id === "imaps")
+  assert.ok(imaps)
+  assert.deepStrictEqual(imaps.tech, [
+    "Angular 18",
+    "NG-ZORRO",
+    "TypeScript",
+    "Tailwind CSS",
+    "REST API",
+    "RxJS",
+  ])
+  for (const role of Object.values(imaps.role)) {
+    assert.match(role, /Angular 18.*NG-ZORRO/)
+    assert.doesNotMatch(role, /Ant Design/i)
+  }
+
+  const timeline = getProjectTimelineItemById("imaps")
+  assert.ok(timeline)
+  assert.deepStrictEqual(timeline.techStack, imaps.tech.slice(0, -1))
+})
+
+test("Tech Stack evidence keeps Ant Design and NG-ZORRO separate and Vitest attributed to HiBlow Fleet", () => {
+  const technologies = TECH_CATEGORIES.flatMap(({ techs }) => techs)
+  const antDesign = technologies.find(({ id }) => id === "ant-design")
+  const ngZorro = technologies.find(({ id }) => id === "ng-zorro")
+  const rxjs = technologies.find(({ id }) => id === "rxjs")
+  const vitest = technologies.find(({ id }) => id === "vitest")
+
+  assert.ok(antDesign && ngZorro && rxjs && vitest)
+  assert.ok(antDesign.verifiedIn.some((entry) => entry.startsWith("Alisa 2.0")))
+  assert.ok(antDesign.verifiedIn.every((entry) => !/\bIMAPS\b/i.test(entry)))
+  assert.ok(ngZorro.verifiedIn.some((entry) => /\bIMAPS\b/i.test(entry)))
+  assert.ok(rxjs.verifiedIn.some((entry) => /\bIMAPS\b/i.test(entry)))
+  assert.ok(vitest.verifiedIn.some((entry) => entry.startsWith("HiBlow Fleet")))
+  assert.ok(
+    vitest.verifiedIn.every((entry) => !/Portfolio CV|node:test/i.test(entry))
+  )
+})
+
+test("The public-safe enterprise maintenance project wording is preserved", () => {
+  const titleEn = "Enterprise Web Applications Maintenance & Operations Portal"
+  const titleId = "Pemeliharaan Aplikasi Web Enterprise & Portal Operasional"
+  const project = projects.find(({ name }) => name === titleEn)
+  assert.ok(project)
+  assert.strictEqual(getProjectTimelineItemById(project.id)?.name, titleEn)
+  assert.ok(
+    experience.some(({ points }) =>
+      points.some(
+        (point) =>
+          point.id.startsWith(`${titleId}: `) &&
+          point.en.startsWith(`${titleEn}: `)
+      )
+    )
+  )
+})
 
 test("Project timeline items reflect verified tech stacks (IMAPS Angular 18, CART Nuxt/Vue, etc.)", () => {
   const imaps = getProjectTimelineItemById("imaps")

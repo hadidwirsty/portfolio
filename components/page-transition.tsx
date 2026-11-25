@@ -63,6 +63,9 @@ export function PageTransition() {
       const anchor = target?.closest("a")
       if (!anchor) return
 
+      // Contextual links coordinate focus after their destination has rendered.
+      if (anchor.hasAttribute("data-skip-page-transition")) return
+
       if (anchor.hasAttribute("download")) return
 
       if (anchor.target && anchor.target !== "_self") return

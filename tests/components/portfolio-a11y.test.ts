@@ -3,7 +3,8 @@ import assert from "node:assert/strict"
 import fs from "node:fs"
 import path from "node:path"
 
-import { subpages, projects } from "../../lib/cv-data.ts"
+import { subpages } from "../../lib/cv-data.ts"
+import { projects } from "../../lib/cv-professional-data.ts"
 import { timelineMilestones } from "../../lib/portfolio-timeline-data.ts"
 
 const TIMELINE_PATH = path.resolve(
@@ -320,11 +321,11 @@ test("Accessibility: ProjectTimelineAccordion & TimelineRuler implement robust W
   assert.match(accordionSource, /aria-selected=\{isActive\}/)
   assert.match(
     accordionSource,
-    /aria-controls=\{`timeline-panel-\$\{item\.id\}`\}/
+    /aria-controls=\{`timeline-panel-\$\{item\.ref\}`\}/
   )
   assert.match(
     accordionSource,
-    /aria-labelledby=\{`timeline-card-\$\{item\.id\}`\}/
+    /aria-labelledby=\{`timeline-card-\$\{item\.ref\}`\}/
   )
 
   // Keyboard navigation

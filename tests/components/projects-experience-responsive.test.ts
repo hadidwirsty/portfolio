@@ -1,6 +1,6 @@
 import test from "node:test"
 import assert from "node:assert"
-import { projects, experience } from "../../lib/cv-data.ts"
+import { projects, experience } from "../../lib/cv-professional-data.ts"
 import { filterProjects, getProjectCounts } from "../../lib/projects-filter.ts"
 
 test("projects and experience collections are properly populated", () => {

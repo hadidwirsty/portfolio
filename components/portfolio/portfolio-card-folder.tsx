@@ -4,35 +4,38 @@ import * as React from "react"
 import { useReducedMotion } from "framer-motion"
 import { ChevronDown, ChevronUp } from "lucide-react"
 
-import type { ProjectEntry } from "@/lib/cv-data"
 import { useLanguage } from "@/lib/language-context"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { FolderBentoCard } from "@/components/portfolio/folder-bento-card"
 import { ProjectDetailDialog } from "@/components/project-detail-dialog"
 import {
-  EXPERIENCE_FILTER_DEFS,
-  getExperienceCategoryCounts,
-  getFilteredProjects,
-  type ExperienceFilterCategory,
-} from "@/lib/portfolio-experience-filter"
+  focusContextualTarget,
+  replaceContextualFragment,
+  useContextualFragment,
+} from "@/hooks/use-contextual-fragment"
+import type { ExperienceFilterCategory } from "@/lib/portfolio-experience-filter"
+import type {
+  PublicProjectCard,
+  PublicSelectedWorks,
+} from "@/lib/public-portfolio-data"
+import type { PublicProjectRef } from "@/lib/skills-portfolio-relationships"
+import {
+  getProjectFragment,
+  getProjectTargetFilter,
+  PROJECT_FRAGMENT_PREFIX,
+  readProjectFragment,
+} from "@/lib/skills-portfolio-navigation"
 import { cn } from "@/lib/utils"
 
-// ---------------------------------------------------------------------------
-// Re-export Project Sequence Constants from Single Source of Truth
-// ---------------------------------------------------------------------------
-
-export {
-  FEATURED_PROJECT_IDS,
-  ADDITIONAL_PROJECT_IDS,
-} from "@/lib/portfolio-experience-filter"
-
 export interface PortfolioCardFolderProps {
-  onSelectProject?: (project: ProjectEntry) => void
+  selectedWorks: PublicSelectedWorks
+  onSelectProject?: (project: PublicProjectCard) => void
   className?: string
 }
 
 export function PortfolioCardFolder({
+  selectedWorks,
   onSelectProject,
   className,
 }: PortfolioCardFolderProps) {
@@ -45,25 +48,77 @@ export function PortfolioCardFolder({
 
   // Selected project for the single reused ProjectDetailDialog
   const [selectedProject, setSelectedProject] =
-    React.useState<ProjectEntry | null>(null)
+    React.useState<PublicProjectCard | null>(null)
   const [dialogOpen, setDialogOpen] = React.useState(false)
+  const [dialogPresent, setDialogPresent] = React.useState(false)
+  const [focusRequest, setFocusRequest] = React.useState<{
+    ref: PublicProjectRef
+  } | null>(null)
+  const handledFocusRequest = React.useRef<typeof focusRequest>(null)
+  const hadProjectContext = React.useRef(false)
 
   // Stable references for auto-scroll target and accessible focus management
   const sectionRef = React.useRef<HTMLElement>(null)
   const headingRef = React.useRef<HTMLHeadingElement>(null)
 
-  // Derived filtered & sorted projects based on active filter
-  const visibleProjects = React.useMemo(() => {
-    return getFilteredProjects(activeFilter)
-  }, [activeFilter])
+  useContextualFragment("/portfolio", (fragment) => {
+    if (fragment && !fragment.startsWith(PROJECT_FRAGMENT_PREFIX)) {
+      setFocusRequest(null)
+      return
+    }
+    const restoreDefault = Boolean(fragment) || hadProjectContext.current
+    hadProjectContext.current = Boolean(fragment)
+    const ref = readProjectFragment(fragment, selectedWorks.projectsByRef)
+    const filter =
+      ref && getProjectTargetFilter(selectedWorks.filters, activeFilter, ref)
+    if (ref && filter) {
+      const targetFragment = getProjectFragment(ref)
+      if (fragment !== targetFragment) {
+        replaceContextualFragment(targetFragment)
+      }
+      setActiveFilter(filter)
+      setDialogOpen(false)
+      setFocusRequest({ ref })
+    } else {
+      setFocusRequest(null)
+      if (restoreDefault) {
+        setActiveFilter("featured")
+        setDialogOpen(false)
+      }
+    }
+  })
 
-  // Dynamic project counts per category
-  const counts = React.useMemo(() => {
-    return getExperienceCategoryCounts()
-  }, [])
+  React.useEffect(() => {
+    if (
+      dialogPresent ||
+      !focusRequest ||
+      handledFocusRequest.current === focusRequest
+    )
+      return
+    const fragment = getProjectFragment(focusRequest.ref)
+    const frame = requestAnimationFrame(() => {
+      // A cached Portfolio view can resume with the preceding project's request.
+      if (
+        window.location.pathname !== "/portfolio" ||
+        window.location.hash !== fragment
+      )
+        return
 
-  const handleSelectProject = (project: ProjectEntry) => {
+      const target = sectionRef.current?.querySelector<HTMLElement>(
+        `#${CSS.escape(fragment.slice(1))}`
+      )
+      if (!target?.getClientRects().length) return
+
+      focusContextualTarget(target)
+      handledFocusRequest.current = focusRequest
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [activeFilter, dialogPresent, focusRequest])
+
+  const handleSelectProject = (project: PublicProjectCard) => {
+    setFocusRequest(null)
     setSelectedProject(project)
+    setDialogPresent(true)
     setDialogOpen(true)
     onSelectProject?.(project)
   }
@@ -72,6 +127,7 @@ export function PortfolioCardFolder({
   const isExpanded = activeFilter !== "featured"
 
   const handleShortcutToggle = () => {
+    setFocusRequest(null)
     if (activeFilter === "featured") {
       // 1. Expand: View all projects without changing vertical scroll position
       setActiveFilter("all")
@@ -91,9 +147,14 @@ export function PortfolioCardFolder({
   }
 
   // Active filter definition for badge styling
-  const activeDef = EXPERIENCE_FILTER_DEFS.find((d) => d.id === activeFilter)
-  const totalCount = counts.all
-  const featuredCount = counts.featured
+  const activeDef = selectedWorks.filters.find((def) => def.id === activeFilter)
+  const visibleProjects = (activeDef?.projectRefs ?? []).map(
+    (ref) => selectedWorks.projectsByRef[ref]
+  )
+  const totalCount = Object.keys(selectedWorks.projectsByRef).length
+  const featuredCount =
+    selectedWorks.filters.find((def) => def.id === "featured")?.projectRefs
+      .length ?? 0
   const additionalCount = totalCount - featuredCount
 
   // Dynamic bilingual shortcut toggle label
@@ -129,8 +190,8 @@ export function PortfolioCardFolder({
             </span>
             <Badge variant="outline" className="font-mono text-[10px]">
               {activeDef
-                ? `${counts[activeFilter]} ${activeDef.badgeLabel?.[lang] ?? activeDef.label[lang]}`
-                : `${counts.featured} Proyek Unggulan`}
+                ? `${activeDef.projectRefs.length} ${activeDef.badgeLabel?.[lang] ?? activeDef.label[lang]}`
+                : `${featuredCount} Proyek Unggulan`}
             </Badge>
           </div>
           <h2
@@ -161,9 +222,9 @@ export function PortfolioCardFolder({
         }
         className="-mx-4 mb-6 no-scrollbar flex items-center gap-2 overflow-x-auto px-4 sm:mx-0 sm:mb-8 sm:flex-wrap sm:px-0"
       >
-        {EXPERIENCE_FILTER_DEFS.map((def) => {
+        {selectedWorks.filters.map((def) => {
           const isActive = activeFilter === def.id
-          const count = counts[def.id]
+          const count = def.projectRefs.length
 
           return (
             <button
@@ -173,7 +234,10 @@ export function PortfolioCardFolder({
               id={`filter-tab-${def.id}`}
               aria-selected={isActive}
               aria-controls="all-projects-drawer"
-              onClick={() => setActiveFilter(def.id)}
+              onClick={() => {
+                setFocusRequest(null)
+                setActiveFilter(def.id)
+              }}
               className={cn(
                 "group inline-flex cursor-pointer items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-medium whitespace-nowrap transition-all select-none",
                 "focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:outline-none",
@@ -212,11 +276,11 @@ export function PortfolioCardFolder({
       >
         {visibleProjects.map((project, idx) => (
           <FolderBentoCard
-            key={project.id}
+            key={project.ref}
             project={project}
             index={idx}
             onSelectProject={handleSelectProject}
-            isDialogOpen={dialogOpen && selectedProject?.id === project.id}
+            isDialogOpen={dialogOpen && selectedProject?.ref === project.ref}
           />
         ))}
       </div>
@@ -253,6 +317,7 @@ export function PortfolioCardFolder({
         project={selectedProject}
         open={dialogOpen}
         onOpenChange={setDialogOpen}
+        onOpenChangeComplete={setDialogPresent}
       />
     </section>
   )

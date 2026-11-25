@@ -1,5 +1,6 @@
 // Explicit .ts extensions required for standalone Node.js test runner (--experimental-strip-types)
-import { projects, type ProjectEntry, type Bi } from "./cv-data.ts"
+import type { Bi } from "./cv-data.ts"
+import { projects, type ProjectEntry } from "./cv-professional-data.ts"
 import { getProjectTimelineItemById } from "./portfolio-project-timeline-data.ts"
 
 // ---------------------------------------------------------------------------

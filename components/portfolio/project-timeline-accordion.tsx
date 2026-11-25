@@ -9,20 +9,19 @@ import { useLanguage } from "@/lib/language-context"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { GradientMotionBackground } from "@/components/ui/gradient-motion-background"
-import {
-  projectTimelineItems,
-  type ProjectTimelineItem,
-} from "@/lib/portfolio-project-timeline-data"
+import type { PublicTimelineItem } from "@/lib/public-portfolio-data"
 import { TimelineRuler } from "@/components/portfolio/timeline-ruler"
 import { cn } from "@/lib/utils"
 
 export interface ProjectTimelineAccordionProps {
+  projectTimelineItems: readonly PublicTimelineItem[]
   className?: string
   initialIndex?: number
-  onSelectProject?: (project: ProjectTimelineItem) => void
+  onSelectProject?: (project: PublicTimelineItem) => void
 }
 
 export function ProjectTimelineAccordion({
+  projectTimelineItems,
   className,
   initialIndex = 0,
   onSelectProject,
@@ -167,6 +166,7 @@ export function ProjectTimelineAccordion({
     activeIndex,
     totalTrackWidth,
     availableWidth,
+    projectTimelineItems.length,
     getCardLeftPosition,
     activeCardWidth,
   ])
@@ -378,15 +378,15 @@ export function ProjectTimelineAccordion({
 
               return (
                 <motion.button
-                  key={item.id}
+                  key={item.ref}
                   ref={(el) => {
                     cardRefs.current[idx] = el
                   }}
                   type="button"
                   role="tab"
-                  id={`timeline-card-${item.id}`}
+                  id={`timeline-card-${item.ref}`}
                   aria-selected={isActive}
-                  aria-controls={`timeline-panel-${item.id}`}
+                  aria-controls={`timeline-panel-${item.ref}`}
                   tabIndex={isActive ? 0 : -1}
                   aria-label={`${item.name} (${item.period[lang]})`}
                   onClick={() => handleCardClick(idx)}
@@ -437,7 +437,7 @@ export function ProjectTimelineAccordion({
                       >
                         <defs>
                           <pattern
-                            id={`blueprint-grid-${item.id}`}
+                            id={`blueprint-grid-${item.ref}`}
                             width="24"
                             height="24"
                             patternUnits="userSpaceOnUse"
@@ -452,7 +452,7 @@ export function ProjectTimelineAccordion({
                         <rect
                           width="100%"
                           height="100%"
-                          fill={`url(#blueprint-grid-${item.id})`}
+                          fill={`url(#blueprint-grid-${item.ref})`}
                         />
                       </svg>
 
@@ -481,7 +481,7 @@ export function ProjectTimelineAccordion({
                   {/* 3. Active Card Content Overlay */}
                   {isActive ? (
                     <motion.div
-                      key={`active-panel-${item.id}`}
+                      key={`active-panel-${item.ref}`}
                       initial={
                         shouldReduceMotion
                           ? { opacity: 1 }
@@ -489,9 +489,9 @@ export function ProjectTimelineAccordion({
                       }
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                      id={`timeline-panel-${item.id}`}
+                      id={`timeline-panel-${item.ref}`}
                       role="tabpanel"
-                      aria-labelledby={`timeline-card-${item.id}`}
+                      aria-labelledby={`timeline-card-${item.ref}`}
                       className="relative flex h-full flex-col justify-between p-4 text-white sm:p-5 lg:p-6"
                     >
                       {/* Top Row: Clean Index Counter without category badge */}

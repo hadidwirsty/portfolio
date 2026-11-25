@@ -1,4 +1,5 @@
-import type { Bi, ProjectEntry } from "./cv-data.ts"
+import type { Bi } from "./cv-data.ts"
+import type { ProjectEntry } from "./cv-professional-data.ts"
 
 export type ProjectCategory = "all" | "enterprise" | "fullstack"
 

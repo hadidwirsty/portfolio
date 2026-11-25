@@ -18,11 +18,14 @@ import {
   getTechStickerAsset,
   type TechStickerAssetInfo,
 } from "@/lib/tech-stack-sticker-assets"
-import type { TechCategory, TechItem } from "@/lib/tech-stack-data"
+import type {
+  PublicTechCategory,
+  PublicTechItem,
+} from "@/lib/public-tech-stack"
 import { cn } from "@/lib/utils"
 
 export interface TechnologyPhysicalFolderProps {
-  category: TechCategory
+  category: PublicTechCategory
   isRevealed: boolean
   onInteraction: (type: "enter" | "leave" | "activate" | "dismiss") => void
   className?: string
@@ -523,7 +526,7 @@ export function TechnologyPhysicalFolder({
     [category, sessionIndex, area, shouldReduceMotion]
   )
 
-  const restingPosition = (tech: TechItem, index: number) => {
+  const restingPosition = (tech: PublicTechItem, index: number) => {
     const { x, y, rotate, zIndex } = getStickerPlacement(
       tech.id,
       index,
@@ -959,7 +962,7 @@ function TechItemArtwork({
   assetInfo,
   isHovered,
 }: {
-  tech: TechItem
+  tech: PublicTechItem
   assetInfo: TechStickerAssetInfo
   isHovered: boolean
 }) {

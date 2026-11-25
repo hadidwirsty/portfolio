@@ -6,6 +6,7 @@ import {
   FEATURED_PROJECT_IDS,
   ADDITIONAL_PROJECT_IDS,
 } from "../../lib/portfolio-experience-filter.ts"
+import { publicSelectedWorks } from "../../lib/public-portfolio-data.ts"
 
 const COMPONENT_PATH = path.resolve(
   process.cwd(),
@@ -27,15 +28,6 @@ test("portfolio-card-folder file exists and exports PortfolioCardFolder componen
 })
 
 test("portfolio-card-folder curates exactly 6 featured projects in exact order", () => {
-  const source = fs.readFileSync(COMPONENT_PATH, "utf-8")
-
-  // Must re-export FEATURED_PROJECT_IDS from single source of truth
-  assert.match(
-    source,
-    /FEATURED_PROJECT_IDS[\s\S]*?@\/lib\/portfolio-experience-filter/,
-    "portfolio-card-folder must re-export FEATURED_PROJECT_IDS from single source of truth"
-  )
-
   const expectedSequence = [
     "hiblow-fleet",
     "is-ware",
@@ -49,6 +41,12 @@ test("portfolio-card-folder curates exactly 6 featured projects in exact order",
     FEATURED_PROJECT_IDS,
     expectedSequence,
     "featured projects must match required sequence"
+  )
+  assert.deepStrictEqual(
+    publicSelectedWorks.filters.find(({ id }) => id === "featured")
+      ?.projectRefs,
+    expectedSequence,
+    "the client projection must keep the featured sequence"
   )
 })
 
@@ -76,11 +74,10 @@ test("portfolio-card-folder implements responsive grid and section header", () =
 test("portfolio-card-folder includes expandable drawer for all 13 projects with bilingual toggle", () => {
   const source = fs.readFileSync(COMPONENT_PATH, "utf-8")
 
-  // Must re-export ADDITIONAL_PROJECT_IDS from single source of truth
-  assert.match(
-    source,
-    /ADDITIONAL_PROJECT_IDS[\s\S]*?@\/lib\/portfolio-experience-filter/,
-    "portfolio-card-folder must re-export ADDITIONAL_PROJECT_IDS from single source of truth"
+  assert.equal(
+    publicSelectedWorks.filters.find(({ id }) => id === "all")?.projectRefs
+      .length,
+    13
   )
 
   const additionalProjects = [
@@ -156,11 +153,11 @@ test("portfolio-card-folder renders accessible work experience filter pills", ()
     "filter pill items must synchronize aria-selected with active filter"
   )
 
-  // Integrates EXPERIENCE_FILTER_DEFS
+  // Uses the projected filter definitions
   assert.match(
     source,
-    /EXPERIENCE_FILTER_DEFS\.map/,
-    "must map over EXPERIENCE_FILTER_DEFS"
+    /selectedWorks\.filters\.map/,
+    "must map over the public filter definitions passed to Selected Works"
   )
 
   // State defaults to featured

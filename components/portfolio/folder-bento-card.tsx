@@ -5,15 +5,15 @@ import Image from "next/image"
 import { motion, useReducedMotion } from "framer-motion"
 import { ArrowUpRight } from "lucide-react"
 
-import type { ProjectEntry } from "@/lib/cv-data"
+import type { PublicProjectCard } from "@/lib/public-portfolio-data"
 import { useLanguage } from "@/lib/language-context"
-import { getProjectTimelineItemById } from "@/lib/portfolio-project-timeline-data"
+import { getProjectFragment } from "@/lib/skills-portfolio-navigation"
 import { cn } from "@/lib/utils"
 
 export interface FolderBentoCardProps {
-  project: ProjectEntry
+  project: PublicProjectCard
   index: number
-  onSelectProject: (project: ProjectEntry) => void
+  onSelectProject: (project: PublicProjectCard) => void
   coverImage?: string
   imagePosition?: string
   isDialogOpen?: boolean
@@ -97,10 +97,9 @@ export function FolderBentoCard({
     !isSuppressed &&
     !shouldReduceMotion
 
-  const timelineItem = getProjectTimelineItemById(project.id)
-  const resolvedCoverImage = coverImage ?? timelineItem?.coverImage
+  const resolvedCoverImage = coverImage ?? project.coverImage
   const resolvedImagePosition =
-    imagePosition ?? timelineItem?.imagePosition ?? "center"
+    imagePosition ?? project.imagePosition ?? "center"
 
   const title = project.name
   const company = project.company[lang]
@@ -110,6 +109,7 @@ export function FolderBentoCard({
 
   return (
     <article
+      id={getProjectFragment(project.ref).slice(1)}
       tabIndex={0}
       role="button"
       aria-label={`${ctaLabel}: ${title}`}
@@ -120,7 +120,7 @@ export function FolderBentoCard({
       onFocus={handleFocus}
       onBlur={handleBlur}
       className={cn(
-        "group relative flex h-115 w-full flex-col overflow-hidden rounded-4xl p-2.5 sm:h-120 sm:p-3 lg:h-125 lg:p-3.5",
+        "group relative flex h-115 w-full scroll-mt-20 flex-col overflow-hidden rounded-4xl p-2.5 sm:h-120 sm:scroll-mt-24 sm:p-3 lg:h-125 lg:p-3.5",
         "border border-border/50 bg-zinc-100/90 text-left select-none dark:bg-zinc-900/80",
         "shadow-xs transition-all duration-300",
         "hover:border-border hover:shadow-xl",
@@ -162,7 +162,7 @@ export function FolderBentoCard({
               >
                 <defs>
                   <pattern
-                    id={`folder-fallback-grid-${project.id}`}
+                    id={`folder-fallback-grid-${project.ref}`}
                     width="20"
                     height="20"
                     patternUnits="userSpaceOnUse"
@@ -173,7 +173,7 @@ export function FolderBentoCard({
                 <rect
                   width="100%"
                   height="100%"
-                  fill={`url(#folder-fallback-grid-${project.id})`}
+                  fill={`url(#folder-fallback-grid-${project.ref})`}
                 />
               </svg>
               <div className="pointer-events-none absolute top-1/4 left-1/2 size-48 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/10 blur-3xl" />

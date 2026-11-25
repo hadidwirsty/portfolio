@@ -4,10 +4,11 @@ import * as React from "react"
 
 import { TechnologyPhysicalFolder } from "@/components/stack/technology-physical-folder"
 import { useT } from "@/lib/language-context"
-import { TECH_CATEGORIES, TECH_STACK_HERO } from "@/lib/tech-stack-data"
+import type { PublicTechToolkit } from "@/lib/public-tech-stack"
 import { cn } from "@/lib/utils"
 
 export interface TechnologyFolderGridProps {
+  toolkit: PublicTechToolkit
   className?: string
 }
 
@@ -45,16 +46,19 @@ export function updateFolderInteraction(
   }
 }
 
-export function TechnologyFolderGrid({ className }: TechnologyFolderGridProps) {
+export function TechnologyFolderGrid({
+  toolkit,
+  className,
+}: TechnologyFolderGridProps) {
   const [folders, dispatch] = React.useReducer(updateFolderInteraction, {
     pinned: null,
     hover: null,
   })
   const preview = previewedFolder(folders)
 
-  const sectionIndex = TECH_STACK_HERO.sectionIndex
-  const sectionTitle = useT(TECH_STACK_HERO.sectionTitle)
-  const sectionSubtitle = useT(TECH_STACK_HERO.sectionSubtitle)
+  const sectionIndex = toolkit.sectionIndex
+  const sectionTitle = useT(toolkit.sectionTitle)
+  const sectionSubtitle = useT(toolkit.sectionSubtitle)
 
   // A pointer preview can own Escape while keyboard focus is still on the body.
   React.useEffect(() => {
@@ -106,7 +110,7 @@ export function TechnologyFolderGrid({ className }: TechnologyFolderGridProps) {
           All 6 categories use the unified physical monochrome folder design
           ========================================================= */}
       <div className="grid grid-cols-1 items-end gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-        {TECH_CATEGORIES.map((category) => (
+        {toolkit.categories.map((category) => (
           <TechnologyPhysicalFolder
             key={category.id}
             category={category}
