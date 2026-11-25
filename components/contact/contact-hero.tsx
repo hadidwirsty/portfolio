@@ -11,8 +11,13 @@ export function ContactHero() {
 
   return (
     <div className="relative flex w-full flex-1 flex-col justify-between">
-      <div className="relative flex w-full flex-col">
-        <KineticHeading text={headingText} motionKey="contact" as="h2" />
+      <div className="relative flex w-full flex-col gap-3 sm:gap-5">
+        <KineticHeading
+          text={headingText}
+          motionKey="contact"
+          as="h1"
+          peek="0"
+        />
         <ContactSheet />
       </div>
       <div className="mt-auto py-6">

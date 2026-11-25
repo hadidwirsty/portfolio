@@ -143,7 +143,19 @@ test("Portfolio projection retains filters, sort order and display data using pu
     assert.equal(card.name, p.name)
     assert.deepEqual(card.period, p.period)
     assert.deepEqual(card.company, p.company)
+    const timelineCard = publicProjectTimelineItems.find(
+      (item) => item.ref === ref
+    )
+    assert.ok(timelineCard)
+    assert.deepEqual(timelineCard.shortDescription, p.shortDescription)
+    assert.deepEqual(card.shortDescription, p.shortDescription)
     assert.deepEqual(card.description, p.description)
+    for (const lang of ["id", "en"] as const) {
+      assert.ok(card.shortDescription[lang].trim())
+      assert.ok(
+        card.shortDescription[lang].length < card.description[lang].length
+      )
+    }
     assert.deepEqual(card.role, p.role)
     assert.deepEqual(card.bullets, p.bullets)
     assert.deepEqual(card.tech, p.tech)

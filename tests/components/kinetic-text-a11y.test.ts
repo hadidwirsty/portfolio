@@ -70,13 +70,16 @@ test("PortfolioHero and Home maintain h1 top-level heading semantics via Kinetic
   )
 })
 
-test("ContactHero specifies as='h2' to avoid duplicate h1 with ContactSheet", () => {
-  const contactHeroSource = fs.readFileSync(CONTACT_HERO_PATH, "utf-8")
-  assert.match(
-    contactHeroSource,
-    /<KineticHeading[\s\S]*?as=["']h2["']/,
-    "ContactHero must specify as='h2' because ContactSheet already renders an h1"
+test("Contact uses the full hero title as h1 and the sheet heading as h2", () => {
+  const heroSource = fs.readFileSync(CONTACT_HERO_PATH, "utf-8")
+  const sheetSource = fs.readFileSync(
+    path.join(path.dirname(CONTACT_HERO_PATH), "contact-sheet.tsx"),
+    "utf-8"
   )
+
+  assert.match(heroSource, /<KineticHeading[^>]*as="h1"[^>]*peek="0"/)
+  assert.match(sheetSource, /<h2[^>]*>\s*\{contactPrompt\}\s*<\/h2>/)
+  assert.doesNotMatch(sheetSource, /<h1\b/)
 })
 
 // ---------------------------------------------------------------------------

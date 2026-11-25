@@ -60,6 +60,7 @@ const projectCards = projects.map((project) => {
     company: project.company,
     period: project.period,
     category: getProjectCategory(project.id),
+    shortDescription: project.shortDescription,
     description: project.description,
     role: project.role,
     bullets: project.bullets,

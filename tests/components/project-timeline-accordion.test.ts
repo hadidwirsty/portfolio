@@ -45,13 +45,13 @@ test("project-timeline-accordion integrates all 13 chronological projects from d
   assert.equal(projectTimelineItems[12].id, "hiblow-fleet")
 })
 
-test("project-timeline-accordion renders section header with index 01 and bilingual copy", () => {
+test("project-timeline-accordion renders a bilingual section heading", () => {
   const source = fs.readFileSync(COMPONENT_PATH, "utf-8")
 
   assert.match(
     source,
-    /01[\s\S]*?(Project Timeline|Lini Masa Proyek)/,
-    "must render section heading with index 01 and bilingual label"
+    /<h2[^>]*>[\s\S]*?Lini Masa Proyek[\s\S]*?Project Timeline/,
+    "must render an h2 with both localized labels"
   )
 })
 
@@ -256,16 +256,16 @@ test("project-timeline-accordion disables hover expansion and relies solely on c
     "must not maintain hovered index state"
   )
 
-  // Subtitle copy must only reference click or swipe
+  // The help text names the arrows and swipe gesture
   assert.match(
     source,
-    /Klik atau geser kartu untuk melihat detail rentang waktu dan teknologi/,
-    "ID subtitle must only mention click and swipe"
+    /Gunakan tombol panah atau geser kartu untuk menjelajahi proyek\./,
+    "ID subtitle must mention the arrows and swipe gesture"
   )
   assert.match(
     source,
-    /Click or swipe cards to explore timeline details and technologies/,
-    "EN subtitle must only mention click and swipe"
+    /Use the arrows or swipe to browse projects\./,
+    "EN subtitle must mention the arrows and swipe gesture"
   )
 })
 

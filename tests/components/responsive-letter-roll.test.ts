@@ -57,7 +57,7 @@ test("responsive-letter-roll wraps LetterRoll in responsive breakpoint classes",
   assert.match(source, /hidden lg:block/)
 })
 
-test("vexoo-dashboard and contact-sheet integrate ResponsiveLetterRoll", () => {
+test("dashboard uses responsive badge text and Contact uses the full bilingual label", () => {
   const dashboardSource = fs.readFileSync(DASHBOARD_PATH, "utf-8")
   const sheetSource = fs.readFileSync(SHEET_PATH, "utf-8")
 
@@ -79,17 +79,7 @@ test("vexoo-dashboard and contact-sheet integrate ResponsiveLetterRoll", () => {
 
   assert.match(
     sheetSource,
-    /ResponsiveLetterRoll/,
-    "contact-sheet must integrate ResponsiveLetterRoll"
-  )
-  assert.match(
-    sheetSource,
-    /mobileText=\{openToWorkShortText\}/,
-    "contact-sheet must pass mobileText"
-  )
-  assert.match(
-    sheetSource,
-    /desktopText=\{openToWorkText\}/,
-    "contact-sheet must pass desktopText"
+    /<LetterRoll[^>]*text=\{openToWorkText\}/,
+    "Contact must use the full localized availability label at every width"
   )
 })

@@ -428,15 +428,15 @@ test("Portfolio Hero avoids unverified 13-enterprise-applications claim and uses
 
   assert.strictEqual(
     descId,
-    "Jelajahi 13 proyek aplikasi web dan produk digital yang saya kerjakan melalui pengalaman magang, profesional, dan pengembangan mandiri."
+    "Jelajahi 13 proyek web dari pengalaman magang, pekerjaan profesional, dan inisiatif pribadi saya."
   )
   assert.strictEqual(
     descEn,
-    "Explore 13 web application and digital product projects from my internship, professional experience, and independent work."
+    "Explore 13 web projects I worked on during my internship, in professional roles, and independently."
   )
 })
 
-test("Section 01 Project Timeline and Section 02 Selected Works use polished recruiter-friendly wording", () => {
+test("The Portfolio timeline and gallery use clear bilingual titles and descriptions", () => {
   const accordionPath = path.join(
     process.cwd(),
     "components",
@@ -459,28 +459,30 @@ test("Section 01 Project Timeline and Section 02 Selected Works use polished rec
     "project-timeline-accordion must not use awkward 'Seluruh Proyek Riil' heading"
   )
   assert.ok(
-    accordionSrc.includes("Perjalanan Pengembangan Proyek"),
-    "project-timeline-accordion must use polished ID heading 'Perjalanan Pengembangan Proyek'"
+    accordionSrc.includes("Lini Masa Proyek"),
+    "project-timeline-accordion must use polished ID heading 'Lini Masa Proyek'"
   )
   assert.ok(
-    accordionSrc.includes("Project Development Journey"),
-    "project-timeline-accordion must use polished EN heading 'Project Development Journey'"
+    accordionSrc.includes("Project Timeline"),
+    "project-timeline-accordion must use polished EN heading 'Project Timeline'"
   )
 
-  // Section 02 description
+  assert.match(cardFolderSrc, /lang === "id" \? "Proyek" : "Projects"/)
+
+  // Gallery description
   assert.ok(
     !cardFolderSrc.includes("Arsip map bento"),
     "portfolio-card-folder must not use 'Arsip map bento' buzzword"
   )
   assert.ok(
     cardFolderSrc.includes(
-      "Kumpulan proyek yang menunjukkan pengalaman saya membangun dan meningkatkan aplikasi web untuk berbagai kebutuhan bisnis."
+      "Pilih filter untuk menjelajahi proyek berdasarkan afiliasi."
     ),
     "portfolio-card-folder must use polished ID description"
   )
   assert.ok(
     cardFolderSrc.includes(
-      "A selection of projects showcasing my experience building and improving web applications for diverse business needs."
+      "Choose a filter to browse projects by affiliation."
     ),
     "portfolio-card-folder must use polished EN description"
   )

@@ -4,6 +4,7 @@ import * as React from "react"
 import Image from "next/image"
 
 import { KineticHeading } from "@/components/kinetic-heading"
+import { Badge } from "@/components/ui/badge"
 import { useT } from "@/lib/language-context"
 import type { PublicTechHero } from "@/lib/public-tech-stack"
 
@@ -42,21 +43,18 @@ export function TechStackHero({ hero }: { hero: PublicTechHero }) {
           className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3"
         >
           {hero.coreStack.map((item) => (
-            <div
-              key={item.name}
-              className="flex items-center gap-2 rounded-full border border-border/50 bg-card/60 px-3.5 py-1.5 font-mono text-xs font-medium text-foreground shadow-2xs backdrop-blur-sm transition-all duration-300 hover:border-border hover:bg-card/90"
-            >
+            <Badge key={item.name} variant="outline" className="font-mono">
               <Image
                 src={item.icon}
                 alt=""
                 width={18}
                 height={18}
-                className="size-4 shrink-0 object-contain"
+                className="size-4 shrink-0 object-contain [image-rendering:pixelated]"
                 unoptimized
                 aria-hidden="true"
               />
-              <span className="font-semibold">{item.name}</span>
-            </div>
+              {item.name}
+            </Badge>
           ))}
         </div>
       </div>

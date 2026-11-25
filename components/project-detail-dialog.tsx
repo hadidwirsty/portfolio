@@ -159,9 +159,7 @@ export function ProjectDetailDialog({
           {/* Section B: Role & Scope */}
           <div className="space-y-2.5">
             <h4 className="font-mono text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-              {lang === "id"
-                ? "Peran & Lingkup Tanggung Jawab"
-                : "Role & Responsibilities"}
+              {lang === "id" ? "Kontribusi Saya" : "My Contribution"}
             </h4>
             <div className="rounded-xl border border-border/50 bg-muted/20 p-3.5 sm:p-5">
               <p className="font-sans text-xs leading-relaxed text-foreground/85 sm:text-sm">
@@ -269,8 +267,8 @@ export function ProjectDetailDialog({
                 <Lock className="size-3.5 shrink-0 text-muted-foreground/70" />
                 <span className="truncate">
                   {lang === "id"
-                    ? "Dokumentasi internal korporat"
-                    : "Internal corporate documentation"}
+                    ? "Tidak ada tautan publik"
+                    : "No public link available"}
                 </span>
               </div>
             )}

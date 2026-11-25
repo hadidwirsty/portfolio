@@ -61,6 +61,7 @@ export function StickerBoard() {
   }>({ width: 0, height: 0 })
 
   const [mode, setMode] = React.useState<BoardMode>("pile")
+  const modeLabel = useT(ui.stickerBoardModes[mode])
   const [positions, setPositions] = React.useState<
     Record<string, StickerState>
   >({})
@@ -186,7 +187,7 @@ export function StickerBoard() {
           </span>
           <span className="hidden size-1 rounded-full bg-border sm:inline-block" />
           <span className="hidden font-mono text-xs text-muted-foreground/70 uppercase sm:inline-block">
-            {mode === "pile" ? "Pile" : mode === "tidy" ? "Grid" : "Custom"}
+            {modeLabel}
           </span>
         </div>
 

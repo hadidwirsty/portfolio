@@ -153,8 +153,8 @@ test("project-detail-dialog implements single scroll body with overscroll-contai
   // Section: Role & Scope
   assert.match(
     source,
-    /(Peran & Lingkup Tanggung Jawab|Role & Responsibilities)/,
-    "must render Role & Responsibilities section"
+    /Kontribusi Saya.*My Contribution/,
+    "must label the contribution section in both languages"
   )
 
   // Section: Architecture & Engineering Highlights
@@ -201,7 +201,7 @@ test("project-detail-dialog implements sticky footer with safe-area padding and 
     "footer must respect safe-area-inset-bottom for mobile devices"
   )
 
-  // Link button or internal corporate documentation fallback
+  // External link or no public link notice
   assert.match(
     source,
     /(Kunjungi Tautan|Visit Project)/,
@@ -209,8 +209,8 @@ test("project-detail-dialog implements sticky footer with safe-area padding and 
   )
   assert.match(
     source,
-    /(Dokumentasi internal korporat|Internal corporate documentation)/,
-    "must provide fallback notice for internal documentation"
+    /Tidak ada tautan publik[\s\S]*?No public link available/,
+    "must provide a bilingual notice when no public link is available"
   )
 
   // Close button in footer

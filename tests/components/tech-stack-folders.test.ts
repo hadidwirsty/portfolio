@@ -143,11 +143,15 @@ test("tech stack hero renders KineticHeading, subtitle, and always-visible core 
     "must map over the projected core technologies"
   )
 
-  // Dark mode subtle border convention: border-border/50 -> hover:border-border
   assert.match(
     source,
-    /border-border\/50[\s\S]*?hover:border-border/,
-    "must follow dark-mode subtle border standards"
+    /import \{ Badge \} from "@\/components\/ui\/badge"/,
+    "must import the shared badge component"
+  )
+  assert.match(
+    source,
+    /<Badge\b[^>]*variant="outline"[^>]*>[\s\S]*?<Image\b[^>]*className="[^"\n]*\bsize-4\b/,
+    "must use the standard outline badge and retain the 16 px sticker size"
   )
 })
 
@@ -1599,14 +1603,18 @@ test("Phase 2.7B content refinement verifies sanitized evidence, shadcn/ui name,
   )
 
   // 3. Hero bilingual copy
+  assert.deepEqual(TECH_STACK_HERO.coreHeading, {
+    id: "Stack Utama",
+    en: "Core Web Stack",
+  })
   assert.strictEqual(
     TECH_STACK_HERO.description.id,
-    "Teknologi, framework, dan praktik pengembangan yang mendukung pekerjaan saya.",
+    "Teknologi dan praktik yang saya gunakan untuk membangun aplikasi web.",
     "Hero ID copy must reflect engineering practices without phantom learning archive promise"
   )
   assert.strictEqual(
     TECH_STACK_HERO.description.en,
-    "The tools, frameworks, and engineering practices behind my work.",
+    "The technologies and practices I use to build web applications.",
     "Hero EN copy must reflect engineering practices without phantom learning archive promise"
   )
 

@@ -103,7 +103,7 @@ export function FolderBentoCard({
 
   const title = project.name
   const company = project.company[lang]
-  const description = project.description[lang]
+  const description = project.shortDescription[lang]
   const projectNumber = String(index + 1).padStart(2, "0")
   const ctaLabel = lang === "id" ? "Lihat Detail" : "View Details"
 

@@ -146,7 +146,6 @@ export function PortfolioCardFolder({
     }
   }
 
-  // Active filter definition for badge styling
   const activeDef = selectedWorks.filters.find((def) => def.id === activeFilter)
   const visibleProjects = (activeDef?.projectRefs ?? []).map(
     (ref) => selectedWorks.projectsByRef[ref]
@@ -175,40 +174,23 @@ export function PortfolioCardFolder({
         "relative w-full scroll-mt-20 select-none sm:scroll-mt-24",
         className
       )}
-      aria-label={
-        lang === "id"
-          ? "02 / Karya Terpilih — Map Arsip Proyek"
-          : "02 / Selected Works — Project Card Folders"
-      }
+      aria-labelledby="portfolio-projects-heading"
     >
       {/* 1. Section Header Card */}
       <div className="flex flex-col gap-2 pb-5 sm:flex-row sm:items-center sm:justify-between sm:pb-6">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="font-mono text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-              02 // {lang === "id" ? "Karya Terpilih" : "Selected Works"}
-            </span>
-            <Badge variant="outline" className="font-mono text-[10px]">
-              {activeDef
-                ? `${activeDef.projectRefs.length} ${activeDef.badgeLabel?.[lang] ?? activeDef.label[lang]}`
-                : `${featuredCount} Proyek Unggulan`}
-            </Badge>
-          </div>
-          <h2
-            ref={headingRef}
-            tabIndex={-1}
-            className="mt-1 font-heading text-xl font-medium tracking-tight text-foreground outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:text-2xl"
-          >
-            {lang === "id"
-              ? "Sistem Rekayasa & Produk Berdampak"
-              : "Engineered Systems & High-Impact Products"}
-          </h2>
-        </div>
+        <h2
+          id="portfolio-projects-heading"
+          ref={headingRef}
+          tabIndex={-1}
+          className="font-heading text-xl font-medium tracking-tight text-foreground outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:text-2xl"
+        >
+          {lang === "id" ? "Proyek" : "Projects"}
+        </h2>
 
         <p className="max-w-md font-sans text-xs leading-relaxed text-muted-foreground sm:text-right sm:text-sm">
           {lang === "id"
-            ? "Kumpulan proyek yang menunjukkan pengalaman saya membangun dan meningkatkan aplikasi web untuk berbagai kebutuhan bisnis."
-            : "A selection of projects showcasing my experience building and improving web applications for diverse business needs."}
+            ? "Pilih filter untuk menjelajahi proyek berdasarkan afiliasi."
+            : "Choose a filter to browse projects by affiliation."}
         </p>
       </div>
 

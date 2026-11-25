@@ -106,10 +106,7 @@ export const nav = {
 export const ui = {
   downloadCv: bi("Unduh CV", "Download CV"),
   contactMe: bi("Hubungi Saya", "Contact Me"),
-  contactPrompt: bi(
-    "Tertarik berkolaborasi atau memiliki peluang yang relevan? Mari berdiskusi.",
-    "Interested in collaborating or discussing an opportunity? Let's connect."
-  ),
+  contactPrompt: bi("Mari berdiskusi.", "Let’s connect."),
   present: bi("Sekarang", "Present"),
   keyProjects: bi("Proyek Terkait", "Related Projects"),
   showAllCerts: bi("Tampilkan Semua Sertifikasi", "Show All Certifications"),
@@ -137,12 +134,17 @@ export const ui = {
   greeting: bi("Halo 👋", "Hi 👋"),
   backToTop: bi("Kembali ke Atas", "Back to Top"),
   contactSubcopy: bi(
-    "Siap membantu membangun aplikasi web enterprise yang cepat, aman, dan mudah dikembangkan.",
-    "Ready to help build fast, secure, and scalable enterprise web applications."
+    "Saya terbuka untuk peluang kerja sebagai Frontend Engineer dan kolaborasi proyek. Anda bisa menghubungi saya lewat email.",
+    "I’m open to frontend engineering roles and project collaborations. Email is the best way to reach me."
   ),
   contactSheetTitle: bi("Lembar Kontak 01", "Contact Sheet 01"),
   sheetNumber: bi("Lembar 1/1", "Sheet 1/1"),
   dragStickerHint: bi("Coba geser stikernya", "Try dragging the stickers"),
+  stickerBoardModes: {
+    pile: bi("Tumpukan", "Pile"),
+    tidy: bi("Kisi", "Grid"),
+    custom: bi("Susunan Bebas", "Custom"),
+  },
   shuffle: bi("Acak", "Shuffle"),
   tidyUp: bi("Rapikan", "Tidy up"),
   madeInSemarang: bi("Dibuat di Semarang", "Made in Semarang"),
@@ -222,8 +224,8 @@ export const subpages = {
   portfolio: {
     title: bi("Portofolio", "Portfolio"),
     description: bi(
-      "Jelajahi 13 proyek aplikasi web dan produk digital yang saya kerjakan melalui pengalaman magang, profesional, dan pengembangan mandiri.",
-      "Explore 13 web application and digital product projects from my internship, professional experience, and independent work."
+      "Jelajahi 13 proyek web dari pengalaman magang, pekerjaan profesional, dan inisiatif pribadi saya.",
+      "Explore 13 web projects I worked on during my internship, in professional roles, and independently."
     ),
   },
   stack: {

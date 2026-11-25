@@ -281,25 +281,21 @@ export function ProjectTimelineAccordion({
         {/* Section Header */}
         <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <div className="flex items-center gap-2">
-              <span className="font-mono text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-                {lang === "id"
-                  ? "01 // Lini Masa Proyek"
-                  : "01 // Project Timeline"}
-              </span>
-              <Badge variant="outline" className="font-mono text-[10px]">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+              <h2 className="font-heading text-xl font-bold tracking-tight text-foreground sm:text-2xl">
+                {lang === "id" ? "Lini Masa Proyek" : "Project Timeline"}
+              </h2>
+              <Badge
+                variant="outline"
+                className="shrink-0 font-mono text-[10px]"
+              >
                 2023 – 2026
               </Badge>
             </div>
-            <h2 className="mt-1 font-heading text-xl font-bold tracking-tight text-foreground sm:text-2xl">
-              {lang === "id"
-                ? "Perjalanan Pengembangan Proyek"
-                : "Project Development Journey"}
-            </h2>
             <p className="mt-0.5 text-xs text-muted-foreground sm:text-sm">
               {lang === "id"
-                ? "Klik atau geser kartu untuk melihat detail rentang waktu dan teknologi"
-                : "Click or swipe cards to explore timeline details and technologies"}
+                ? "Gunakan tombol panah atau geser kartu untuk menjelajahi proyek."
+                : "Use the arrows or swipe to browse projects."}
             </p>
           </div>
 

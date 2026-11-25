@@ -1,3 +1,5 @@
+import { getTechStickerAsset } from "./tech-stack-sticker-assets.ts"
+
 export type Bi = {
   id: string
   en: string
@@ -33,33 +35,38 @@ export interface CoreStackItem {
 export const CORE_STACK: CoreStackItem[] = [
   {
     name: "TypeScript",
-    icon: "/icons/skills/typescript.svg",
+    icon:
+      getTechStickerAsset("typescript").stickerPath ??
+      "/icons/skills/typescript.svg",
     role: bi("Arsitektur Bertipe Ketat", "Type-Safe Architecture"),
   },
   {
     name: "React",
-    icon: "/icons/skills/react.svg",
+    icon: getTechStickerAsset("react").stickerPath ?? "/icons/skills/react.svg",
     role: bi("Komponen Berbasis State", "Component Engine"),
   },
   {
     name: "Next.js",
-    icon: "/icons/skills/nextjs.svg",
+    icon:
+      getTechStickerAsset("nextjs").stickerPath ?? "/icons/skills/nextjs.svg",
     role: bi("App Router & SSR/SSG", "App Router & SSR/SSG"),
   },
   {
     name: "Tailwind CSS",
-    icon: "/icons/skills/tailwind.svg",
+    icon:
+      getTechStickerAsset("tailwind").stickerPath ??
+      "/icons/skills/tailwind.svg",
     role: bi("Sistem Desain Modern", "Utility Design System"),
   },
 ]
 
 export const TECH_STACK_HERO = {
-  title: bi("Di Balik Pengembangan.", "Behind the Build."),
+  title: bi("Di Balik Pengembangan", "Behind the Build"),
   description: bi(
-    "Teknologi, framework, dan praktik pengembangan yang mendukung pekerjaan saya.",
-    "The tools, frameworks, and engineering practices behind my work."
+    "Teknologi dan praktik yang saya gunakan untuk membangun aplikasi web.",
+    "The technologies and practices I use to build web applications."
   ),
-  coreHeading: bi("Ekosistem Utama", "Primary Ecosystem"),
+  coreHeading: bi("Stack Utama", "Core Web Stack"),
   sectionIndex: "01 / TECHNOLOGIES",
   sectionTitle: bi("Teknologi yang Saya Gunakan.", "Inside My Toolkit."),
   sectionSubtitle: bi(

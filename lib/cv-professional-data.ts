@@ -132,6 +132,7 @@ export type ProjectEntry = {
   name: string
   period: Bi
   company: Bi
+  shortDescription: Bi
   description: Bi
   role: Bi
   tech: string[]
@@ -148,13 +149,17 @@ export const projects: ProjectEntry[] = [
       "Proyek Pribadi (Bisnis Keluarga)",
       "Personal Project (Family Business)"
     ),
+    shortDescription: bi(
+      "Aplikasi untuk mengelola perjalanan dan keuangan armada truk semen curah.",
+      "An app for managing trips and finances for a bulk cement trucking fleet."
+    ),
     description: bi(
       "Aplikasi web full-stack untuk mengelola operasional dan keuangan armada truk semen curah milik bisnis keluarga. Sistem ini menggantikan pencatatan manual dengan pengelolaan ritase, referensi tarif untuk 296 rute pabrik, perhitungan PPh 23 (1,2%), pembagian keuntungan investor, dan dasbor analitik berbasis Recharts.",
       "A full-stack web application for managing the operations and finances of a family-owned bulk cement trucking business. It replaces manual records with trip tracking, a rate catalog for 296 factory routes, PPh 23 tax calculations (1.2%), investor profit sharing, and Recharts analytics dashboards."
     ),
     role: bi(
-      "Merancang dan mengembangkan aplikasi web full-stack manajemen operasional dan keuangan armada truk semen curah menggunakan Next.js 16 (App Router berbasis Server Components dan Server Actions), React 19, TypeScript, Tailwind CSS v4, dan Drizzle ORM (PostgreSQL); mengimplementasikan kalkulasi otomatis tarif angkutan lintas 296 rute pabrik semen nasional, pemotongan pajak PPh 23 (1,2%), rekapitulasi beban armada, serta modul penutupan buku bagi hasil investor; merancang modul Pure Domain Engine yang divalidasi oleh 297 pengujian otomatis Vitest (100% lulus); mengintegrasikan autentikasi Better-Auth dengan kontrol akses berbasis peran (RBAC); serta memelihara dasbor analitik visual Recharts.",
-      "Designed and developed a full-stack operations and financial management web application for a bulk cement truck fleet using Next.js 16 (App Router leveraging Server Components and Server Actions), React 19, TypeScript, Tailwind CSS v4, and Drizzle ORM (PostgreSQL); implemented automated freight tariff calculations across 296 national cement factory routes, PPh 23 tax deductions (1.2%), fleet expense tracking, and monthly investor profit-sharing workflows; designed a Pure Domain Engine validated by 297 automated Vitest tests (100% pass); integrated Better-Auth authentication with role-based access control (RBAC); maintained interactive Recharts analytics dashboards."
+      "Saya merancang dan membangun aplikasi full-stack ini untuk bisnis keluarga, dari logika keuangan dan basis data hingga dasbor operasional.",
+      "I designed and built this full-stack app for my family’s business, from the financial logic and database to the operations dashboards."
     ),
     bullets: [
       bi(
@@ -202,13 +207,17 @@ export const projects: ProjectEntry[] = [
       "PT Sigma Cipta Caraka (Klien: PT KBI – Grup Danareksa)",
       "PT Sigma Cipta Caraka (Client: PT KBI – Danareksa Group)"
     ),
+    shortDescription: bi(
+      "Purwarupa untuk menerbitkan dan mengelola resi gudang.",
+      "A prototype for issuing and managing warehouse receipts."
+    ),
     description: bi(
       "Purwarupa sistem manajemen resi gudang terintegrasi yang diselesaikan dalam sprint 2 minggu untuk proposal teknis PT Kliring Berjangka Indonesia (Grup Danareksa). Mencakup penerbitan resi, integrasi dokumen asuransi dan LPK, rekam jejak audit, serta kontrol akses untuk 5 peran pengguna.",
       "An integrated warehouse receipt management prototype delivered in a 2-week sprint for a technical proposal to PT Kliring Berjangka Indonesia (Danareksa Group). Features include receipt issuance, insurance and inspection agency (LPK) document integration, audit trails, and access controls for 5 user roles."
     ),
     role: bi(
-      "Mengembangkan arsitektur purwarupa dan modul penerbitan resi gudang dalam sprint 2 minggu menggunakan Next.js (App Router), React 19, TypeScript, dan Tailwind CSS. Mengimplementasikan rekam jejak audit, integrasi dokumen asuransi dan LPK, serta data master gudang. Kontribusi ini mendukung proposal yang meraih peringkat pertama dalam evaluasi teknis klien.",
-      "Developed the prototype architecture and warehouse receipt issuance modules in a 2-week sprint using Next.js (App Router), React 19, TypeScript, and Tailwind CSS. Implemented audit trails, insurance and LPK document integration, and warehouse master data. This work contributed to a proposal that ranked first in the client's technical evaluation."
+      "Saya mengembangkan arsitektur purwarupa dan alur penerbitan resi gudang untuk proposal teknis klien.",
+      "I developed the prototype architecture and warehouse receipt issuance workflow for the client’s technical proposal."
     ),
     bullets: [
       bi(
@@ -254,13 +263,17 @@ export const projects: ProjectEntry[] = [
       "PT Sigma Cipta Caraka (Klien: Infomedia Nusantara)",
       "PT Sigma Cipta Caraka (Client: Infomedia Nusantara)"
     ),
+    shortDescription: bi(
+      "Sistem untuk meninjau, mengelola, dan mengonfigurasi kontrak.",
+      "A system for reviewing, managing, and configuring contracts."
+    ),
     description: bi(
       "Sistem manajemen konten (CMS) untuk Infomedia Nusantara yang dibangun dengan arsitektur microservices dan micro-frontend berbasis Module Federation.",
       "A content management system (CMS) for Infomedia Nusantara, built using a microservices architecture and a Module Federation-based micro-frontend."
     ),
     role: bi(
-      "Mengembangkan modul Smart Contracting untuk pengelolaan kontrak, peninjauan pesanan legal, dan konfigurasi kontrak, sekaligus merancang Host Shell micro-frontend berbasis Module Federation menggunakan Vite, React 19, Ant Design 5, dan TanStack Router.",
-      "Developed Smart Contracting features for contract management, legal order reviews, and contract configuration, and designed a Module Federation-based micro-frontend Host Shell using Vite, React 19, Ant Design 5, and TanStack Router."
+      "Saya mengembangkan modul Smart Contracting dan merancang Host Shell yang menghubungkan modul micro-frontend.",
+      "I built Smart Contracting features and designed the Host Shell that connects the micro-frontends."
     ),
     bullets: [
       bi(
@@ -304,13 +317,17 @@ export const projects: ProjectEntry[] = [
       "PT Sigma Cipta Caraka (Tim Pengelola WBS Telkomsigma)",
       "PT Sigma Cipta Caraka (WBS Management Team)"
     ),
+    shortDescription: bi(
+      "Sistem internal untuk mencatat dan menelaah laporan dugaan pelanggaran.",
+      "An internal system for logging and reviewing reports of suspected misconduct."
+    ),
     description: bi(
       "Aplikasi Whistleblowing System (WBS) internal bagi Tim Pengelola WBS Telkomsigma untuk menangani laporan dugaan pelanggaran etika dan tata kelola perusahaan sesuai prinsip ISO 37002. Fitur utamanya meliputi dasbor analitik, penelaahan kasus bertahap, registrasi laporan dari berbagai kanal, dan pengunggahan bukti secara aman.",
       "An internal Whistleblowing System (WBS) for Telkomsigma's WBS Management Team to handle reports of suspected ethics and corporate governance violations in line with ISO 37002. Key features include analytics dashboards, multi-stage case reviews, multi-channel report registration, and secure evidence uploads."
     ),
     role: bi(
-      "Mengembangkan antarmuka aplikasi web Whistleblowing System internal bagi Tim Pengelola WBS Telkomsigma untuk penanganan dugaan pelanggaran etik dan tata kelola perusahaan (ISO 37002) menggunakan Next.js (App Router), React 19, TypeScript, Tailwind CSS v4, dan TanStack Query; mengimplementasikan dasbor analitik eksekutif dengan grafik Recharts, tabel data penelaahan kasus multi-tahap (validasi-verifikasi dan pemeriksaan), serta formulir registrasi pengaduan multi-kanal (surat, telepon, dan email); merancang lapisan keamanan pengunggahan berkas bukti berbasis inspeksi tanda tangan biner (magic bytes) dan integrasi pemindaian virus ClamAV; mengintegrasikan dukungan multi-bahasa (i18next) dan manajemen formulir kuesioner; serta mengelola kontrol akses berbasis peran (RBAC).",
-      "Developed internal Whistleblowing System web application interfaces for Telkomsigma's WBS Management Team to handle corporate ethics and governance violation cases (ISO 37002) using Next.js (App Router), React 19, TypeScript, Tailwind CSS v4, and TanStack Query; implemented executive analytics dashboards with Recharts, multi-stage case assessment data tables (validation-verification and inspection), and multi-channel report registration forms (letter, phone, and email); designed evidence file upload security layers based on binary file signature inspection (magic bytes) and ClamAV antivirus scanning integration; integrated multilingual support (i18next) and configurable questionnaire management modules; maintained role-based access control (RBAC)."
+      "Saya mengembangkan antarmuka pelaporan dan penelaahan kasus serta merancang validasi keamanan untuk unggahan bukti.",
+      "I developed the reporting and case review interfaces and designed security checks for evidence uploads."
     ),
     bullets: [
       bi(
@@ -357,13 +374,17 @@ export const projects: ProjectEntry[] = [
       "PT Sigma Cipta Caraka (Tim Service Desk & Operasional Layanan TI)",
       "PT Sigma Cipta Caraka (Service Desk & IT Operations Team)"
     ),
+    shortDescription: bi(
+      "Dasbor pemantauan tiket layanan TI selama Ramadan, Natal, dan Tahun Baru.",
+      "A dashboard for tracking IT service tickets during Ramadan, Christmas, and New Year."
+    ),
     description: bi(
-      "Aplikasi web terpusat untuk memantau tiket layanan TI selama periode sibuk Ramadan serta Natal dan Tahun Baru. Digunakan oleh tim Service Desk dan Operasional Layanan untuk memantau sekitar 40 unit penyedia layanan melalui pembaruan data otomatis berkala.",
-      "A centralized web application for monitoring IT service tickets during the busy Ramadan and Christmas–New Year periods. It supports Service Desk and Operations teams across approximately 40 service provider units, with regularly refreshed data."
+      "Aplikasi web terpusat untuk memantau tiket layanan TI selama periode sibuk Ramadan serta Natal dan Tahun Baru. Tim Service Desk dan Operasional Layanan dapat mengikuti status tiket melalui pembaruan data berkala.",
+      "A centralized web application for monitoring IT service tickets during the busy Ramadan and Christmas–New Year periods. Service Desk and Operations teams can track ticket status with regularly refreshed data."
     ),
     role: bi(
-      "Mengembangkan arsitektur frontend dan dasbor status tiket menggunakan Next.js (App Router), React 19, TypeScript, dan Tailwind CSS. Menerapkan pembaruan data otomatis setiap 30 detik, visualisasi Recharts, formulir unggah bukti penanganan tiket, dan modul data master jadwal kerja.",
-      "Developed the frontend architecture and ticket monitoring dashboards using Next.js (App Router), React 19, TypeScript, and Tailwind CSS. Implemented automatic data polling every 30 seconds, Recharts visualizations, ticket resolution evidence uploads, and shift schedule master data modules."
+      "Saya mengembangkan arsitektur frontend, dasbor status tiket, dan antarmuka untuk pencatatan kendala serta pengelolaan data operasional.",
+      "I developed the frontend architecture, ticket status dashboards, and interfaces for issue reporting and operational data management."
     ),
     bullets: [
       bi(
@@ -375,8 +396,8 @@ export const projects: ProjectEntry[] = [
         "Built service issue reporting forms with support for uploading resolution evidence using multipart/form-data."
       ),
       bi(
-        "Membangun modul data master operasional untuk kategori tiket, penyedia layanan, dan jadwal shift, beserta dialog detail riwayat penanganan.",
-        "Built operational master data modules for ticket categories, service providers, and shift schedules, along with dialogs for viewing ticket resolution histories."
+        "Membangun modul data master untuk kategori tiket, sekitar 40 unit penyedia layanan, dan jadwal shift, serta dialog riwayat penanganan tiket.",
+        "Built master data for approximately 40 service-provider units, as well as modules for ticket categories, shift schedules, and ticket resolution history."
       ),
       bi(
         "Membangun validasi jadwal shift berdasarkan waktu lokal agar status petugas yang sedang bertugas ditampilkan secara akurat.",
@@ -410,13 +431,17 @@ export const projects: ProjectEntry[] = [
       "PT Sigma Cipta Caraka (Tim Sales Support & Presales)",
       "PT Sigma Cipta Caraka (Sales Support & Presales Team)"
     ),
+    shortDescription: bi(
+      "Aplikasi untuk mencari dan membandingkan tender pemerintah dari LPSE dan SiRUP.",
+      "An app for finding and comparing government tenders from LPSE and SiRUP."
+    ),
     description: bi(
       "Aplikasi web intelijen pengadaan pemerintah yang mengolah informasi dari portal LPSE dan SiRUP. Membantu tim Sales Support dan Presales menemukan peluang tender TI, membandingkan rencana pengadaan dengan tender aktif, serta mengelola konfigurasi pengambilan data otomatis (scraping).",
       "A government procurement intelligence application that aggregates data from LPSE and SiRUP. It helps Sales Support and Presales teams identify IT tender opportunities, compare procurement plans with active tenders, and manage automated data collection (scraping)."
     ),
     role: bi(
-      "Mengembangkan katalog rencana pengadaan SiRUP, dasbor analitik tender, fitur perbandingan tender berdampingan, pelacak durasi interaksi pengguna (dwell tracker), dan konfigurasi kata kunci KBLI untuk scraping menggunakan React 18, TypeScript, Vite, Tailwind CSS, TanStack Query, dan Zustand.",
-      "Developed the SiRUP procurement catalog, tender analytics dashboards, side-by-side tender comparisons, user interaction duration tracking (dwell tracker), and KBLI keyword settings for scraping using React 18, TypeScript, Vite, Tailwind CSS, TanStack Query, and Zustand."
+      "Saya membangun antarmuka untuk pencarian, analisis, dan perbandingan tender, serta konfigurasi pengambilan data otomatis.",
+      "I built interfaces for searching, analyzing, and comparing tenders, as well as settings for automated data collection."
     ),
     bullets: [
       bi(
@@ -463,13 +488,17 @@ export const projects: ProjectEntry[] = [
       "PT Sigma Cipta Caraka (Klien: BPJS Kesehatan)",
       "PT Sigma Cipta Caraka (Client: BPJS Kesehatan)"
     ),
+    shortDescription: bi(
+      "Aplikasi manajemen aset tetap untuk BPJS Kesehatan.",
+      "A fixed asset management app for BPJS Kesehatan."
+    ),
     description: bi(
       "Integrated Management Asset and Procurement System — aplikasi manajemen aset untuk BPJS Kesehatan.",
       "Integrated Management Asset and Procurement System — an enterprise asset management application for BPJS Kesehatan."
     ),
     role: bi(
-      "Mengembangkan modul persetujuan aset bertingkat dengan navigasi beberapa tab, direktori aset tetap, usulan penghapusan aset, dan manajemen pengguna menggunakan Angular 18 dan NG-ZORRO. Mengintegrasikan REST API dengan TypeScript dan mengonfigurasi header keamanan untuk mencegah clickjacking.",
-      "Developed multi-step asset approval workflows, a fixed asset directory, asset disposal proposals, and user management using Angular 18 and NG-ZORRO. Integrated type-safe REST APIs and configured anti-clickjacking security headers."
+      "Saya mengembangkan antarmuka inventaris, persetujuan aset, dan manajemen pengguna menggunakan Angular 18 dan NG-ZORRO.",
+      "I built interfaces for asset inventory, asset approvals, and user management using Angular 18 and NG-ZORRO."
     ),
     bullets: [
       bi(
@@ -511,13 +540,17 @@ export const projects: ProjectEntry[] = [
       "PT Sigma Cipta Caraka (Divisi Corporate Information System)",
       "PT Sigma Cipta Caraka (Corporate Information System Division)"
     ),
+    shortDescription: bi(
+      "Pemeliharaan antarmuka dan keamanan dua aplikasi web perusahaan.",
+      "Frontend and security maintenance for two enterprise web applications."
+    ),
     description: bi(
       "Pemeliharaan dan peningkatan keamanan frontend pada 2 aplikasi web enterprise dalam layanan terkelola (managed services). Pekerjaan mencakup perbaikan temuan pemindaian kerentanan (XSS, CSP, dan Open Redirect), kompatibilitas SSR dengan Node.js 22, serta perbaikan alur transaksi pengadaan.",
       "Frontend maintenance and security improvements across 2 enterprise web applications under a managed services arrangement. Work included remediation of vulnerability scan findings (XSS, CSP, and Open Redirect), Node.js 22 SSR compatibility fixes, and procurement workflow improvements."
     ),
     role: bi(
-      "Mengembangkan pembaruan antarmuka, memperbaiki bug, dan mengimplementasikan perbaikan keamanan frontend pada 2 aplikasi web enterprise menggunakan Vue.js, Nuxt.js, TypeScript, dan Tailwind CSS; mengimplementasikan composable sanitasi data (useSanitize, useSvgSanitizer) dan Content Security Policy (CSP) untuk penguatan terhadap Cross-Site Scripting (XSS); merancang sanitasi URL pengalihan login guna mencegah celah Open Redirect; memasang pelindung kompatibilitas Server-Side Rendering (SSR guards) untuk stabilitas di lingkungan Node 22; serta menguji dan memperbaiki logika penguraian ID Purchase Order dan integrasi REST API publik.",
-      "Developed frontend updates, resolved bug-fix tickets, and implemented frontend security remediations across 2 enterprise web applications using Vue.js, Nuxt.js, TypeScript, and Tailwind CSS; implemented data sanitization composables (useSanitize, useSvgSanitizer) and Content Security Policy (CSP) headers to harden against Cross-Site Scripting (XSS); designed login redirect URL sanitization to prevent Open Redirect vulnerabilities; implemented Server-Side Rendering (SSR) compatibility guards ensuring stability in Node 22 environments; tested and fixed Purchase Order ID parsing logic and public REST API integrations."
+      "Saya memelihara antarmuka, memperbaiki alur pengadaan, dan menangani temuan keamanan frontend pada dua aplikasi web.",
+      "I maintained the interfaces, fixed procurement workflows, and addressed frontend security findings across two web applications."
     ),
     bullets: [
       bi(
@@ -561,13 +594,17 @@ export const projects: ProjectEntry[] = [
       "PT Sigma Cipta Caraka (Klien: PT Pertamina International Shipping)",
       "PT Sigma Cipta Caraka (Client: PT Pertamina International Shipping)"
     ),
+    shortDescription: bi(
+      "Portal dan sistem manajemen konten untuk Pertamina International Shipping.",
+      "A web portal and content management system for Pertamina International Shipping."
+    ),
     description: bi(
       "Portal web dan sistem manajemen konten (CMS) untuk PT Pertamina International Shipping, dikembangkan dengan C#/.NET 8 dan Blazor Server dalam arsitektur microservices. Fitur meliputi publikasi berita perusahaan, pengelolaan arsip dokumen, formulir interaktif, dan integrasi Single Sign-On.",
       "An enterprise portal and content management system (CMS) for PT Pertamina International Shipping, built with C#/.NET 8 and Blazor Server in a microservices architecture. Features include corporate news publishing, document archives, interactive forms, and Single Sign-On integration."
     ),
     role: bi(
-      "Mengembangkan dan memelihara antarmuka portal web enterprise serta sistem manajemen konten (CMS) PT Pertamina International Shipping menggunakan C#, .NET 8.0, ASP.NET Core, dan Blazor Server (Interactive Server Mode) dalam arsitektur microservices; menstandardisasi pewarisan kelas dasar dan siklus hidup komponen pada pustaka antarmuka Oktaf.UI lintas ratusan berkas komponen Razor; mengimplementasikan penanganan deserialisasi nilai null dan peningkatan stabilitas pada modul Form Builder serta editor CMS; merancang antarmuka navigasi bertingkat (StickyMenu) dengan indikator tahapan; mengintegrasikan Mock Authentication Middleware pada 6 microservice backend untuk simulasi otorisasi peran (RBAC) di lingkungan pengembangan lokal; serta memelihara konfigurasi konfigurasi kontainer Docker.",
-      "Developed and maintained enterprise web portal interfaces and content management systems (CMS) for PT Pertamina International Shipping using C#, .NET 8.0, ASP.NET Core, and Blazor Server (Interactive Server Mode) within a microservices architecture; standardized base component inheritance and lifecycle execution across the Oktaf.UI Razor component library across hundreds of component files; implemented null deserialization safeguards and stability enhancements on the Form Builder and CMS editor; designed multi-level navigation interfaces (StickyMenu) with step progress indicators; integrated Mock Authentication Middleware across 6 backend microservices to simulate role-based authorization (RBAC) in local environments; maintained Docker containerization configurations."
+      "Saya mengembangkan dan memelihara antarmuka portal dan CMS, menstandarkan pustaka komponen, serta memelihara konfigurasi kontainer Docker.",
+      "I developed and maintained the portal and CMS interfaces, standardized the component library, and maintained Docker container configuration."
     ),
     bullets: [
       bi(
@@ -613,13 +650,17 @@ export const projects: ProjectEntry[] = [
       "PT Sigma Cipta Caraka (Tim ITSM Platform)",
       "PT Sigma Cipta Caraka (ITSM Platform Team)"
     ),
+    shortDescription: bi(
+      "Aplikasi untuk mengelola dan meninjau permintaan perubahan layanan TI.",
+      "An app for managing and reviewing IT service change requests."
+    ),
     description: bi(
       "Aplikasi IT Service Management (ITSM) berbasis web untuk pengelolaan layanan TI perusahaan sesuai praktik ITIL. Fitur mencakup permintaan perubahan sistem, peninjauan oleh Change Advisory Board (CAB), dan verifikasi dokumen terkait risiko.",
       "An enterprise IT Service Management (ITSM) application supporting ITIL-aligned operations, including change requests, Change Advisory Board (CAB) reviews, and risk documentation checks."
     ),
     role: bi(
-      "Memelihara modul Change Management pada platform ITSM menggunakan Vue 3 (Composition API), TypeScript, Vite, Tailwind CSS, dan Pinia. Menangani tiket bug dan Change Request (CR), membangun alur persetujuan CAB (penetapan dan penugasan ulang peninjau), matriks 35 dokumen justifikasi wajib, serta kontrol akses koordinator perubahan.",
-      "Maintained the Change Management module of an enterprise ITSM platform using Vue 3 (Composition API), TypeScript, Vite, Tailwind CSS, and Pinia. Resolved bug tickets and Change Requests (CRs), implemented CAB approval workflows (assigning and reassigning reviewers), a matrix of 35 required justification documents, and change coordinator access controls."
+      "Saya memelihara modul Change Management dan mengembangkan alur persetujuan serta validasi dokumen.",
+      "I maintained the Change Management module and built approval and document validation workflows."
     ),
     bullets: [
       bi(
@@ -663,13 +704,17 @@ export const projects: ProjectEntry[] = [
       "PT Sigma Cipta Caraka (Tim Cyber Security)",
       "PT Sigma Cipta Caraka (Cyber Security Team)"
     ),
+    shortDescription: bi(
+      "Aplikasi untuk memantau aset digital dan tindak lanjut temuan keamanan siber.",
+      "An app for monitoring digital assets and tracking how security findings are addressed."
+    ),
     description: bi(
       "Aplikasi web untuk Continuous Automated Red Teaming dan Attack Surface Management yang membantu memantau kerentanan aset digital perusahaan, kebocoran kredensial, dan alur remediasi keamanan siber.",
       "A Continuous Automated Red Teaming and Attack Surface Management web application for monitoring corporate digital asset vulnerabilities, credential leaks, and cybersecurity remediation workflows."
     ),
     role: bi(
-      "Memelihara dan menyempurnakan modul konfigurasi paket layanan audit keamanan siber (Packages), dialog pengelolaan domain klien, serta konsistensi tata letak dan palet warna sistem desain menggunakan Nuxt 3, Vue.js, Pinia, dan Vee-Validate/Yup.",
-      "Maintained and improved cybersecurity audit package configuration (Packages), client domain management dialogs, and design system consistency using Nuxt 3, Vue.js, Pinia, and Vee-Validate/Yup."
+      "Saya memelihara antarmuka konfigurasi audit dan pengelolaan domain klien serta menyeragamkan tampilan.",
+      "I maintained the audit configuration and client domain interfaces and standardized their visual design."
     ),
     bullets: [
       bi(
@@ -705,13 +750,17 @@ export const projects: ProjectEntry[] = [
     name: "E-Commerce Bulk Orders Website",
     period: bi("Mei 2026 – Jun 2026", "May 2026 – Jun 2026"),
     company: bi("Tumbuhin Digital", "Tumbuhin Digital"),
+    shortDescription: bi(
+      "Situs e-commerce untuk pemesanan besar, pembayaran bertahap, dan pengiriman.",
+      "An e-commerce site for bulk orders, split payments, and shipment tracking."
+    ),
     description: bi(
       "Situs e-commerce untuk pembelian dalam jumlah besar (bulk orders) dengan fitur pembayaran bertahap (split payment), pemenuhan pesanan per item, sinkronisasi filter dengan parameter URL, dan dasbor analitik penjualan berbasis Recharts.",
       "A bulk-order e-commerce website featuring split payments, item-level order fulfillment, URL-synchronized filters, and sales analytics dashboards powered by Recharts."
     ),
     role: bi(
-      "Merancang dan mengimplementasikan manajemen state keranjang belanja pada situs web e-commerce pemesanan partai besar (bulk orders) menggunakan Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4, Zustand, dan TanStack Query; mengintegrasikan pembaruan antarmuka optimistik (optimistic UI updates) dengan pemulihan otomatis saat gangguan jaringan; mengembangkan alur pemesanan multi-tahap dan konfirmasi pelunasan bertahap (split payment); mengimplementasikan panel pemenuhan pesanan per item (item-level fulfillment) dengan pencegahan duplikasi kartu resi pengiriman; serta memelihara sanitasi input sisi klien (isomorphic-dompurify) dan visualisasi analitik Recharts.",
-      "Designed and implemented cart state management for a commercial bulk-orders e-commerce website using Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4, Zustand, and TanStack Query; integrated optimistic UI updates with automated state rollback on network disruptions; developed multi-step checkout workflows and split payment settlement confirmations; implemented a granular item-level order fulfillment panel featuring duplicate shipment tracking card prevention; and maintained client-side input sanitization (isomorphic-dompurify) alongside Recharts analytics visualizations."
+      "Saya mengembangkan pengelolaan keranjang belanja, alur pemesanan dan pembayaran, serta panel pemenuhan pesanan per item.",
+      "I developed shopping cart state management, checkout and payment workflows, and the item-level fulfillment panel."
     ),
     bullets: [
       bi(
@@ -723,8 +772,8 @@ export const projects: ProjectEntry[] = [
         "Developed split-payment workflows and second-installment confirmation dialogs, clearly separating paid and unpaid items."
       ),
       bi(
-        "Mengimplementasikan panel pemenuhan pesanan per item (item-level fulfillment) dengan validasi pembatasan angka (clamping) dan algoritma deduplikasi kartu nomor resi pengiriman (airway bill de-duplication).",
-        "Implemented a granular item-level order fulfillment panel with manual quantity input clamping and duplicate shipment tracking card prevention algorithms."
+        "Mengembangkan panel pemenuhan pesanan per item yang membatasi jumlah sesuai rentang yang valid dan mencegah duplikasi entri resi pengiriman.",
+        "Built an item-level fulfillment panel, validated quantity ranges, and prevented duplicate shipment-tracking entries."
       ),
       bi(
         "Mengembangkan katalog produk responsif dengan filter yang tersinkron dengan parameter URL, serta dialog detail laporan penjualan menggunakan Embla Carousel.",
@@ -759,13 +808,17 @@ export const projects: ProjectEntry[] = [
       "PT Telkom Indonesia – Netmonk",
       "PT Telkom Indonesia – Netmonk"
     ),
+    shortDescription: bi(
+      "Purwarupa dasbor analitik untuk memantau pesanan layanan telekomunikasi.",
+      "An analytics dashboard prototype for tracking telecommunications service orders."
+    ),
     description: bi(
       "Purwarupa aplikasi analitik operasional untuk ekosistem Netmonk (PT Telkom Indonesia), dengan pemantauan pesanan layanan regional (NCX dan Scone), dasbor Metabase tertanam yang diamankan dengan JWT, serta autentikasi dual-token.",
       "An operational analytics prototype for PT Telkom Indonesia's Netmonk ecosystem, featuring regional service order tracking (NCX and Scone), JWT-secured embedded Metabase dashboards, and dual-token authentication."
     ),
     role: bi(
-      "Mengembangkan purwarupa aplikasi web analitik operasional telekomunikasi Netmonk Analytics (PT Telkom Indonesia) menggunakan React, Tailwind CSS, Redux Toolkit, Node.js (Express), dan MongoDB; memantau siklus pesanan layanan telekomunikasi (NCX dan Scone) lintas 7 divisi regional (TREG) dan 40+ wilayah telekomunikasi (Witel); merancang arsitektur keamanan akses dasbor Metabase tertanam menggunakan token JWT bertanda tangan kriptografis dengan masa kedaluwarsa 10 menit (dipertahankan sebagai skripsi sarjana di UGM); serta mengintegrasikan sistem autentikasi dual-token dengan penanganan silent refresh pada RTK Query.",
-      "Developed the Netmonk Analytics operational analytics web prototype (PT Telkom Indonesia) using React, Tailwind CSS, Redux Toolkit, Node.js (Express), and MongoDB; monitored telecommunication order fulfillment cycles (NCX and Scone) across 7 regional divisions (TREG) and 40+ branch offices (Witel); designed secure access architectures for embedded Metabase dashboards leveraging cryptographic JWT signing with 10-minute expiration windows (defended as undergraduate thesis at UGM); and integrated dual-token authentication featuring silent re-authentication via RTK Query."
+      "Saya mengembangkan purwarupa antarmuka pemantauan pesanan dan merancang pengamanan akses ke dasbor Metabase tertanam.",
+      "I built the order monitoring prototype and designed secure access for its embedded Metabase dashboards."
     ),
     bullets: [
       bi(

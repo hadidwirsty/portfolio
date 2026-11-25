@@ -53,8 +53,11 @@ test("portfolio-card-folder curates exactly 6 featured projects in exact order",
 test("portfolio-card-folder implements responsive grid and section header", () => {
   const source = fs.readFileSync(COMPONENT_PATH, "utf-8")
 
-  // Section header 02
-  assert.match(source, /02 \/\//, "must have section index 02 //")
+  assert.match(source, /aria-labelledby="portfolio-projects-heading"/)
+  assert.match(
+    source,
+    /<h2[^>]*id="portfolio-projects-heading"[^>]*>\s*\{lang === "id" \? "Proyek" : "Projects"\}/
+  )
 
   // Responsive grid
   assert.match(

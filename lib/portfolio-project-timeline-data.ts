@@ -275,7 +275,7 @@ function buildProjectTimelineItems(): ProjectTimelineItem[] {
       company: cvProject.company,
       role: cvProject.role,
       category: getProjectCategory(cvProject.id),
-      shortDescription: cvProject.description,
+      shortDescription: cvProject.shortDescription,
       techStack: meta.techStack,
       coverImage: meta.coverImage,
       imagePosition: meta.imagePosition,
