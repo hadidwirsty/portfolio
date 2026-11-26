@@ -2,9 +2,14 @@ import { test } from "node:test"
 import assert from "node:assert"
 import fs from "node:fs"
 import path from "node:path"
+import { createRequire } from "node:module"
+import { createElement } from "react"
+import { renderToStaticMarkup } from "react-dom/server"
 
 import {
   CERTIFICATES_DATA,
+  CERTIFICATION_ISSUERS,
+  LEARNING_ARCHIVE_HERO,
   getFeaturedCertificatesByIssuer,
   getIssuerCount,
   getTotalCertificatesCount,
@@ -112,6 +117,11 @@ test("dicoding certificates match exact user-provided titles, categories and IDs
       exp.id,
       `Course "${exp.title}" must match certificate ID ${exp.id}`
     )
+    assert.equal(
+      found.credentialUrl,
+      `https://www.dicoding.com/certificates/${exp.id}`,
+      `Course "${exp.title}" must link to its official Dicoding credential`
+    )
   }
 
   // Categories breakdown (7 + 4 + 3 + 2 = 16)
@@ -142,7 +152,7 @@ test("dicoding certificates match exact user-provided titles, categories and IDs
   )
 })
 
-test("linkedin certificates match exact titles and do not fabricate certificate IDs or URLs", () => {
+test("LinkedIn certificates match exact titles and have distinct canonical credential URLs", () => {
   const linkedinCerts = CERTIFICATES_DATA.filter(
     (c) => c.issuerId === "linkedin"
   )
@@ -174,20 +184,24 @@ test("linkedin certificates match exact titles and do not fabricate certificate 
     "Practical Ethics for Businesses and Individuals",
   ]
 
+  const urls = new Set<string>()
   for (const title of expectedLinkedInTitles) {
     const found = linkedinCerts.find((c) => c.title === title)
     assert.ok(found, `LinkedIn Learning course "${title}" must exist`)
-    assert.strictEqual(
-      found.certificateId,
-      undefined,
-      `LinkedIn course "${title}" must not fabricate a certificate ID`
-    )
-    assert.strictEqual(
+    assert.equal(found.certificateId, undefined)
+    assert.ok(found.credentialUrl, `Missing credential URL for "${title}"`)
+    assert.match(
       found.credentialUrl,
-      undefined,
-      `LinkedIn course "${title}" must not fabricate a credential URL`
+      /^https:\/\/www\.linkedin\.com\/learning\/certificates\/[a-f0-9]{64}$/
     )
+    urls.add(found.credentialUrl)
   }
+  assert.equal(urls.size, expectedLinkedInTitles.length)
+  assert.equal(
+    linkedinCerts.find((cert) => cert.id === "linkedin-fearless-mindfulness")
+      ?.credentialUrl,
+    "https://www.linkedin.com/learning/certificates/26433d7c1cad2831159479820b146860cd76547c4439efe1ea9125af227f2ead"
+  )
 
   // Categories breakdown (2 + 6 + 7 + 4 + 3 = 22)
   const reactCerts = linkedinCerts.filter(
@@ -237,10 +251,20 @@ test("other credentials contains exactly 3 historical records separate from the 
 
 test("featured certificates reference canonical data by stable IDs without duplicating records", () => {
   const dicodingFeatured = getFeaturedCertificatesByIssuer("dicoding")
-  assert.strictEqual(dicodingFeatured.length, 3)
+  assert.deepEqual(
+    dicodingFeatured.map(({ id }) => id),
+    ["dicoding-react-expert", "dicoding-fe-tools", "dicoding-fe-fundamental"]
+  )
 
   const linkedinFeatured = getFeaturedCertificatesByIssuer("linkedin")
-  assert.strictEqual(linkedinFeatured.length, 3)
+  assert.deepEqual(
+    linkedinFeatured.map(({ id }) => id),
+    [
+      "linkedin-react-essential",
+      "linkedin-react-practice",
+      "linkedin-agile-foundations",
+    ]
+  )
 
   // Ensure each featured certificate exists in CERTIFICATES_DATA
   for (const feat of [...dicodingFeatured, ...linkedinFeatured]) {
@@ -253,23 +277,86 @@ test("featured certificates reference canonical data by stable IDs without dupli
   }
 })
 
-test("accessibility hardening: closed document preview cards are non-interactive", () => {
-  assert.ok(
-    fs.existsSync(DOC_PREVIEW_PATH),
-    "certificate-document-preview.tsx must exist"
+const requireFromTest = createRequire(import.meta.url)
+const jitiPath = requireFromTest.resolve("jiti", {
+  paths: [requireFromTest.resolve("eslint")],
+})
+const loadTsx = requireFromTest(jitiPath).createJiti(import.meta.url, {
+  jsx: { runtime: "automatic" },
+  fsCache: false,
+  alias: { "@": process.cwd() },
+})
+
+const FOLDER_PATH = path.resolve("components/stack/certification-folder.tsx")
+
+test("closed certification folders expose only the disclosure button; open folders expose three separate papers", () => {
+  const { CertificationFolder } = loadTsx(
+    FOLDER_PATH
+  ) as typeof import("../../components/stack/certification-folder")
+  const { LanguageProvider } = loadTsx(
+    "@/lib/language-context"
+  ) as typeof import("../../lib/language-context")
+  for (const issuer of Object.values(CERTIFICATION_ISSUERS)) {
+    const featured = getFeaturedCertificatesByIssuer(issuer.id)
+    const render = (isOpen: boolean) =>
+      renderToStaticMarkup(
+        createElement(
+          LanguageProvider,
+          null,
+          createElement(CertificationFolder, {
+            issuer,
+            isOpen,
+            selectedCertId: isOpen ? featured[0].id : null,
+            onToggle: () => {},
+            onSelectCert: () => {},
+            onCloseDetail: () => {},
+          })
+        )
+      )
+    const closed = render(false)
+    assert.equal((closed.match(/<button\b/g) ?? []).length, 1)
+    assert.match(closed, /aria-expanded="false"/)
+    assert.match(closed, /<\/button>[\s\S]*?data-certificate-stack/)
+    assert.match(closed, /aria-hidden="true"[^>]*data-certificate-stack/)
+    assert.doesNotMatch(closed, /aria-pressed=/)
+
+    const open = render(true)
+    const target = open.match(/aria-controls="([^"]+)"/)?.[1]
+    assert.ok(target)
+    assert.ok(open.includes(`id="${target}"`))
+    assert.match(open, /aria-expanded="true"/)
+    assert.equal((open.match(/aria-pressed="(?:true|false)"/g) ?? []).length, 3)
+    assert.equal((open.match(/aria-pressed="true"/g) ?? []).length, 1)
+    assert.match(open, /<ul[^>]*grid-cols-1[^>]*grid-cols-3/)
+    assert.doesNotMatch(open, /data-certificate-stack/)
+  }
+
+  const preview = fs.readFileSync(DOC_PREVIEW_PATH, "utf-8")
+  assert.match(preview, /initial=\{shouldReduceMotion \? false :/)
+  assert.match(preview, /delay: shouldReduceMotion \? 0 :/)
+})
+
+test("folder Escape is locally owned and returns focus to the relevant trigger", () => {
+  const grid = fs.readFileSync(
+    "components/stack/certification-folder-grid.tsx",
+    "utf-8"
   )
-  const source = fs.readFileSync(DOC_PREVIEW_PATH, "utf-8")
-
-  // tabIndex={isOpen ? 0 : -1} and aria-hidden={!isOpen}
-  assert.match(source, /tabIndex=\{isOpen \? 0 : -1\}/)
-  assert.match(source, /aria-hidden=\{!isOpen\}/)
-
-  // pointer-events-none when closed
+  const folder = fs.readFileSync(FOLDER_PATH, "utf-8")
+  assert.doesNotMatch(grid, /addEventListener\("keydown"/)
+  assert.match(folder, /<article\s+onKeyDown=\{handleEscape\}/)
   assert.match(
-    source,
-    /isOpen[\s\S]*?pointer-events-auto[\s\S]*?pointer-events-none/,
-    "must apply pointer-events-none when folder is closed"
+    folder,
+    /event\.key !== "Escape"[\s\S]*?event\.defaultPrevented[\s\S]*?!isOpen/
   )
+  assert.match(
+    folder,
+    /event\.preventDefault\(\)[\s\S]*?event\.stopPropagation\(\)/
+  )
+  assert.match(
+    folder,
+    /if \(selectedCert\) \{\s*handleCloseDetailWithFocus\(\)\s*\} else \{\s*onToggle\(\)\s*toggleButtonRef\.current\?\.focus\(\)/
+  )
+  assert.match(folder, /onCloseDetail\(\)[\s\S]*?selectedButton\?\.focus\(\)/)
 })
 
 test("certificate-detail provides neutral wording when credential URL is unavailable", () => {
@@ -308,6 +395,55 @@ test("certification-archive implements expandable 38-certificate listing with co
   assert.match(source, /OTHER_CREDENTIALS\.map/)
 })
 
+test("complete archive uses one collapsed disclosure labelled with the course count", () => {
+  const { CertificationArchive } = loadTsx(
+    ARCHIVE_PATH
+  ) as typeof import("../../components/stack/certification-archive")
+  const { LanguageProvider } = loadTsx(
+    "@/lib/language-context"
+  ) as typeof import("../../lib/language-context")
+  const html = renderToStaticMarkup(
+    createElement(LanguageProvider, null, createElement(CertificationArchive))
+  )
+  assert.equal((html.match(/<button\b/g) ?? []).length, 1)
+  assert.match(html, /aria-expanded="false"/)
+  assert.match(html, /(?:Lihat semua 38 sertifikat|View all 38 certificates)/)
+  const target = html.match(/aria-controls="([^"]+)"/)?.[1]
+  assert.ok(target)
+  assert.ok(html.includes(`id="${target}" hidden`))
+
+  const source = fs.readFileSync(ARCHIVE_PATH, "utf-8")
+  assert.match(source, /Lihat semua \$\{totalCount\} sertifikat/)
+  assert.match(source, /View all \$\{totalCount\} certificates/)
+  assert.match(source, /Tutup arsip/)
+  assert.match(source, /Close archive/)
+  assert.match(source, /handleCategoryChange\(cat\.id\)/)
+})
+
+test("archive announces the selected platform and category filters", () => {
+  const source = fs.readFileSync(ARCHIVE_PATH, "utf-8")
+
+  for (const issuer of ["all", "dicoding", "linkedin"]) {
+    assert.ok(
+      source.includes(`aria-pressed={activeIssuer === "${issuer}"}`),
+      `Missing pressed state for platform ${issuer}`
+    )
+  }
+  assert.match(source, /aria-pressed=\{activeCategory === "all"\}/)
+  assert.match(source, /aria-pressed=\{activeCategory === cat\.id\}/)
+})
+
+test("closing archive details restores focus to the selected certificate button", () => {
+  const source = fs.readFileSync(ARCHIVE_PATH, "utf-8")
+
+  assert.match(source, /ref=\{isSelected \? selectedButtonRef : undefined\}/)
+  assert.match(source, /onClose=\{handleCloseDetailWithFocus\}/)
+  assert.match(
+    source,
+    /const selectedButton = selectedButtonRef\.current\s+setSelectedCertId\(null\)\s+selectedButton\?\.focus\(\)/
+  )
+})
+
 test("app/stack/page.tsx renders single unified Section 02 learning archive without duplicate legacy component", () => {
   assert.ok(fs.existsSync(PAGE_PATH), "app/stack/page.tsx must exist")
   const source = fs.readFileSync(PAGE_PATH, "utf-8")
@@ -321,4 +457,118 @@ test("app/stack/page.tsx renders single unified Section 02 learning archive with
     /<CertificationsSection \/>/,
     "must remove redundant legacy CertificationsSection from /stack render tree"
   )
+})
+
+test("course dates match the audited source documents by stable ID", () => {
+  const expected: Record<string, [string, string?]> = {
+    "dicoding-web-dasar": ["2024-08-19", "2027-08-19"],
+    "dicoding-fe-pemula": ["2024-08-20", "2027-08-20"],
+    "dicoding-fe-fundamental": ["2024-09-14", "2027-09-14"],
+    "dicoding-fe-tools": ["2024-10-16", "2027-10-16"],
+    "dicoding-react-fundamental": ["2024-08-25", "2027-08-25"],
+    "dicoding-react-pemula": ["2024-08-22", "2027-08-22"],
+    "dicoding-react-expert": ["2024-10-02", "2027-10-02"],
+    "dicoding-js-dasar": ["2024-08-21", "2027-08-21"],
+    "dicoding-backend-pemula": ["2024-10-14", "2027-10-14"],
+    "dicoding-aws-cloud": ["2024-09-10", "2027-09-10"],
+    "dicoding-sql-dasar": ["2025-01-15", "2028-01-15"],
+    "dicoding-python-dasar": ["2025-01-13", "2028-01-13"],
+    "dicoding-python-prosedural": ["2024-01-15", "2027-01-15"],
+    "dicoding-data-science": ["2025-01-05", "2028-01-05"],
+    "dicoding-git-github": ["2021-10-17", "2024-10-17"],
+    "dicoding-project-management": ["2024-01-07", "2027-01-07"],
+    "linkedin-react-essential": ["2025-07-03"],
+    "linkedin-react-practice": ["2025-07-03"],
+    "linkedin-agile-foundations": ["2025-06-18"],
+    "linkedin-strategic-agility": ["2025-07-03"],
+    "linkedin-rapid-workplace-change": ["2025-07-03"],
+    "linkedin-cultural-humility": ["2025-06-24"],
+    "linkedin-embracing-uncertainty": ["2025-07-03"],
+    "linkedin-fearless-mindfulness": ["2025-07-03"],
+    "linkedin-speaking-up": ["2025-06-20"],
+    "linkedin-courage-to-speak-up": ["2025-07-03"],
+    "linkedin-nano-communicating-courage": ["2025-06-20"],
+    "linkedin-nano-strength-resilience": ["2025-06-17"],
+    "linkedin-courage-habit": ["2025-06-20"],
+    "linkedin-courage-self-compassion": ["2025-06-20"],
+    "linkedin-compassionate-purpose": ["2025-06-20"],
+    "linkedin-rapport-customers": ["2025-06-18"],
+    "linkedin-positive-conversations-customers": ["2025-06-20"],
+    "linkedin-nano-customer-centric": ["2025-06-20"],
+    "linkedin-personalized-sales": ["2025-06-20"],
+    "linkedin-business-ethics": ["2025-06-20"],
+    "linkedin-ethics-sales": ["2025-06-20"],
+    "linkedin-practical-ethics": ["2025-07-03"],
+  }
+
+  assert.equal(Object.keys(expected).length, CERTIFICATES_DATA.length)
+  for (const cert of CERTIFICATES_DATA) {
+    const dates = expected[cert.id]
+    assert.ok(dates, cert.id)
+    assert.equal(cert.issuedAt, dates[0], cert.id)
+    assert.equal(cert.expiresAt, dates[1], cert.id)
+    if (cert.expiresAt) assert.ok(dates[0] < cert.expiresAt)
+  }
+})
+
+test("Learning Archive uses a single bilingual summary and compact platform folders", () => {
+  assert.deepEqual(LEARNING_ARCHIVE_HERO.title, {
+    id: "Arsip Pembelajaran",
+    en: "Learning Archive",
+  })
+  const grid = fs.readFileSync(
+    "components/stack/certification-folder-grid.tsx",
+    "utf-8"
+  )
+  const folder = fs.readFileSync(
+    "components/stack/certification-folder.tsx",
+    "utf-8"
+  )
+  assert.match(grid, /getTotalCertificatesCount\(\)/)
+  assert.match(grid, /grid-cols-1[^"\n]*lg:grid-cols-2/)
+  assert.match(
+    folder,
+    /<Badge[^>]*variant="outline"[^>]*>\s*\{certCountLabel\}\s*<\/Badge>/
+  )
+  assert.doesNotMatch(folder, /\[Buka 3 Dokumen\]/)
+})
+
+test("credential actions are conditional native links in detail and archive", () => {
+  const detail = fs.readFileSync(DETAIL_PATH, "utf-8")
+  const archive = fs.readFileSync(ARCHIVE_PATH, "utf-8")
+  assert.match(detail, /<CertificateCredentialLink\s+certificate=\{cert\}/)
+  assert.match(
+    archive,
+    /<\/button>\s*<CertificateCredentialLink\s+certificate=\{cert\}/
+  )
+  const { CertificateCredentialLink } = loadTsx(
+    path.resolve("components/stack/certificate-credential-link.tsx")
+  ) as typeof import("../../components/stack/certificate-credential-link")
+
+  const title = "Example certificate"
+  const credentialUrl = "https://example.test/certificates/example"
+  const withoutUrl = renderToStaticMarkup(
+    createElement(CertificateCredentialLink, {
+      certificate: { title },
+      lang: "en",
+    })
+  )
+  assert.equal(withoutUrl, "")
+
+  for (const [lang, label, tabHint] of [
+    ["id", "Lihat sertifikat", "buka di tab baru"],
+    ["en", "Show credential", "opens in a new tab"],
+  ] as const) {
+    const html = renderToStaticMarkup(
+      createElement(CertificateCredentialLink, {
+        certificate: { title, credentialUrl },
+        lang,
+      })
+    )
+    assert.ok(html.startsWith("<a "))
+    assert.ok(html.includes(`href="${credentialUrl}"`))
+    assert.match(html, /target="_blank"/)
+    assert.match(html, /rel="noopener noreferrer"/)
+    assert.ok(html.includes(`aria-label="${label}: ${title} (${tabHint})"`))
+  }
 })

@@ -3,6 +3,7 @@
 import * as React from "react"
 import { BookOpen, ChevronDown, ChevronUp, GraduationCap } from "lucide-react"
 
+import { CertificateCredentialLink } from "@/components/stack/certificate-credential-link"
 import { CertificateDetail } from "@/components/stack/certificate-detail"
 import {
   CERTIFICATES_DATA,
@@ -25,6 +26,7 @@ export function CertificationArchive({ className }: CertificationArchiveProps) {
 
   // Archive expandable toggle state (default: collapsed)
   const [isExpanded, setIsExpanded] = React.useState(false)
+  const contentId = React.useId()
 
   // Filters state
   const [activeIssuer, setActiveIssuer] = React.useState<
@@ -36,6 +38,7 @@ export function CertificationArchive({ className }: CertificationArchiveProps) {
   const [selectedCertId, setSelectedCertId] = React.useState<string | null>(
     null
   )
+  const selectedButtonRef = React.useRef<HTMLButtonElement>(null)
 
   // When active issuer changes, reset category filter
   const handleIssuerChange = (issuer: "all" | "dicoding" | "linkedin") => {
@@ -51,6 +54,12 @@ export function CertificationArchive({ className }: CertificationArchiveProps) {
 
   const handleSelectCert = (certId: string) => {
     setSelectedCertId((current) => (current === certId ? null : certId))
+  }
+
+  const handleCloseDetailWithFocus = () => {
+    const selectedButton = selectedButtonRef.current
+    setSelectedCertId(null)
+    selectedButton?.focus()
   }
 
   // Derive filtered certificates
@@ -96,36 +105,19 @@ export function CertificationArchive({ className }: CertificationArchiveProps) {
         className
       )}
     >
-      {/* =========================================================
-          ARCHIVE HEADER & EXPAND TOGGLE
-          ========================================================= */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="space-y-1">
-          <span className="font-mono text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-            COMPLETE ARCHIVE
-          </span>
-
-          <h3
-            id="archive-heading"
-            className="font-heading text-xl font-bold tracking-tight text-foreground sm:text-2xl"
-          >
-            {lang === "id"
-              ? "Seluruh Sertifikat Kursus"
-              : "All Course Certificates"}
-          </h3>
-
-          <p className="font-sans text-xs text-muted-foreground sm:text-sm">
-            {lang === "id"
-              ? `Eksplorasi arsip lengkap 38 sertifikat kursus yang terbagi dalam 2 platform pembelajaran.`
-              : `Explore the complete archive of 38 course certificates across 2 learning platforms.`}
-          </p>
-        </div>
+        <h3
+          id="archive-heading"
+          className="font-heading text-xl font-bold tracking-tight text-foreground sm:text-2xl"
+        >
+          {lang === "id" ? "Arsip lengkap" : "Full archive"}
+        </h3>
 
         <button
           type="button"
           onClick={() => setIsExpanded((prev) => !prev)}
           aria-expanded={isExpanded}
-          aria-controls="archive-expandable-content"
+          aria-controls={contentId}
           className={cn(
             "inline-flex items-center justify-center gap-2 self-start rounded-xl px-4 py-2.5 font-mono text-xs font-semibold transition-all duration-200 sm:self-auto",
             "border border-border/60 bg-background/80 text-foreground shadow-2xs hover:border-border hover:bg-background",
@@ -137,11 +129,11 @@ export function CertificationArchive({ className }: CertificationArchiveProps) {
           <span>
             {isExpanded
               ? lang === "id"
-                ? "Tutup Arsip Lengkap"
-                : "Collapse Full Archive"
+                ? "Tutup arsip"
+                : "Close archive"
               : lang === "id"
-                ? `Buka Arsip Lengkap (38)`
-                : `Open Full Archive (38)`}
+                ? `Lihat semua ${totalCount} sertifikat`
+                : `View all ${totalCount} certificates`}
           </span>
           {isExpanded ? (
             <ChevronUp aria-hidden="true" className="size-4" />
@@ -151,25 +143,30 @@ export function CertificationArchive({ className }: CertificationArchiveProps) {
         </button>
       </div>
 
-      {/* =========================================================
-          EXPANDABLE ARCHIVE BODY
-          ========================================================= */}
-      {isExpanded && (
+      {isExpanded ? (
         <div
-          id="archive-expandable-content"
-          className="mt-8 animate-in space-y-8 border-t border-border/40 pt-6 duration-300 fade-in"
+          id={contentId}
+          className="mt-8 space-y-8 border-t border-border/40 pt-6 motion-safe:animate-in motion-safe:duration-300 motion-safe:fade-in"
         >
           {/* 1. FILTER CONTROLS */}
           <div className="space-y-4">
             {/* 1A. Issuer Platform Filter Pills */}
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="mr-1 font-mono text-[11px] font-semibold text-muted-foreground uppercase">
+            <div
+              role="group"
+              aria-labelledby={`${contentId}-platform`}
+              className="flex flex-wrap items-center gap-2"
+            >
+              <span
+                id={`${contentId}-platform`}
+                className="mr-1 font-mono text-[11px] font-semibold text-muted-foreground uppercase"
+              >
                 Platform:
               </span>
 
               <button
                 type="button"
                 onClick={() => handleIssuerChange("all")}
+                aria-pressed={activeIssuer === "all"}
                 className={cn(
                   "rounded-full px-3 py-1 font-mono text-xs font-medium transition-colors",
                   "border focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
@@ -184,6 +181,7 @@ export function CertificationArchive({ className }: CertificationArchiveProps) {
               <button
                 type="button"
                 onClick={() => handleIssuerChange("dicoding")}
+                aria-pressed={activeIssuer === "dicoding"}
                 className={cn(
                   "rounded-full px-3 py-1 font-mono text-xs font-medium transition-colors",
                   "border focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
@@ -198,6 +196,7 @@ export function CertificationArchive({ className }: CertificationArchiveProps) {
               <button
                 type="button"
                 onClick={() => handleIssuerChange("linkedin")}
+                aria-pressed={activeIssuer === "linkedin"}
                 className={cn(
                   "rounded-full px-3 py-1 font-mono text-xs font-medium transition-colors",
                   "border focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
@@ -212,14 +211,22 @@ export function CertificationArchive({ className }: CertificationArchiveProps) {
 
             {/* 1B. Contextual Category Filter Pills (when a specific platform is chosen) */}
             {contextualCategories.length > 0 && (
-              <div className="flex flex-wrap items-center gap-2 border-t border-border/30 pt-1">
-                <span className="mr-1 font-mono text-[11px] font-semibold text-muted-foreground uppercase">
+              <div
+                role="group"
+                aria-labelledby={`${contentId}-category`}
+                className="flex flex-wrap items-center gap-2 border-t border-border/30 pt-1"
+              >
+                <span
+                  id={`${contentId}-category`}
+                  className="mr-1 font-mono text-[11px] font-semibold text-muted-foreground uppercase"
+                >
                   {lang === "id" ? "Kategori:" : "Category:"}
                 </span>
 
                 <button
                   type="button"
                   onClick={() => handleCategoryChange("all")}
+                  aria-pressed={activeCategory === "all"}
                   className={cn(
                     "rounded-full px-2.5 py-0.5 font-mono text-[11px] font-medium transition-colors",
                     "border focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
@@ -236,6 +243,7 @@ export function CertificationArchive({ className }: CertificationArchiveProps) {
                     key={cat.id}
                     type="button"
                     onClick={() => handleCategoryChange(cat.id)}
+                    aria-pressed={activeCategory === cat.id}
                     className={cn(
                       "rounded-full px-2.5 py-0.5 font-mono text-[11px] font-medium transition-colors",
                       "border focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none",
@@ -257,7 +265,7 @@ export function CertificationArchive({ className }: CertificationArchiveProps) {
               <CertificateDetail
                 cert={selectedCert}
                 issuerName={selectedIssuerName}
-                onClose={() => setSelectedCertId(null)}
+                onClose={handleCloseDetailWithFocus}
               />
             </div>
           )}
@@ -279,52 +287,46 @@ export function CertificationArchive({ className }: CertificationArchiveProps) {
                 const issuerName = CERTIFICATION_ISSUERS[cert.issuerId].name
 
                 return (
-                  <button
+                  <div
                     key={cert.id}
-                    type="button"
-                    onClick={() => handleSelectCert(cert.id)}
                     className={cn(
-                      "flex flex-col justify-between rounded-xl p-3.5 text-left transition-all duration-200 select-none",
-                      "border border-border/50 bg-background/60 shadow-2xs hover:border-border hover:bg-background/95",
-                      "focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:outline-none",
+                      "flex flex-col items-start gap-3 rounded-xl border border-border/50 bg-background/60 p-3.5 shadow-2xs",
                       isSelected &&
-                        "border-primary bg-background shadow-xs ring-2 ring-primary/20"
+                        "border-primary bg-background ring-2 ring-primary/20"
                     )}
                   >
-                    <div className="space-y-1.5">
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="truncate font-mono text-[9px] font-semibold tracking-wider text-muted-foreground uppercase">
+                    <button
+                      ref={isSelected ? selectedButtonRef : undefined}
+                      type="button"
+                      onClick={() => handleSelectCert(cert.id)}
+                      aria-pressed={isSelected}
+                      className="group flex w-full flex-1 flex-col justify-between gap-2 rounded-sm text-left focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:outline-none"
+                    >
+                      <span className="flex flex-wrap items-center justify-between gap-2">
+                        <span className="font-mono text-[9px] font-semibold tracking-wider text-muted-foreground uppercase">
                           {issuerName}
                         </span>
                         {category && (
-                          <span className="max-w-[50%] truncate font-mono text-[8px] text-muted-foreground/70">
+                          <span className="font-mono text-[9px] text-muted-foreground">
                             {category.title[lang]}
                           </span>
                         )}
-                      </div>
-
-                      <h4 className="font-heading text-xs leading-snug font-bold text-foreground group-hover:text-primary sm:text-sm">
-                        {cert.title}
-                      </h4>
-                    </div>
-
-                    <div className="mt-3 flex items-center justify-between border-t border-border/30 pt-2 font-mono text-[9px] text-muted-foreground">
-                      <span>
-                        {cert.certificateId
-                          ? `ID: ${cert.certificateId}`
-                          : "Course Completed"}
                       </span>
-                      <span className="font-medium text-primary">
+                      <span className="font-heading text-xs leading-snug font-bold text-foreground group-hover:text-primary sm:text-sm">
+                        {cert.title}
+                      </span>
+                      <span className="font-mono text-[10px] font-medium text-primary">
                         {isSelected
                           ? lang === "id"
-                            ? "[Terpilih]"
-                            : "[Selected]"
+                            ? "Terpilih"
+                            : "Selected"
                           : lang === "id"
-                            ? "Lihat Detail"
-                            : "Details"}
+                            ? "Lihat detail"
+                            : "View details"}
                       </span>
-                    </div>
-                  </button>
+                    </button>
+                    <CertificateCredentialLink certificate={cert} lang={lang} />
+                  </div>
                 )
               })}
             </div>
@@ -375,6 +377,8 @@ export function CertificationArchive({ className }: CertificationArchiveProps) {
             </div>
           </div>
         </div>
+      ) : (
+        <div id={contentId} hidden />
       )}
     </section>
   )
