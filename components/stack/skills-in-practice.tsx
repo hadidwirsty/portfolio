@@ -3,7 +3,9 @@
 import * as React from "react"
 import Link from "next/link"
 import { motion, useReducedMotion } from "framer-motion"
+import { ArrowUpRight } from "lucide-react"
 
+import { FeaturePanelBackground } from "@/components/ui/feature-panel-background"
 import { LetterRoll } from "@/components/ui/letter-roll"
 import {
   Select,
@@ -38,6 +40,7 @@ const copy = {
     placeholder: "Pilih teknologi",
     clear: "Hapus pilihan",
     empty: "Pilih teknologi untuk melihat proyek terkait.",
+    projects: "Proyek terkait",
     related: (name: string) => `Proyek terkait ${name}`,
     count: (count: number) => `${count} proyek`,
   },
@@ -47,6 +50,7 @@ const copy = {
     placeholder: "Choose a technology",
     clear: "Clear selection",
     empty: "Choose a technology to see its projects.",
+    projects: "Related projects",
     related: (name: string) => `Projects using ${name}`,
     count: (count: number) =>
       `${count} ${count === 1 ? "project" : "projects"}`,
@@ -75,6 +79,9 @@ export function SkillsInPractice({
   )
   const headingRef = React.useRef<HTMLHeadingElement>(null)
   const selected = skills.find(({ id }) => id === selectedId)
+  const projectsHeadingId = selected
+    ? getSkillFragment(selected.id).slice(1)
+    : "skills-in-practice-projects"
 
   useContextualFragment("/stack", (fragment) => {
     const hasSkillFragment = fragment.startsWith(SKILL_FRAGMENT_PREFIX)
@@ -112,13 +119,9 @@ export function SkillsInPractice({
       }}
       id="skills-in-practice"
       aria-labelledby="skills-in-practice-heading"
-      className="relative isolate grid scroll-mt-20 gap-6 rounded-3xl border border-border/50 bg-linear-to-br from-card via-card/50 to-background p-6 shadow-xs sm:scroll-mt-24 sm:p-8 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-12"
+      className="feature-panel grid scroll-mt-20 gap-6 p-6 sm:scroll-mt-24 sm:p-8 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-12"
     >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-2 -z-10 rounded-[inherit] border border-dashed border-border/50 sm:inset-3"
-      />
-
+      <FeaturePanelBackground />
       <div className="space-y-5">
         <h2
           id="skills-in-practice-heading"
@@ -148,7 +151,13 @@ export function SkillsInPractice({
               aria-labelledby="skills-in-practice-technology-label"
               className="min-h-11 w-full bg-background px-3"
             >
-              <SelectValue placeholder={labels.placeholder} />
+              <SelectValue className="min-w-0" placeholder={labels.placeholder}>
+                <LetterRoll
+                  text={selected?.name ?? labels.placeholder}
+                  hoverTarget="parent"
+                  className="max-w-full truncate"
+                />
+              </SelectValue>
             </SelectTrigger>
             <SelectContent align="start" alignItemWithTrigger={false}>
               {selected && (
@@ -173,42 +182,52 @@ export function SkillsInPractice({
           </Select>
         </div>
       </div>
-      <div className="max-w-2xl min-w-0 xl:max-w-none">
+      <section
+        aria-labelledby={projectsHeadingId}
+        className="flex min-w-0 flex-col rounded-2xl border border-border/50 bg-card/60 p-3 shadow-sm sm:p-4"
+      >
         <div role="status" aria-atomic="true" className="sr-only">
           {selected &&
             `${selected.name}: ${labels.count(selected.projects.length)}`}
         </div>
-        {selected ? (
-          <motion.div
-            key={selected.id}
-            initial={
-              reduceMotion || focusRequest ? false : { opacity: 0, y: 6 }
-            }
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: reduceMotion ? 0 : 0.28,
-              ease: [0.16, 1, 0.3, 1],
-            }}
+        <div className="mb-3 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-border/50 pb-2.5">
+          <h3
+            ref={headingRef}
+            id={projectsHeadingId}
+            tabIndex={selected ? -1 : undefined}
+            className="scroll-mt-20 rounded-sm text-sm font-semibold text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring sm:scroll-mt-24"
           >
-            <div className="mb-2 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <h3
-                ref={headingRef}
-                id={getSkillFragment(selected.id).slice(1)}
-                tabIndex={-1}
-                className="scroll-mt-20 rounded-sm font-medium focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring sm:scroll-mt-24"
-              >
-                {labels.related(selected.name)}
-              </h3>
-              <span
-                aria-hidden="true"
-                className="font-mono text-xs text-muted-foreground"
-              >
-                {labels.count(selected.projects.length)}
-              </span>
-            </div>
-            <ul className="xl:grid xl:grid-cols-2 xl:gap-x-6">
+            {selected ? labels.related(selected.name) : labels.projects}
+          </h3>
+          {selected && (
+            <span
+              aria-hidden="true"
+              className="font-mono text-xs text-muted-foreground"
+            >
+              {labels.count(selected.projects.length)}
+            </span>
+          )}
+        </div>
+        <div className="skills-project-mat relative min-h-24 flex-1 rounded-xl border border-border/50 bg-background/50 p-4 sm:p-5">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-2 rounded-tl-sm border-t border-l border-border/50"
+          />
+          {selected ? (
+            <motion.ul
+              key={selected.id}
+              initial={
+                reduceMotion || focusRequest ? false : { opacity: 0, y: 6 }
+              }
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: reduceMotion ? 0 : 0.28,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              className="relative grid gap-2 xl:grid-cols-2"
+            >
               {selected.projects.map(({ ref, name }) => (
-                <li key={ref}>
+                <li key={ref} className="min-w-0">
                   <Link
                     href={`/portfolio${getProjectFragment(ref)}`}
                     scroll={false}
@@ -216,29 +235,36 @@ export function SkillsInPractice({
                     onNavigate={() =>
                       rememberSkillForProjectReturn(window.history, selected.id)
                     }
-                    className="group flex min-h-11 w-fit max-w-full items-center gap-2 rounded-sm py-2 text-sm text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                    className="group flex h-full min-h-11 items-center justify-between gap-2 rounded-lg border border-border/50 bg-card/90 px-3 py-2 text-sm text-foreground transition-colors hover:border-foreground/30 hover:bg-card focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring motion-reduce:transition-none"
                   >
-                    {reduceMotion ? (
-                      <span className="min-w-0 wrap-break-word">{name}</span>
-                    ) : (
-                      <LetterRoll
-                        text={name}
-                        hoverTarget="parent"
-                        stagger={0.65}
-                        duration={0.4}
-                        className="min-w-0"
-                        style={{ width: "100%" }}
-                      />
-                    )}
+                    <span className="min-w-0 flex-1 wrap-break-word">
+                      {reduceMotion ? (
+                        name
+                      ) : (
+                        <LetterRoll
+                          text={name}
+                          hoverTarget="parent"
+                          stagger={0.65}
+                          duration={0.4}
+                          style={{ width: "100%" }}
+                        />
+                      )}
+                    </span>
+                    <ArrowUpRight
+                      aria-hidden="true"
+                      className="size-4 shrink-0 text-muted-foreground group-hover:text-foreground"
+                    />
                   </Link>
                 </li>
               ))}
-            </ul>
-          </motion.div>
-        ) : (
-          <p className="text-sm text-muted-foreground">{labels.empty}</p>
-        )}
-      </div>
+            </motion.ul>
+          ) : (
+            <p className="relative w-fit rounded-md bg-background/90 px-2 py-1 text-sm text-muted-foreground">
+              {labels.empty}
+            </p>
+          )}
+        </div>
+      </section>
     </motion.section>
   )
 }

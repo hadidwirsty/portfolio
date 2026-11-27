@@ -67,11 +67,11 @@ export const TECH_STACK_HERO = {
     "The technologies and practices I use to build web applications."
   ),
   coreHeading: bi("Stack Utama", "Core Web Stack"),
-  sectionIndex: "01 / TECHNOLOGIES",
-  sectionTitle: bi("Teknologi yang Saya Gunakan.", "Inside My Toolkit."),
+  sectionIndex: bi("01 / TEKNOLOGI", "01 / TECHNOLOGIES"),
+  sectionTitle: bi("Teknologi yang Saya Gunakan", "Inside My Toolkit"),
   sectionSubtitle: bi(
-    "Eksplorasi folder teknologi interaktif di bawah untuk melihat alat kerja, pustaka, dan framework yang saya gunakan.",
-    "Explore the interactive technology folders below to reveal the tools, libraries, and frameworks I use."
+    "Buka folder untuk melihat teknologi di tiap kategori.",
+    "Open a folder to see the technologies in each category."
   ),
 }
 

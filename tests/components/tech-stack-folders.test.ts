@@ -113,7 +113,14 @@ test("tech stack data defines exactly 4 core technologies and 6 verified categor
   }
 
   // 3. Section Titles & Descriptions
-  assert.strictEqual(TECH_STACK_HERO.sectionIndex, "01 / TECHNOLOGIES")
+  assert.deepEqual(TECH_STACK_HERO.sectionIndex, {
+    id: "01 / TEKNOLOGI",
+    en: "01 / TECHNOLOGIES",
+  })
+  assert.deepEqual(TECH_STACK_HERO.sectionTitle, {
+    id: "Teknologi yang Saya Gunakan",
+    en: "Inside My Toolkit",
+  })
   assert.ok(TECH_STACK_HERO.title.id.length > 0)
   assert.ok(TECH_STACK_HERO.title.en.length > 0)
 })

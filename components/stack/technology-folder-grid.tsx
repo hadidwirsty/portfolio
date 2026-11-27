@@ -56,7 +56,7 @@ export function TechnologyFolderGrid({
   })
   const preview = previewedFolder(folders)
 
-  const sectionIndex = toolkit.sectionIndex
+  const sectionIndex = useT(toolkit.sectionIndex)
   const sectionTitle = useT(toolkit.sectionTitle)
   const sectionSubtitle = useT(toolkit.sectionSubtitle)
 

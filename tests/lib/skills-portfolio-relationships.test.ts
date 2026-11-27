@@ -4,7 +4,7 @@ import { join, relative, resolve } from "node:path"
 import { test } from "node:test"
 import ts from "typescript"
 
-import { projects } from "../../lib/cv-professional-data.ts"
+import { experience, projects } from "../../lib/cv-professional-data.ts"
 import { getFilteredProjects } from "../../lib/portfolio-experience-filter.ts"
 import { projectTimelineItems } from "../../lib/portfolio-project-timeline-data.ts"
 import {
@@ -157,7 +157,14 @@ test("Portfolio projection retains filters, sort order and display data using pu
       )
     }
     assert.deepEqual(card.role, p.role)
-    assert.deepEqual(card.bullets, p.bullets)
+    assert.deepEqual(
+      card.roleLabel,
+      p.roleLabel ??
+        experience.find(({ projectIds }) => projectIds.includes(p.id))?.role
+    )
+    assert.ok(card.roleLabel?.id && card.roleLabel.en)
+    assert.deepEqual(card.highlights, p.highlights)
+    assert.deepEqual(card.technicalDetails, p.technicalDetails)
     assert.deepEqual(card.tech, p.tech)
     assert.equal(card.link, p.link)
     assert.ok(!Object.hasOwn(card, "id"))
@@ -170,7 +177,7 @@ test("P08 uses the approved public reference in the registry and both Portfolio 
   assert.ok(project)
   assert.ok(!isPublicProjectRef(project.id))
   assert.ok(!Object.hasOwn(publicSelectedWorks.projectsByRef, project.id))
-  assert.equal(publicSelectedWorks.projectsByRef[ref].dossierCode, "P08")
+  assert.equal(publicSelectedWorks.projectsByRef[ref].ref, ref)
   const timeline = publicProjectTimelineItems.find((item) => item.ref === ref)
   assert.ok(timeline)
   assert.equal(timeline.name, project.name)
