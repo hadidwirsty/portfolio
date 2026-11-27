@@ -3,6 +3,7 @@
 import * as React from "react"
 import { motion, useReducedMotion } from "framer-motion"
 
+import { LetterRoll } from "@/components/ui/letter-roll"
 import { useLanguage } from "@/lib/language-context"
 import {
   TIMELINE_YEAR_MARKERS,
@@ -104,7 +105,7 @@ export function TimelineRuler({
                   "rounded-sm px-1 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:outline-none"
                 )}
               >
-                <span>{marker.label}</span>
+                <LetterRoll text={marker.label} hoverTarget="parent" />
               </button>
             </div>
           )

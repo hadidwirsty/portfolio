@@ -155,6 +155,7 @@ test("portfolio-card-folder renders accessible work experience filter pills", ()
     /aria-selected=\{isActive\}/,
     "filter pill items must synchronize aria-selected with active filter"
   )
+  assert.match(source, /<FilterPill\b[\s\S]*?\btruncateLabel\b/)
 
   // Uses the projected filter definitions
   assert.match(

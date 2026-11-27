@@ -1,4 +1,4 @@
-import { projects } from "./cv-professional-data.ts"
+import { experience, projects } from "./cv-professional-data.ts"
 import {
   EXPERIENCE_FILTER_DEFS,
   getFilteredProjects,
@@ -7,7 +7,6 @@ import {
   getProjectTimelineItemById,
   projectTimelineItems,
 } from "./portfolio-project-timeline-data.ts"
-import { getProjectCategory } from "./projects-filter.ts"
 import { getProjectTechnologyLinks } from "./project-technology-links.ts"
 import {
   isPublicProjectRef,
@@ -50,20 +49,20 @@ export const publicProjectTimelineItems = projectTimelineItems.map((item) => ({
 const projectCards = projects.map((project) => {
   const ref = getPublicProjectRef(project.id)
   const timeline = getProjectTimelineItemById(project.id)
+  const affiliation = experience.find(({ projectIds }) =>
+    projectIds.includes(project.id)
+  )
   return {
     ref,
-    dossierCode:
-      ref === "enterprise-web-maintenance-operations"
-        ? "P08"
-        : ref.toUpperCase(),
     name: project.name,
     company: project.company,
     period: project.period,
-    category: getProjectCategory(project.id),
     shortDescription: project.shortDescription,
     description: project.description,
+    roleLabel: project.roleLabel ?? affiliation?.role,
     role: project.role,
-    bullets: project.bullets,
+    highlights: project.highlights,
+    technicalDetails: project.technicalDetails,
     tech: project.tech,
     technologyLinks: getProjectTechnologyLinks(ref, project.tech),
     link: project.link,

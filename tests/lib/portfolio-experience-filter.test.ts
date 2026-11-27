@@ -8,7 +8,6 @@ import {
   getFilteredProjects,
   sortProjectsNewestFirst,
 } from "../../lib/portfolio-experience-filter.ts"
-import { getProjectTimelineItemById } from "../../lib/portfolio-project-timeline-data.ts"
 
 test("Work Experience Affiliation maps all 13 projects uniquely", () => {
   assert.strictEqual(projects.length, 13, "must have exactly 13 projects")
@@ -85,26 +84,21 @@ test("Featured filter returns exact 6 curated projects in predefined order", () 
   )
 })
 
-test("All filter returns all 13 projects sorted newest first (startMonth DESC)", () => {
-  const all = getFilteredProjects("all")
-  assert.strictEqual(all.length, 13)
+test("All filter keeps Featured in the first six positions and adds the remaining seven newest first", () => {
+  const featuredIds = getFilteredProjects("featured").map(({ id }) => id)
+  const allIds = getFilteredProjects("all").map(({ id }) => id)
 
-  for (let i = 0; i < all.length - 1; i++) {
-    const currMeta = getProjectTimelineItemById(all[i].id)
-    const nextMeta = getProjectTimelineItemById(all[i + 1].id)
-    assert.ok(currMeta, `meta for ${all[i].id} must exist`)
-    assert.ok(nextMeta, `meta for ${all[i + 1].id} must exist`)
-
-    // startMonth must be greater than or equal to next
-    assert.ok(
-      currMeta.startMonth >= nextMeta.startMonth,
-      `Project ${all[i].id} (${currMeta.startMonth}) must start on or after ${all[i + 1].id} (${nextMeta.startMonth})`
-    )
-  }
-
-  // Verify first is HiBlow Fleet (2026-09) and last is Netmonk (2023-01)
-  assert.strictEqual(all[0].id, "hiblow-fleet")
-  assert.strictEqual(all[all.length - 1].id, "netmonk")
+  assert.deepEqual(allIds, [
+    ...featuredIds,
+    "bulk-orders",
+    "pis-mars",
+    "cis",
+    "caterine-cm",
+    "monara",
+    "cart",
+    "netmonk",
+  ])
+  assert.deepEqual(new Set(allIds), new Set(projects.map(({ id }) => id)))
 })
 
 test("Deterministic tie-breaking works for projects starting on the same month", () => {

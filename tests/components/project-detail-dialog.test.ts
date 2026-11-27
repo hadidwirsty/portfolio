@@ -4,6 +4,7 @@ import fs from "node:fs"
 import path from "node:path"
 import { projects } from "../../lib/cv-professional-data.ts"
 import { getProjectCategory } from "../../lib/projects-filter.ts"
+import { publicSelectedWorks } from "../../lib/public-portfolio-data.ts"
 
 const COMPONENT_PATH = path.resolve(
   process.cwd(),
@@ -40,12 +41,16 @@ test("all 13 projects have complete company, period, and category data", () => {
       category === "enterprise" || category === "fullstack",
       `project ${project.id} category must be enterprise or fullstack`
     )
-    if (project.bullets) {
-      assert.ok(Array.isArray(project.bullets))
-      for (const bullet of project.bullets) {
-        assert.ok(bullet.id, `bullet in ${project.id} must have id`)
-        assert.ok(bullet.en, `bullet in ${project.id} must have en`)
-      }
+    assert.ok(project.technicalDetails?.length)
+    const headings = new Set<string>()
+    for (const { title, description } of project.technicalDetails) {
+      assert.ok(title.id.trim() && title.en.trim())
+      assert.ok(description.id.trim() && description.en.trim())
+      assert.ok(!headings.has(title.en))
+      headings.add(title.en)
+    }
+    for (const { value, label } of project.highlights ?? []) {
+      assert.ok(value.trim() && label.id.trim() && label.en.trim())
     }
   }
 })
@@ -63,162 +68,72 @@ test("project-detail-dialog file exists and exports ProjectDetailDialog componen
   )
 })
 
-test("project-detail-dialog implements responsive layout classes (mobile bottom-sheet docked at bottom-0, tablet 3xl, desktop 4xl)", () => {
+test("project detail gives the mobile bottom sheet more reading space and centers the dialog from tablet up", () => {
   const source = fs.readFileSync(COMPONENT_PATH, "utf-8")
-
-  // Mobile native bottom sheet docked at bottom-0 with dvh height and rounded top
   assert.match(
     source,
-    /bottom-0[\s\S]*?w-full[\s\S]*?rounded-t-3xl[\s\S]*?max-h-\[88dvh\]/,
-    "must implement native mobile bottom-sheet docked at bottom-0 with rounded-t-3xl and bounded dvh"
+    /<DialogContent[\s\S]*?className="[^"]*bottom-0[^"]*h-\[92dvh\][^"]*rounded-t-3xl/
   )
-
-  // Mobile pull handle indicator
-  assert.match(
-    source,
-    /bg-muted-foreground\/25[\s\S]*?sm:hidden/,
-    "must render mobile pull handle indicator in header"
-  )
-
-  // Tablet preserved centered dialog with proportional max-width (3xl)
-  assert.match(
-    source,
-    /sm:top-1\/2[\s\S]*?sm:max-w-3xl/,
-    "must preserve centered dialog with sm:max-w-3xl for comfortable tablet width"
-  )
-
-  // Desktop generous max-width (4xl ~896px)
-  assert.match(
-    source,
-    /lg:max-w-4xl/,
-    "must preserve lg:max-w-4xl for generous desktop dossier reading space"
-  )
-
-  // Maximum desktop height bounded to 90dvh
-  assert.match(source, /lg:max-h-\[90dvh\]/, "must cap desktop height to 90dvh")
+  assert.match(source, /sm:top-1\/2[^"]*sm:h-auto[^"]*sm:max-h-\[88dvh\]/)
+  assert.match(source, /sm:max-w-3xl/)
+  assert.match(source, /max-w-\[68ch\]/)
 })
 
-test("project-detail-dialog implements sticky header with dossier metadata, long title wrap, and accessible close button", () => {
+test("project detail leads with the title, followed by role, affiliation, and period", () => {
   const source = fs.readFileSync(COMPONENT_PATH, "utf-8")
-
-  // Sticky header with backdrop blur
+  const header = source.match(/<DialogHeader[\s\S]+?<\/DialogHeader>/)?.[0]
+  assert.ok(header)
   assert.match(
-    source,
-    /DialogHeader[\s\S]*?sticky top-0[\s\S]*?backdrop-blur/,
-    "header must be sticky with backdrop-blur"
+    header,
+    /<DialogTitle[^>]*wrap-break-word[^>]*>\s*\{project\.name\}/
   )
-
-  // Technical dossier identifier
   assert.match(
-    source,
-    /DOSSIER \/\//,
-    "must include technical DOSSIER // identifier"
+    header,
+    /<\/DialogTitle>[\s\S]*?project\.roleLabel\[lang\][\s\S]*?project\.company\[lang\][\s\S]*?project\.period\[lang\]/
   )
-
-  // Category badge
-  assert.match(source, /categoryLabel/, "must display category badge")
-
-  // DialogTitle with long title wrapping
+  assert.doesNotMatch(header, /DOSSIER|dossierCode/)
   assert.match(
-    source,
-    /<DialogTitle[\s\S]*?(break-words|wrap-break-word)/,
-    "DialogTitle must include break-words/wrap-break-word to handle long titles gracefully"
-  )
-
-  // Dedicated close button in header with accessible label
-  assert.match(
-    source,
-    /<DialogClose[\s\S]*?aria-label=\{lang === ["']id["'] \? ["']Tutup dialog["'] : ["']Close dialog["']\}/,
-    "must render accessible DialogClose button with bilingual aria-label"
+    header,
+    /<DialogClose[\s\S]*?aria-label=\{lang === "id" \? "Tutup dialog" : "Close dialog"\}/
   )
 })
 
-test("project-detail-dialog implements single scroll body with overscroll-contain and structured sections", () => {
+test("project detail presents a keyboard-scrollable overview, contribution, highlights, and titled technical list", () => {
   const source = fs.readFileSync(COMPONENT_PATH, "utf-8")
-
-  // Single internal scroll container with overscroll-contain
   assert.match(
     source,
-    /overflow-y-auto overscroll-contain/,
-    "scroll body must use overflow-y-auto and overscroll-contain"
+    /tabIndex=\{0\}[\s\S]*?overflow-y-auto overscroll-contain/
   )
-
-  // Section: Overview
+  assert.equal(source.match(/overflow-y-auto/g)?.length, 1)
   assert.match(
     source,
-    /(Ringkasan Proyek|Project Overview)/,
-    "must render Project Overview section"
-  )
-
-  // Section: Role & Scope
-  assert.match(
-    source,
-    /Kontribusi Saya.*My Contribution/,
-    "must label the contribution section in both languages"
-  )
-
-  // Section: Architecture & Engineering Highlights
-  assert.match(
-    source,
-    /(Sorotan Arsitektur & Rekayasa|Architecture & Engineering Highlights)/,
-    "must render Architecture & Engineering Highlights section"
-  )
-
-  // Structured bullet items
-  assert.match(
-    source,
-    /project\.bullets\.map/,
-    "must map bullet highlights into structured items"
-  )
-
-  // Section: Technology Stack
-  assert.match(
-    source,
-    /(Tumpukan Teknologi|Technology Stack)/,
-    "must render Technology Stack section"
+    /Project Overview[\s\S]*?My Contribution[\s\S]*?Project Highlights[\s\S]*?Technical Details[\s\S]*?Technology Stack/
   )
   assert.match(
     source,
-    /project\.tech\.map/,
-    "must map tech stack into responsive badges"
+    /project\.technicalDetails\.map[\s\S]*?<li[^>]*>[\s\S]*?<h4[^>]*>\s*\{title\[lang\]\}/
   )
+  assert.match(source, /project\.tech\.map/)
 })
 
-test("project-detail-dialog implements sticky footer with safe-area padding and action buttons", () => {
+test("HiBlow Fleet surfaces route and test counts, while project highlights remain optional", () => {
+  assert.deepEqual(
+    publicSelectedWorks.projectsByRef["hiblow-fleet"].highlights?.map(
+      ({ value }) => value
+    ),
+    ["296", "297"]
+  )
+  assert.equal(publicSelectedWorks.projectsByRef.imaps.highlights, undefined)
+})
+
+test("project detail offers the public link as its primary action and respects the bottom safe area", () => {
   const source = fs.readFileSync(COMPONENT_PATH, "utf-8")
-
-  // Sticky footer
   assert.match(
     source,
-    /sticky bottom-0[\s\S]*?border-t/,
-    "footer must be sticky with top border"
+    /\{project\.link && \([\s\S]*?env\(safe-area-inset-bottom\)[\s\S]*?<Button\s+className=[\s\S]*?<a href=\{project\.link\} target="_blank" rel="noreferrer"/
   )
-
-  // Safe-area inset bottom padding
-  assert.match(
-    source,
-    /env\(safe-area-inset-bottom\)/,
-    "footer must respect safe-area-inset-bottom for mobile devices"
-  )
-
-  // External link or no public link notice
-  assert.match(
-    source,
-    /(Kunjungi Tautan|Visit Project)/,
-    "must support project external link"
-  )
-  assert.match(
-    source,
-    /Tidak ada tautan publik[\s\S]*?No public link available/,
-    "must provide a bilingual notice when no public link is available"
-  )
-
-  // Close button in footer
-  assert.match(
-    source,
-    /<DialogClose[\s\S]*?(Tutup|Close)/,
-    "must include accessible close button in footer"
-  )
+  assert.match(source, /Kunjungi Proyek.*Visit Project/)
+  assert.equal(source.match(/<DialogClose\s/g)?.length, 1)
 })
 
 test("project-detail-dialog satisfies WAI-ARIA compliance with hidden DialogDescription", () => {

@@ -309,29 +309,15 @@ test("project-timeline-accordion defaults to project 1 (Netmonk Analytics) on in
   )
 })
 
-test("project-timeline-accordion wraps the entire section in a cohesive card with GradientMotionBackground without inner dashed border or metadata stamps", () => {
+test("project-timeline-accordion uses the shared feature panel and background", () => {
   const source = fs.readFileSync(COMPONENT_PATH, "utf-8")
 
-  // Must wrap inside outer card container with rounded-3xl, border-border/50, and bg-card/8
   assert.match(
     source,
-    /rounded-3xl[\s\S]*?border-border\/50[\s\S]*?bg-card\/8/,
-    "must wrap section in outer card container"
+    /className=\{cn\(\s*"feature-panel\b[^"]*"/,
+    "must use the same panel styles as Contact and Skills in Practice"
   )
-
-  // Must integrate GradientMotionBackground ambient motion layer
-  assert.match(
-    source,
-    /<GradientMotionBackground/,
-    "must integrate GradientMotionBackground ambient layer"
-  )
-
-  // Must NOT have inner dashed border
-  assert.doesNotMatch(
-    source,
-    /border-dashed/,
-    "must not have inner dashed border"
-  )
+  assert.match(source, /<FeaturePanelBackground\s*\/>/)
 
   // Must NOT render corner registration marks
   assert.doesNotMatch(

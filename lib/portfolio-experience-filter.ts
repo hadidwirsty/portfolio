@@ -162,20 +162,22 @@ export function sortProjectsNewestFirst(items: ProjectEntry[]): ProjectEntry[] {
 /**
  * Filters and sorts projects based on the active work experience category.
  * - 'featured': Strictly returns the 6 curated featured projects in their predefined order.
- * - 'all': Returns all 13 verified projects sorted newest first.
+ * - 'all': Keeps the featured sequence first, followed by the remaining projects sorted newest first.
  * - Company categories: Returns all projects affiliated with the company, sorted newest first.
  */
 export function getFilteredProjects(
   category: ExperienceFilterCategory
 ): ProjectEntry[] {
-  if (category === "featured") {
-    return FEATURED_PROJECT_IDS.map((id) =>
+  if (category === "featured" || category === "all") {
+    const featured = FEATURED_PROJECT_IDS.map((id) =>
       projects.find((p) => p.id === id)
     ).filter((p): p is ProjectEntry => Boolean(p))
-  }
 
-  if (category === "all") {
-    return sortProjectsNewestFirst(projects)
+    if (category === "featured") return featured
+
+    const featuredIds = new Set(featured.map(({ id }) => id))
+    const remaining = projects.filter(({ id }) => !featuredIds.has(id))
+    return [...featured, ...sortProjectsNewestFirst(remaining)]
   }
 
   const matches = projects.filter(

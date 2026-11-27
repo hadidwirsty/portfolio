@@ -8,7 +8,7 @@ import { ChevronLeft, ChevronRight, Calendar, Building2 } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { GradientMotionBackground } from "@/components/ui/gradient-motion-background"
+import { FeaturePanelBackground } from "@/components/ui/feature-panel-background"
 import type { PublicTimelineItem } from "@/lib/public-portfolio-data"
 import { TimelineRuler } from "@/components/portfolio/timeline-ruler"
 import { cn } from "@/lib/utils"
@@ -268,14 +268,11 @@ export function ProjectTimelineAccordion({
           : "Interactive Project Timeline"
       }
       className={cn(
-        "group relative z-10 flex w-full flex-col overflow-hidden rounded-3xl border border-border/50 bg-card/8 p-4 shadow-xs backdrop-blur-[10px] transition-[border-color,background-color] duration-500 hover:bg-card/2 sm:p-6 lg:p-8",
+        "feature-panel group z-10 flex w-full flex-col p-4 sm:p-6 lg:p-8",
         className
       )}
     >
-      <GradientMotionBackground
-        seed={42}
-        className="pointer-events-none absolute inset-0 z-0 overflow-hidden rounded-[inherit] bg-transparent transition-opacity duration-500 group-hover:opacity-25 dark:bg-transparent"
-      />
+      <FeaturePanelBackground />
 
       <div className="relative z-10 w-full space-y-4 sm:space-y-6">
         {/* Section Header */}

@@ -126,6 +126,19 @@ export const experience: ExperienceEntry[] = [
   },
 ]
 
+type ProjectTechnicalDetail = {
+  title: Bi
+  description: Bi
+}
+
+function technicalDetail(
+  title: Bi,
+  id: string,
+  en: string
+): ProjectTechnicalDetail {
+  return { title, description: bi(id, en) }
+}
+
 export type ProjectEntry = {
   id: string
   publicRef?: string
@@ -136,7 +149,9 @@ export type ProjectEntry = {
   description: Bi
   role: Bi
   tech: string[]
-  bullets?: Bi[]
+  roleLabel?: Bi
+  highlights?: { value: string; label: Bi }[]
+  technicalDetails?: ProjectTechnicalDetail[]
   link?: string
 }
 
@@ -154,31 +169,47 @@ export const projects: ProjectEntry[] = [
       "An app for managing trips and finances for a bulk cement trucking fleet."
     ),
     description: bi(
-      "Aplikasi web full-stack untuk mengelola operasional dan keuangan armada truk semen curah milik bisnis keluarga. Sistem ini menggantikan pencatatan manual dengan pengelolaan ritase, referensi tarif untuk 296 rute pabrik, perhitungan PPh 23 (1,2%), pembagian keuntungan investor, dan dasbor analitik berbasis Recharts.",
-      "A full-stack web application for managing the operations and finances of a family-owned bulk cement trucking business. It replaces manual records with trip tracking, a rate catalog for 296 factory routes, PPh 23 tax calculations (1.2%), investor profit sharing, and Recharts analytics dashboards."
+      "Aplikasi web untuk operasional dan keuangan armada truk semen curah milik bisnis keluarga. Aplikasi ini menggantikan pencatatan manual perjalanan dan transaksi keuangan.",
+      "A web app for managing a family-owned bulk cement trucking fleet. It replaced manual records for trips and financial transactions."
     ),
     role: bi(
       "Saya merancang dan membangun aplikasi full-stack ini untuk bisnis keluarga, dari logika keuangan dan basis data hingga dasbor operasional.",
       "I designed and built this full-stack app for my family’s business, from the financial logic and database to the operations dashboards."
     ),
-    bullets: [
-      bi(
-        "Merancang arsitektur aplikasi manajemen armada full-stack menggunakan Next.js 16 dan React 19 dengan React Server Components (RSC) dan Next.js Server Actions yang divalidasi menggunakan Zod.",
-        "Designed the full-stack fleet management architecture using Next.js 16 and React 19, with React Server Components (RSC) and Zod-validated Next.js Server Actions."
+    roleLabel: bi("Pengembang Full-Stack", "Full-Stack Developer"),
+    highlights: [
+      {
+        value: "296",
+        label: bi(
+          "rute pabrik dengan tarif otomatis",
+          "factory routes with automated rates"
+        ),
+      },
+      { value: "297", label: bi("tes Vitest lulus", "Vitest tests passed") },
+    ],
+    technicalDetails: [
+      technicalDetail(
+        bi("Arsitektur aplikasi", "Application architecture"),
+        "Membangun aplikasi dengan Next.js 16, React 19, React Server Components (RSC), dan Server Actions yang divalidasi dengan Zod.",
+        "Built the app with Next.js 16, React 19, React Server Components (RSC), and Zod-validated Server Actions."
       ),
-      bi(
-        "Membangun Pure Domain Engine untuk mengotomatiskan perhitungan tarif angkutan di 296 rute pabrik semen, pemotongan PPh 23 (1,2%), dan pembagian keuntungan investor; seluruh 297 pengujian otomatis Vitest berhasil dilalui.",
-        "Built a financial Pure Domain Engine to automate freight rates across 296 cement factory routes, PPh 23 deductions (1.2%), and investor profit sharing; all 297 automated Vitest tests passed."
+      technicalDetail(
+        bi("Kalkulasi tarif dan keuangan", "Rates and financial calculations"),
+        "Membangun Pure Domain Engine untuk mengotomatiskan tarif angkutan, potongan PPh 23 (1,2%), dan pembagian keuntungan investor.",
+        "Built a Pure Domain Engine to automate freight rates, PPh 23 deductions (1.2%), and investor profit sharing."
       ),
-      bi(
+      technicalDetail(
+        bi("Basis data dan hak akses", "Database and access control"),
         "Merancang skema basis data PostgreSQL dengan Drizzle ORM dan kontrol akses berbasis peran (RBAC) menggunakan Better-Auth untuk memisahkan akses pengelola dan investor.",
         "Designed PostgreSQL database schemas with Drizzle ORM and implemented role-based access control (RBAC) using Better-Auth to separate administrative and investor access."
       ),
-      bi(
+      technicalDetail(
+        bi("Dasbor operasional", "Operations dashboards"),
         "Mengembangkan dasbor keuangan dan pemantauan armada dengan Recharts untuk menampilkan tren pendapatan dan pengeluaran bulanan, serta pengingat masa berlaku uji KIR dan STNK.",
         "Built financial and fleet monitoring dashboards with Recharts to visualize monthly revenue and expenses, along with KIR vehicle inspection and STNK registration renewal reminders."
       ),
-      bi(
+      technicalDetail(
+        bi("Ekspor laporan", "Report exports"),
         "Menambahkan fitur ekspor laporan transaksi dalam format Excel (.xlsx) dan CSV untuk mendukung audit pembukuan dan rekonsiliasi bank.",
         "Added transaction report exports in Excel (.xlsx) and CSV formats to support accounting audits and bank reconciliation."
       ),
@@ -212,31 +243,52 @@ export const projects: ProjectEntry[] = [
       "A prototype for issuing and managing warehouse receipts."
     ),
     description: bi(
-      "Purwarupa sistem manajemen resi gudang terintegrasi yang diselesaikan dalam sprint 2 minggu untuk proposal teknis PT Kliring Berjangka Indonesia (Grup Danareksa). Mencakup penerbitan resi, integrasi dokumen asuransi dan LPK, rekam jejak audit, serta kontrol akses untuk 5 peran pengguna.",
-      "An integrated warehouse receipt management prototype delivered in a 2-week sprint for a technical proposal to PT Kliring Berjangka Indonesia (Danareksa Group). Features include receipt issuance, insurance and inspection agency (LPK) document integration, audit trails, and access controls for 5 user roles."
+      "Purwarupa manajemen resi gudang untuk proposal teknis PT Kliring Berjangka Indonesia (Grup Danareksa). Alurnya mencakup penerbitan resi hingga verifikasi dokumen.",
+      "A warehouse receipt prototype built for a technical proposal to PT Kliring Berjangka Indonesia. It covers receipt issuance through document verification."
     ),
     role: bi(
       "Saya mengembangkan arsitektur purwarupa dan alur penerbitan resi gudang untuk proposal teknis klien.",
       "I developed the prototype architecture and warehouse receipt issuance workflow for the client’s technical proposal."
     ),
-    bullets: [
-      bi(
+    highlights: [
+      {
+        value: "#1",
+        label: bi(
+          "peringkat proposal dalam evaluasi teknis",
+          "in the technical proposal evaluation"
+        ),
+      },
+      {
+        value: "2",
+        label: bi(
+          "minggu pengerjaan purwarupa",
+          "weeks to deliver the prototype"
+        ),
+      },
+    ],
+    technicalDetails: [
+      technicalDetail(
+        bi("Penerbitan resi gudang", "Warehouse receipt issuance"),
         "Mengembangkan antarmuka penerbitan resi gudang dalam sprint 2 minggu, termasuk formulir registrasi bertahap, perhitungan bobot komoditas, dan alur persetujuan dokumen.",
         "Developed warehouse receipt issuance interfaces in a 2-week sprint, including multi-step registration forms, commodity weight calculations, and document approval workflows."
       ),
-      bi(
+      technicalDetail(
+        bi("Jejak audit", "Audit trail"),
         "Mengembangkan fitur rekam jejak audit (audit trail) untuk mencatat perubahan status resi dari pembuatan draf hingga verifikasi akhir.",
         "Built audit trail tracking to record warehouse receipt status changes from initial draft to final verification."
       ),
-      bi(
+      technicalDetail(
+        bi("Pengelolaan data master", "Master data management"),
         "Mengembangkan modul data master untuk gudang, jenis komoditas, perusahaan asuransi, dan Lembaga Pemeriksa Kesesuaian (LPK), lengkap dengan fitur pencarian dan unduh lampiran.",
         "Built master data modules for warehouses, commodity types, insurance companies, and inspection agencies (LPK), with search and attachment download features."
       ),
-      bi(
+      technicalDetail(
+        bi("Tata letak dan navigasi", "Layout and navigation"),
         "Merancang tata letak aplikasi dan navigasi responsif berbasis Next.js App Router, Tailwind CSS v4, dan Radix UI (shadcn/ui).",
         "Designed responsive application layouts and navigation components using Next.js App Router, Tailwind CSS v4, and Radix UI (shadcn/ui)."
       ),
-      bi(
+      technicalDetail(
+        bi("Integrasi API dan hak akses", "API integration and access control"),
         "Mengintegrasikan REST API menggunakan TanStack Query dan Zustand serta menerapkan kontrol akses berbasis 5 peran pengguna; kontribusi ini mendukung proposal yang meraih peringkat pertama dalam evaluasi teknis klien.",
         "Integrated REST APIs using TanStack Query and Zustand and maintained access control for 5 user roles, contributing to the proposal's first-place ranking in the client's technical evaluation."
       ),
@@ -268,31 +320,39 @@ export const projects: ProjectEntry[] = [
       "A system for reviewing, managing, and configuring contracts."
     ),
     description: bi(
-      "Sistem manajemen konten (CMS) untuk Infomedia Nusantara yang dibangun dengan arsitektur microservices dan micro-frontend berbasis Module Federation.",
-      "A content management system (CMS) for Infomedia Nusantara, built using a microservices architecture and a Module Federation-based micro-frontend."
+      "CMS untuk Infomedia Nusantara yang mempertemukan peninjauan, pemantauan, dan konfigurasi kontrak dalam satu portal. Sistem ini memakai arsitektur microservices dan micro-frontend.",
+      "A CMS for Infomedia Nusantara that brings contract review, tracking, and configuration into one portal. It uses a microservices and micro-frontend architecture."
     ),
     role: bi(
       "Saya mengembangkan modul Smart Contracting dan merancang Host Shell yang menghubungkan modul micro-frontend.",
       "I built Smart Contracting features and designed the Host Shell that connects the micro-frontends."
     ),
-    bullets: [
-      bi(
+    technicalDetails: [
+      technicalDetail(
+        bi("Peninjauan kontrak", "Contract review"),
         "Mengembangkan antarmuka Smart Contracting untuk peninjauan pesanan legal, pemantauan kontrak aktif, dan validasi dokumen.",
         "Built Smart Contracting interfaces for legal order reviews, active contract tracking, and document validation."
       ),
-      bi(
+      technicalDetail(
+        bi("Konfigurasi kontrak", "Contract configuration"),
         "Mengimplementasikan modul konfigurasi kontrak (Configurations) mencakup pengelolaan tipe kontrak, tahapan (stages), alur kerja (workflows), dan template klausul.",
         "Implemented contract configuration modules (Configurations) covering contract types, lifecycle stages, workflows, and clause templates."
       ),
-      bi(
+      technicalDetail(
+        bi(
+          "Pembuat formulir dan pratinjau PDF",
+          "Form builder and PDF previews"
+        ),
         "Merancang antarmuka pembuat formulir dengan fitur seret dan lepas (drag and drop) serta pratinjau PDF di sisi klien menggunakan @react-pdf/renderer.",
         "Designed a drag-and-drop form builder and client-side PDF previews using @react-pdf/renderer."
       ),
-      bi(
+      technicalDetail(
+        bi("Host Shell micro-frontend", "Micro-frontend Host Shell"),
         "Merancang kerangka Host Shell berbasis arsitektur micro-frontend (Module Federation) menggunakan Vite, React 19, Ant Design 5, dan TanStack Router untuk routing lintas micro-frontend.",
         "Designed the micro-frontend Host Shell architecture (Module Federation) using Vite, React 19, Ant Design 5, and TanStack Router for federated navigation."
       ),
-      bi(
+      technicalDetail(
+        bi("Integrasi API dan state", "API integration and state"),
         "Mengintegrasikan REST API dengan TanStack Query dan Zustand serta memelihara konsistensi state dan penanganan error respons API.",
         "Integrated REST APIs with TanStack Query and Zustand while maintaining state consistency and API error handling."
       ),
@@ -322,31 +382,36 @@ export const projects: ProjectEntry[] = [
       "An internal system for logging and reviewing reports of suspected misconduct."
     ),
     description: bi(
-      "Aplikasi Whistleblowing System (WBS) internal bagi Tim Pengelola WBS Telkomsigma untuk menangani laporan dugaan pelanggaran etika dan tata kelola perusahaan sesuai prinsip ISO 37002. Fitur utamanya meliputi dasbor analitik, penelaahan kasus bertahap, registrasi laporan dari berbagai kanal, dan pengunggahan bukti secara aman.",
-      "An internal Whistleblowing System (WBS) for Telkomsigma's WBS Management Team to handle reports of suspected ethics and corporate governance violations in line with ISO 37002. Key features include analytics dashboards, multi-stage case reviews, multi-channel report registration, and secure evidence uploads."
+      "Sistem internal Telkomsigma untuk mencatat dan menelaah dugaan pelanggaran etika dan tata kelola, sesuai prinsip ISO 37002.",
+      "An internal system for Telkomsigma to log and review suspected ethics and governance violations in line with ISO 37002."
     ),
     role: bi(
       "Saya mengembangkan antarmuka pelaporan dan penelaahan kasus serta merancang validasi keamanan untuk unggahan bukti.",
       "I developed the reporting and case review interfaces and designed security checks for evidence uploads."
     ),
-    bullets: [
-      bi(
+    technicalDetails: [
+      technicalDetail(
+        bi("Dasbor pengaduan", "Reporting dashboards"),
         "Mengembangkan dasbor analitik pengaduan WBS menggunakan Recharts untuk menampilkan rasio kasus terbukti (concern ratio), distribusi status, klasifikasi identitas pelapor, dan kanal pelaporan.",
         "Built WBS analytics dashboards with Recharts to show substantiated case ratios (concern ratio), case status distributions, reporter identity categories, and reporting channel breakdowns."
       ),
-      bi(
+      technicalDetail(
+        bi("Penelaahan kasus", "Case review"),
         "Mengimplementasikan manajemen data pengaduan dan alur penelaahan multi-tahap (validasi-verifikasi, pemeriksaan, dan pelaporan publik) dengan tabel TanStack Table, panel samping interaktif, dan sinkronisasi data antar tab terpusat.",
         "Implemented complaint data management and multi-stage case assessment workflows (validation-verification, inspection, and public reporting) with TanStack Table, interactive side panels, and centralized multi-tab data synchronization."
       ),
-      bi(
+      technicalDetail(
+        bi("Pencatatan laporan", "Report registration"),
         "Mengembangkan formulir pencatatan pengaduan dari berbagai kanal, termasuk surat, telepon, dan tatap muka, beserta informasi kejadian dan lampiran bukti pendukung.",
         "Built complaint registration forms for reports received by letter, phone, or in person, including incident details and supporting evidence attachments."
       ),
-      bi(
+      technicalDetail(
+        bi("Keamanan unggahan bukti", "Evidence upload security"),
         "Merancang validasi unggahan bukti dengan memeriksa tanda tangan biner (magic bytes) pada 4.096 byte pertama untuk mendeteksi ketidaksesuaian jenis berkas, serta mengintegrasikan pemindaian antivirus ClamAV di sisi server.",
         "Designed evidence upload validation by inspecting binary file signatures (magic bytes) within the first 4,096 bytes to detect file type mismatches, and integrated server-side ClamAV antivirus scanning."
       ),
-      bi(
+      technicalDetail(
+        bi("Kuesioner dan hak akses", "Questionnaires and access control"),
         "Mengintegrasikan dukungan multibahasa dengan i18next dan modul konfigurasi kuesioner, termasuk pengelompokan pertanyaan dan validasi isian wajib, serta mengelola kontrol akses berbasis peran (RBAC).",
         "Integrated multilingual support with i18next and configurable questionnaires, including question grouping and required-field validation, while maintaining role-based access control (RBAC)."
       ),
@@ -379,31 +444,52 @@ export const projects: ProjectEntry[] = [
       "A dashboard for tracking IT service tickets during Ramadan, Christmas, and New Year."
     ),
     description: bi(
-      "Aplikasi web terpusat untuk memantau tiket layanan TI selama periode sibuk Ramadan serta Natal dan Tahun Baru. Tim Service Desk dan Operasional Layanan dapat mengikuti status tiket melalui pembaruan data berkala.",
-      "A centralized web application for monitoring IT service tickets during the busy Ramadan and Christmas–New Year periods. Service Desk and Operations teams can track ticket status with regularly refreshed data."
+      "Aplikasi web terpusat untuk memantau status tiket layanan TI selama periode sibuk Ramadan, Natal, dan Tahun Baru, dengan pembaruan data berkala.",
+      "A centralized web app that helps Service Desk and Operations teams track IT service tickets during the Ramadan, Christmas, and New Year periods."
     ),
     role: bi(
       "Saya mengembangkan arsitektur frontend, dasbor status tiket, dan antarmuka untuk pencatatan kendala serta pengelolaan data operasional.",
       "I developed the frontend architecture, ticket status dashboards, and interfaces for issue reporting and operational data management."
     ),
-    bullets: [
-      bi(
+    highlights: [
+      {
+        value: "30",
+        label: bi(
+          "detik antar pembaruan tiket",
+          "seconds between ticket refreshes"
+        ),
+      },
+      {
+        value: "~40",
+        label: bi("unit penyedia layanan", "service-provider units"),
+      },
+    ],
+    technicalDetails: [
+      technicalDetail(
+        bi("Dasbor tiket", "Ticket dashboards"),
         "Mengembangkan dasbor pemantauan tiket dengan pembaruan data otomatis setiap 30 detik dan visualisasi menggunakan Recharts.",
         "Built ticket monitoring dashboards with automatic data refresh every 30 seconds and Recharts visualizations."
       ),
-      bi(
+      technicalDetail(
+        bi("Pencatatan kendala layanan", "Service issue reporting"),
         "Mengembangkan formulir pencatatan kendala layanan dengan fitur unggah berkas bukti penanganan menggunakan multipart/form-data.",
         "Built service issue reporting forms with support for uploading resolution evidence using multipart/form-data."
       ),
-      bi(
+      technicalDetail(
+        bi(
+          "Data operasional dan riwayat tiket",
+          "Operations data and ticket history"
+        ),
         "Membangun modul data master untuk kategori tiket, sekitar 40 unit penyedia layanan, dan jadwal shift, serta dialog riwayat penanganan tiket.",
         "Built master data for approximately 40 service-provider units, as well as modules for ticket categories, shift schedules, and ticket resolution history."
       ),
-      bi(
+      technicalDetail(
+        bi("Validasi jadwal shift", "Shift schedule validation"),
         "Membangun validasi jadwal shift berdasarkan waktu lokal agar status petugas yang sedang bertugas ditampilkan secara akurat.",
         "Built shift schedule validation using local time to accurately identify on-duty staff."
       ),
-      bi(
+      technicalDetail(
+        bi("Integrasi API dan hak akses", "API integration and access control"),
         "Mengintegrasikan REST API dengan TanStack Query dan Zustand serta mengelola kontrol akses berbasis peran (RBAC).",
         "Integrated REST APIs with TanStack Query and Zustand while maintaining role-based access control (RBAC)."
       ),
@@ -436,31 +522,36 @@ export const projects: ProjectEntry[] = [
       "An app for finding and comparing government tenders from LPSE and SiRUP."
     ),
     description: bi(
-      "Aplikasi web intelijen pengadaan pemerintah yang mengolah informasi dari portal LPSE dan SiRUP. Membantu tim Sales Support dan Presales menemukan peluang tender TI, membandingkan rencana pengadaan dengan tender aktif, serta mengelola konfigurasi pengambilan data otomatis (scraping).",
-      "A government procurement intelligence application that aggregates data from LPSE and SiRUP. It helps Sales Support and Presales teams identify IT tender opportunities, compare procurement plans with active tenders, and manage automated data collection (scraping)."
+      "Aplikasi yang menghimpun data LPSE dan SiRUP agar tim Sales Support dan Presales dapat mencari peluang tender TI dan membandingkannya dengan rencana pengadaan.",
+      "A public procurement app that combines LPSE and SiRUP data to help Sales Support and Presales teams find IT tenders and compare them with procurement plans."
     ),
     role: bi(
       "Saya membangun antarmuka untuk pencarian, analisis, dan perbandingan tender, serta konfigurasi pengambilan data otomatis.",
       "I built interfaces for searching, analyzing, and comparing tenders, as well as settings for automated data collection."
     ),
-    bullets: [
-      bi(
+    technicalDetails: [
+      technicalDetail(
+        bi("Katalog tender", "Tender catalogs"),
         "Mengembangkan katalog tender LPSE dan rencana pengadaan SiRUP dengan filter pencarian terstruktur dan tabel interaktif menggunakan TanStack Table.",
         "Built LPSE tender and SiRUP procurement plan catalogs with structured search filters and interactive tables using TanStack Table."
       ),
-      bi(
+      technicalDetail(
+        bi("Analitik pengadaan", "Procurement analytics"),
         "Membuat dasbor analitik untuk memvisualisasikan pagu anggaran dan jumlah tender pemerintah menggunakan Recharts.",
         "Built Recharts dashboards to visualize government procurement budgets and tender counts."
       ),
-      bi(
+      technicalDetail(
+        bi("Perbandingan tender", "Tender comparison"),
         "Mengimplementasikan fitur komparasi tender berdampingan (side-by-side) antara paket rencana SiRUP dan lelang LPSE untuk validasi kode RUP.",
         "Implemented side-by-side tender comparison tools between SiRUP procurement plans and LPSE tenders for RUP code verification."
       ),
-      bi(
+      technicalDetail(
+        bi("Konfigurasi pengambilan data", "Data collection settings"),
         "Merancang modul konfigurasi sistem untuk kata kunci KBLI yang digunakan dalam scraping serta fitur pelacakan durasi interaksi pengguna (Dwell Tracker).",
         "Designed system settings for KBLI keyword-based scraping and a user interaction duration tracker (Dwell Tracker)."
       ),
-      bi(
+      technicalDetail(
+        bi("Integrasi API dan hak akses", "API integration and access control"),
         "Mengintegrasikan REST API dengan TanStack Query dan Zustand serta mengelola kontrol akses berbasis peran (RBAC).",
         "Integrated REST APIs with TanStack Query and Zustand while maintaining role-based access control (RBAC)."
       ),
@@ -500,24 +591,29 @@ export const projects: ProjectEntry[] = [
       "Saya mengembangkan antarmuka inventaris, persetujuan aset, dan manajemen pengguna menggunakan Angular 18 dan NG-ZORRO.",
       "I built interfaces for asset inventory, asset approvals, and user management using Angular 18 and NG-ZORRO."
     ),
-    bullets: [
-      bi(
+    technicalDetails: [
+      technicalDetail(
+        bi("Persetujuan aset", "Asset approvals"),
         "Mengembangkan antarmuka modul persetujuan bertingkat (Approval Asset) dengan navigasi beberapa tab untuk usulan aset baru, perubahan nilai, mutasi, dan penghapusan.",
         "Developed multi-stage fixed asset approval modules with multi-tab navigation supporting new asset entries, value adjustments, transfers, and disposal proposals."
       ),
-      bi(
+      technicalDetail(
+        bi("Inventaris aset tetap", "Fixed asset inventory"),
         "Mengembangkan direktori inventaris aset tetap dengan tabel data padat, paginasi di sisi server, dan format mata uang rupiah.",
         "Built a fixed asset inventory directory with dense data tables, server-side pagination, and Indonesian rupiah currency formatting."
       ),
-      bi(
+      technicalDetail(
+        bi("Usulan penghapusan", "Disposal proposals"),
         "Mengembangkan formulir usulan penghapusan aset, termasuk fitur pengelompokan data dan peninjauan akhir.",
         "Built asset disposal proposal forms, including data grouping and final review workflows."
       ),
-      bi(
+      technicalDetail(
+        bi("Manajemen pengguna", "User management"),
         "Mengimplementasikan modul manajemen pengguna (User Management) dan peran dengan kontrol akses berbasis peran (RBAC).",
         "Implemented user and role management modules with role-based access control (RBAC)."
       ),
-      bi(
+      technicalDetail(
+        bi("Integrasi API dan keamanan", "API integration and security"),
         "Mengintegrasikan REST API dengan tipe data yang terdefinisi dan mengonfigurasi header keamanan anti-clickjacking (X-Frame-Options: SAMEORIGIN).",
         "Integrated type-safe REST APIs and configured anti-clickjacking security headers (X-Frame-Options: SAMEORIGIN)."
       ),
@@ -545,31 +641,39 @@ export const projects: ProjectEntry[] = [
       "Frontend and security maintenance for two enterprise web applications."
     ),
     description: bi(
-      "Pemeliharaan dan peningkatan keamanan frontend pada 2 aplikasi web enterprise dalam layanan terkelola (managed services). Pekerjaan mencakup perbaikan temuan pemindaian kerentanan (XSS, CSP, dan Open Redirect), kompatibilitas SSR dengan Node.js 22, serta perbaikan alur transaksi pengadaan.",
-      "Frontend maintenance and security improvements across 2 enterprise web applications under a managed services arrangement. Work included remediation of vulnerability scan findings (XSS, CSP, and Open Redirect), Node.js 22 SSR compatibility fixes, and procurement workflow improvements."
+      "Pemeliharaan frontend dan peningkatan keamanan untuk dua aplikasi web enterprise dalam layanan terkelola, termasuk perbaikan alur pengadaan dan kompatibilitas SSR.",
+      "Frontend maintenance and security improvements for two enterprise web applications, including procurement workflow fixes and SSR compatibility."
     ),
     role: bi(
       "Saya memelihara antarmuka, memperbaiki alur pengadaan, dan menangani temuan keamanan frontend pada dua aplikasi web.",
       "I maintained the interfaces, fixed procurement workflows, and addressed frontend security findings across two web applications."
     ),
-    bullets: [
-      bi(
+    technicalDetails: [
+      technicalDetail(
+        bi("Sanitasi data", "Data sanitization"),
         "Mengembangkan composable sanitasi data (useSanitize dan useSvgSanitizer) untuk membersihkan input teks, parameter URL, dan markup SVG kode QR guna menutup celah Cross-Site Scripting (XSS) pada dokumen pengadaan.",
         "Built data sanitization composables (useSanitize and useSvgSanitizer) for text inputs, URL parameters, and QR code SVG markup to address Cross-Site Scripting (XSS) vulnerabilities in procurement documents."
       ),
-      bi(
+      technicalDetail(
+        bi("Keamanan alur login", "Login flow security"),
         "Mengimplementasikan proteksi Content Security Policy (CSP) dan sanitasi pengalihan URL pada alur login portal kemitraan guna mencegah serangan injeksi skrip dan celah Open Redirect.",
         "Implemented Content Security Policy (CSP) protections and URL redirect sanitization on partner portal login flows to prevent script injection and Open Redirect exploits."
       ),
-      bi(
+      technicalDetail(
+        bi("Kompatibilitas SSR", "SSR compatibility"),
         "Membangun pelindung kompatibilitas Server-Side Rendering (SSR), termasuk mock aman untuk objek peramban (localStorage) dan pembungkus ClientOnly, guna mencegah kegagalan hidrasi di lingkungan Node.js 22.",
         "Built Server-Side Rendering (SSR) compatibility guards, including safe browser API mocks (localStorage) and ClientOnly wrappers, to prevent hydration failures in Node.js 22 environments."
       ),
-      bi(
+      technicalDetail(
+        bi("Penguraian ID pesanan pembelian", "Purchase order ID parsing"),
         "Memperbaiki penguraian ID Purchase Order (PO) dari parameter URL untuk mencegah data transaksi satu formulir menimpa formulir lainnya.",
         "Fixed Purchase Order (PO) ID parsing from URL parameters to prevent transaction data from one procurement form from overwriting another."
       ),
-      bi(
+      technicalDetail(
+        bi(
+          "Konsistensi API dan tabel transaksi",
+          "API consistency and transaction tables"
+        ),
         "Menyeragamkan konfigurasi klien REST API publik (BASE_URL_PUBLIC) serta memperbaiki paginasi dan filter pencarian pada tabel transaksi pengadaan.",
         "Standardized public REST API client configuration (BASE_URL_PUBLIC) and improved pagination and search filters in procurement transaction tables."
       ),
@@ -599,31 +703,48 @@ export const projects: ProjectEntry[] = [
       "A web portal and content management system for Pertamina International Shipping."
     ),
     description: bi(
-      "Portal web dan sistem manajemen konten (CMS) untuk PT Pertamina International Shipping, dikembangkan dengan C#/.NET 8 dan Blazor Server dalam arsitektur microservices. Fitur meliputi publikasi berita perusahaan, pengelolaan arsip dokumen, formulir interaktif, dan integrasi Single Sign-On.",
-      "An enterprise portal and content management system (CMS) for PT Pertamina International Shipping, built with C#/.NET 8 and Blazor Server in a microservices architecture. Features include corporate news publishing, document archives, interactive forms, and Single Sign-On integration."
+      "Portal dan sistem manajemen konten untuk Pertamina International Shipping, dengan publikasi berita, arsip dokumen, formulir interaktif, dan Single Sign-On.",
+      "An enterprise portal and CMS for Pertamina International Shipping with news publishing, document archives, interactive forms, and single sign-on."
     ),
     role: bi(
       "Saya mengembangkan dan memelihara antarmuka portal dan CMS, menstandarkan pustaka komponen, serta memelihara konfigurasi kontainer Docker.",
       "I developed and maintained the portal and CMS interfaces, standardized the component library, and maintained Docker container configuration."
     ),
-    bullets: [
-      bi(
+    highlights: [
+      {
+        value: "384",
+        label: bi("berkas Razor distandarkan", "Razor files standardized"),
+      },
+    ],
+    technicalDetails: [
+      technicalDetail(
+        bi("Standardisasi komponen Blazor", "Blazor component standardization"),
         "Menstandarkan pustaka komponen UI Blazor Oktaf.UI pada 384 berkas Razor, meliputi pewarisan kelas dasar, metode siklus hidup komponen (OnParametersSetAsync), dan keamanan tipe referensi nullable.",
         "Standardized the Oktaf.UI Blazor component library across 384 Razor files, including base class inheritance, component lifecycle handling (OnParametersSetAsync), and nullable reference type safety."
       ),
-      bi(
+      technicalDetail(
+        bi("Pembuat formulir dan editor CMS", "Form builder and CMS editor"),
         "Memperbaiki modul Form Builder dan editor CMS dengan menangani deserialisasi parameter null secara aman, mengatasi kegagalan serialisasi komponen, dan meningkatkan respons antarmuka penyuntingan konten.",
         "Improved the Form Builder and CMS editor by safely handling null parameter deserialization, resolving component serialization crashes, and improving content editing responsiveness."
       ),
-      bi(
+      technicalDetail(
+        bi(
+          "Formulir dan navigasi bertingkat",
+          "Forms and multi-level navigation"
+        ),
         "Merancang komponen formulir dan navigasi bertingkat (StickyMenu) dengan indikator langkah, pemisah arah navigasi, serta jarak antarelemen input yang konsisten (InputTextArea, LOV, FbDatePicker, UploadFile).",
         "Designed structured forms and multi-level navigation (StickyMenu) with step indicators, breadcrumb separators, and consistent input spacing (InputTextArea, LOV, FbDatePicker, UploadFile)."
       ),
-      bi(
-        "Mengintegrasikan Mock Authentication Middleware ke 6 layanan backend ASP.NET Core untuk menyimulasikan sesi login dan hak akses administratif (Admin BUSOL/Admin APP) di lingkungan pengembangan lokal tanpa bergantung pada server SSO eksternal.",
-        "Integrated Mock Authentication Middleware into 6 ASP.NET Core backend microservices to simulate logged-in sessions and administrative permissions (Admin BUSOL/Admin APP) in local development without depending on an external SSO server."
+      technicalDetail(
+        bi("Simulasi autentikasi lokal", "Local authentication simulation"),
+        "Mengintegrasikan Mock Authentication Middleware di enam layanan ASP.NET Core untuk menyimulasikan login dan akses Admin BUSOL/Admin APP saat pengembangan lokal tanpa server SSO eksternal.",
+        "Integrated Mock Authentication Middleware in six ASP.NET Core services to simulate logins and Admin BUSOL/Admin APP permissions in local development without an external SSO server."
       ),
-      bi(
+      technicalDetail(
+        bi(
+          "Konfigurasi Docker dan layanan",
+          "Docker and service configuration"
+        ),
         "Memelihara konfigurasi Docker untuk beberapa layanan dan integrasi API microservices, termasuk healthcheck melalui alamat loopback serta sinkronisasi variabel lingkungan basis data lokal.",
         "Maintained multi-service Docker configurations and microservice API integration, including loopback-based health checks and local database environment variable synchronization."
       ),
@@ -655,31 +776,48 @@ export const projects: ProjectEntry[] = [
       "An app for managing and reviewing IT service change requests."
     ),
     description: bi(
-      "Aplikasi IT Service Management (ITSM) berbasis web untuk pengelolaan layanan TI perusahaan sesuai praktik ITIL. Fitur mencakup permintaan perubahan sistem, peninjauan oleh Change Advisory Board (CAB), dan verifikasi dokumen terkait risiko.",
-      "An enterprise IT Service Management (ITSM) application supporting ITIL-aligned operations, including change requests, Change Advisory Board (CAB) reviews, and risk documentation checks."
+      "Aplikasi manajemen layanan TI untuk permintaan perubahan sistem, peninjauan oleh Change Advisory Board (CAB), dan verifikasi dokumen risiko sesuai praktik ITIL.",
+      "An IT service management app for change requests, Change Advisory Board (CAB) reviews, and risk document checks in line with ITIL."
     ),
     role: bi(
       "Saya memelihara modul Change Management dan mengembangkan alur persetujuan serta validasi dokumen.",
       "I maintained the Change Management module and built approval and document validation workflows."
     ),
-    bullets: [
-      bi(
+    highlights: [
+      {
+        value: "35",
+        label: bi(
+          "dokumen justifikasi dalam matriks",
+          "justification documents in the matrix"
+        ),
+      },
+    ],
+    technicalDetails: [
+      technicalDetail(
+        bi("Persetujuan perubahan", "Change approvals"),
         "Memelihara dan mengembangkan modul persetujuan Change Advisory Board (CAB) untuk manajemen perubahan TI, mencakup dialog penambahan peninjau, delegasi ulang (re-assign), dan penghapusan hak persetujuan pada tiket Change Request (CR).",
         "Maintained and developed Change Advisory Board (CAB) approval modules for IT change management, including dialogs to assign, re-assign, and revoke approver permissions on Change Request (CR) tasks."
       ),
-      bi(
+      technicalDetail(
+        bi("Validasi dokumen risiko", "Risk document validation"),
         "Mengembangkan matriks 35 dokumen justifikasi wajib dengan validasi berkas dalam berbagai format hingga 15 MB, pratinjau dokumen, dan penanganan unggahan sementara.",
         "Built a matrix of 35 required justification documents, with validation for multiple file formats up to 15 MB, document previews, and temporary upload handling."
       ),
-      bi(
+      technicalDetail(
+        bi("Pengelolaan dan filter tiket", "Ticket management and filters"),
         "Memelihara modul manajemen tugas perubahan dan filter pencarian tiket lanjutan dengan state filter yang tetap tersimpan.",
         "Maintained change task management modules and advanced ticket search filters with persistent filter settings."
       ),
-      bi(
+      technicalDetail(
+        bi("Hak akses Change Coordinator", "Change Coordinator permissions"),
         "Merancang validasi hak akses dan alur kerja untuk peran Change Coordinator sesuai tata kelola ITIL.",
         "Designed access validation and workflows for the Change Coordinator role in line with ITIL governance practices."
       ),
-      bi(
+      technicalDetail(
+        bi(
+          "Integrasi API dan sinkronisasi draf",
+          "API integration and draft syncing"
+        ),
         "Mengintegrasikan REST API dengan manajemen state Pinia serta memelihara konsistensi sinkronisasi draf perubahan lokal (applyLocalPendingChanges).",
         "Integrated REST APIs with Pinia state management and ensured local pending change synchronization workflows (applyLocalPendingChanges)."
       ),
@@ -709,27 +847,31 @@ export const projects: ProjectEntry[] = [
       "An app for monitoring digital assets and tracking how security findings are addressed."
     ),
     description: bi(
-      "Aplikasi web untuk Continuous Automated Red Teaming dan Attack Surface Management yang membantu memantau kerentanan aset digital perusahaan, kebocoran kredensial, dan alur remediasi keamanan siber.",
-      "A Continuous Automated Red Teaming and Attack Surface Management web application for monitoring corporate digital asset vulnerabilities, credential leaks, and cybersecurity remediation workflows."
+      "Aplikasi Continuous Automated Red Teaming dan Attack Surface Management untuk memantau kerentanan aset digital, kebocoran kredensial, dan tindak lanjut perbaikan.",
+      "A Continuous Automated Red Teaming and Attack Surface Management app for tracking digital asset vulnerabilities, credential leaks, and remediation."
     ),
     role: bi(
       "Saya memelihara antarmuka konfigurasi audit dan pengelolaan domain klien serta menyeragamkan tampilan.",
       "I maintained the audit configuration and client domain interfaces and standardized their visual design."
     ),
-    bullets: [
-      bi(
+    technicalDetails: [
+      technicalDetail(
+        bi("Konfigurasi paket audit", "Audit package settings"),
         "Memelihara dan menyempurnakan antarmuka modul Packages (CRUD paket audit pemindaian, kuota, periode, dan profil konfigurasi).",
         "Maintained and enhanced Packages module interfaces (security scan package management, quotas, periods, and configuration profiles)."
       ),
-      bi(
+      technicalDetail(
+        bi("Validasi formulir", "Form validation"),
         "Mengimplementasikan formulir dengan validasi skema menggunakan Vee-Validate dan Yup dengan manajemen state Pinia.",
         "Implemented schema-validated forms using Vee-Validate and Yup backed by Pinia state management."
       ),
-      bi(
+      technicalDetail(
+        bi("Pengelolaan domain klien", "Client domain management"),
         "Merancang komponen dialog penambahan dan pengeditan domain klien serta formulir filter penelusuran aset digital.",
         "Designed client domain creation and editing dialogs and digital asset search filter forms."
       ),
-      bi(
+      technicalDetail(
+        bi("Konsistensi desain", "Design consistency"),
         "Menjaga konsistensi sistem desain melalui standardisasi palet warna Tailwind CSS dan tata letak responsif.",
         "Maintained a consistent design system by standardizing Tailwind CSS color palettes and responsive layouts."
       ),
@@ -755,31 +897,39 @@ export const projects: ProjectEntry[] = [
       "An e-commerce site for bulk orders, split payments, and shipment tracking."
     ),
     description: bi(
-      "Situs e-commerce untuk pembelian dalam jumlah besar (bulk orders) dengan fitur pembayaran bertahap (split payment), pemenuhan pesanan per item, sinkronisasi filter dengan parameter URL, dan dasbor analitik penjualan berbasis Recharts.",
-      "A bulk-order e-commerce website featuring split payments, item-level order fulfillment, URL-synchronized filters, and sales analytics dashboards powered by Recharts."
+      "Situs e-commerce untuk pesanan dalam jumlah besar dengan pembayaran bertahap, pemenuhan pesanan per item, serta laporan dan dasbor analitik penjualan.",
+      "A bulk-order e-commerce website with split payments, item-level order fulfillment, and sales reports and analytics."
     ),
     role: bi(
       "Saya mengembangkan pengelolaan keranjang belanja, alur pemesanan dan pembayaran, serta panel pemenuhan pesanan per item.",
       "I developed shopping cart state management, checkout and payment workflows, and the item-level fulfillment panel."
     ),
-    bullets: [
-      bi(
+    technicalDetails: [
+      technicalDetail(
+        bi("State keranjang belanja", "Shopping cart state"),
         "Merancang pengelolaan state keranjang belanja dengan optimistic updates menggunakan Next.js 16 (App Router), Zustand, dan TanStack Query v5, termasuk rollback otomatis saat terjadi gangguan jaringan.",
         "Designed shopping cart state management with optimistic updates using Next.js 16 (App Router), Zustand, and TanStack Query v5, including automatic rollback on network failures."
       ),
-      bi(
+      technicalDetail(
+        bi("Pembayaran bertahap", "Split payments"),
         "Mengembangkan alur pembayaran bertahap (split payment) dan dialog konfirmasi pelunasan tahap kedua, dengan pemisahan yang jelas antara barang yang sudah dan belum dilunasi.",
         "Developed split-payment workflows and second-installment confirmation dialogs, clearly separating paid and unpaid items."
       ),
-      bi(
+      technicalDetail(
+        bi("Pemenuhan pesanan per item", "Item-level order fulfillment"),
         "Mengembangkan panel pemenuhan pesanan per item yang membatasi jumlah sesuai rentang yang valid dan mencegah duplikasi entri resi pengiriman.",
         "Built an item-level fulfillment panel, validated quantity ranges, and prevented duplicate shipment-tracking entries."
       ),
-      bi(
+      technicalDetail(
+        bi("Katalog dan laporan penjualan", "Catalog and sales reports"),
         "Mengembangkan katalog produk responsif dengan filter yang tersinkron dengan parameter URL, serta dialog detail laporan penjualan menggunakan Embla Carousel.",
         "Built a responsive product catalog with URL-synchronized filters and an Embla Carousel-based sales report detail dialog."
       ),
-      bi(
+      technicalDetail(
+        bi(
+          "Pemeliharaan kode dan sanitasi input",
+          "Code maintenance and input sanitization"
+        ),
         "Melakukan refactoring untuk meningkatkan keterbacaan dan pemeliharaan kode, serta menerapkan sanitasi input sisi klien menggunakan isomorphic-dompurify guna mengurangi risiko Cross-Site Scripting (XSS).",
         "Refactored code to improve readability and maintainability, and implemented client-side input sanitization with isomorphic-dompurify to reduce Cross-Site Scripting (XSS) risks."
       ),
@@ -813,31 +963,46 @@ export const projects: ProjectEntry[] = [
       "An analytics dashboard prototype for tracking telecommunications service orders."
     ),
     description: bi(
-      "Purwarupa aplikasi analitik operasional untuk ekosistem Netmonk (PT Telkom Indonesia), dengan pemantauan pesanan layanan regional (NCX dan Scone), dasbor Metabase tertanam yang diamankan dengan JWT, serta autentikasi dual-token.",
-      "An operational analytics prototype for PT Telkom Indonesia's Netmonk ecosystem, featuring regional service order tracking (NCX and Scone), JWT-secured embedded Metabase dashboards, and dual-token authentication."
+      "Purwarupa analitik Netmonk untuk PT Telkom Indonesia yang memantau pesanan layanan regional (NCX dan Scone) melalui antarmuka web dan dasbor Metabase.",
+      "An operational analytics prototype for PT Telkom Indonesia that tracks regional service orders (NCX and Scone) through a web interface and embedded Metabase dashboards."
     ),
     role: bi(
       "Saya mengembangkan purwarupa antarmuka pemantauan pesanan dan merancang pengamanan akses ke dasbor Metabase tertanam.",
       "I built the order monitoring prototype and designed secure access for its embedded Metabase dashboards."
     ),
-    bullets: [
-      bi(
+    highlights: [
+      {
+        value: "7",
+        label: bi("divisi regional (TREG)", "regional divisions (TREG)"),
+      },
+      { value: "40+", label: bi("Witel tercakup", "Witel covered") },
+    ],
+    technicalDetails: [
+      technicalDetail(
+        bi("Pelacakan pesanan layanan", "Service order tracking"),
         "Mengembangkan antarmuka pemantauan pesanan regional (NCX dan Scone) menggunakan React, Tailwind CSS, dan Netmonk Design System untuk 7 divisi regional (TREG) dan lebih dari 40 Witel di Indonesia.",
         "Built regional service order tracking interfaces (NCX and Scone) with React, Tailwind CSS, and the Netmonk Design System for 7 regional divisions (TREG) and more than 40 Witel across Indonesia."
       ),
-      bi(
+      technicalDetail(
+        bi("Akses dasbor Metabase", "Metabase dashboard access"),
         "Merancang arsitektur keamanan akses dasbor Metabase tertanam menggunakan token JWT bertanda tangan kriptografis dengan masa aktif 10 menit guna mengamankan visualisasi analitik operasional (dipertahankan sebagai skripsi sarjana di UGM).",
         "Designed access security architectures for embedded Metabase dashboards leveraging cryptographic JWT signing with a 10-minute validity period to protect operational analytics (defended as undergraduate thesis at UGM)."
       ),
-      bi(
+      technicalDetail(
+        bi("Autentikasi dual-token", "Dual-token authentication"),
         "Mengimplementasikan sistem autentikasi dual-token dan mekanisme silent refresh menggunakan RTK Query untuk menangani penyegaran access token di latar belakang secara transparan tanpa mengganggu alur kerja pengguna.",
         "Implemented dual-token authentication and silent refresh mechanisms utilizing RTK Query to execute background access token renewals without interrupting user workflows."
       ),
-      bi(
+      technicalDetail(
+        bi(
+          "Integrasi backend dan hak akses",
+          "Backend integration and access control"
+        ),
         "Mengintegrasikan frontend dengan REST API Express.js dan basis data MongoDB (Mongoose), termasuk penerapan kontrol akses berbasis peran (RBAC) bertingkat.",
         "Integrated the frontend with Express.js REST APIs and MongoDB (Mongoose), including multi-level role-based access control (RBAC)."
       ),
-      bi(
+      technicalDetail(
+        bi("Pemeliharaan setelah magang", "Post-internship maintenance"),
         "Memelihara keandalan repositori pada pembaruan pascamagang (2026) melalui modernisasi build toolchain ke Vite 6 dan remediasi kerentanan dependensi.",
         "Maintained repository reliability during post-internship maintenance (2026) by modernizing build toolchains to Vite 6 and remediating dependency vulnerabilities."
       ),

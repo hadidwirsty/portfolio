@@ -7,6 +7,8 @@ import { ChevronDown, ChevronUp } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { FilterPill } from "@/components/ui/filter-pill"
+import { LetterRoll } from "@/components/ui/letter-roll"
 import { FolderBentoCard } from "@/components/portfolio/folder-bento-card"
 import { ProjectDetailDialog } from "@/components/project-detail-dialog"
 import {
@@ -209,37 +211,22 @@ export function PortfolioCardFolder({
           const count = def.projectRefs.length
 
           return (
-            <button
+            <FilterPill
               key={def.id}
               role="tab"
-              type="button"
               id={`filter-tab-${def.id}`}
               aria-selected={isActive}
               aria-controls="all-projects-drawer"
+              count={count}
+              truncateLabel
+              className="max-w-[min(10rem,100%)] shrink-0 sm:max-w-full"
               onClick={() => {
                 setFocusRequest(null)
                 setActiveFilter(def.id)
               }}
-              className={cn(
-                "group inline-flex cursor-pointer items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-medium whitespace-nowrap transition-all select-none",
-                "focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:outline-none",
-                isActive
-                  ? "bg-foreground font-semibold text-background shadow-xs"
-                  : "border border-border/50 bg-card/70 text-muted-foreground hover:border-foreground/30 hover:bg-muted hover:text-foreground"
-              )}
             >
-              <span>{def.label[lang]}</span>
-              <span
-                className={cn(
-                  "py-0.2 rounded-full px-1.5 font-mono text-[10px]",
-                  isActive
-                    ? "bg-background/25 font-bold text-background"
-                    : "bg-muted text-muted-foreground group-hover:text-foreground"
-                )}
-              >
-                {count}
-              </span>
-            </button>
+              {def.label[lang]}
+            </FilterPill>
           )
         })}
       </div>
@@ -277,7 +264,7 @@ export function PortfolioCardFolder({
           aria-controls="all-projects-drawer"
           className="group inline-flex cursor-pointer items-center gap-2 rounded-full border-border/50 bg-card/80 px-6 py-2.5 text-xs font-medium text-foreground shadow-xs backdrop-blur-md transition-all hover:border-foreground/40 hover:bg-card focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:text-sm"
         >
-          <span>{shortcutButtonLabel}</span>
+          <LetterRoll text={shortcutButtonLabel} hoverTarget="parent" />
           {!isExpanded && (
             <Badge
               variant="secondary"
