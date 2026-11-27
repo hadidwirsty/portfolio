@@ -19,17 +19,17 @@ test("getIssuerCategory correctly identifies issuer categories", () => {
   assert.strictEqual(getIssuerCategory("FHCI BUMN"), "other")
 })
 
-test("filterCertifications returns all 20 for 'all'", () => {
+test("filterCertifications returns all records for 'all'", () => {
   const all = filterCertifications(certifications, "all")
-  assert.strictEqual(all.length, 20)
+  assert.deepEqual(all, certifications)
 })
 
 test("getCertificationCounts categorizes properly", () => {
   const counts = getCertificationCounts(certifications)
-  assert.strictEqual(counts.all, 20)
+  assert.strictEqual(counts.all, 19)
   assert.strictEqual(counts.dicoding, 15)
   assert.strictEqual(counts.linkedin, 2)
-  assert.strictEqual(counts.other, 3)
+  assert.strictEqual(counts.other, 2)
 })
 
 test("issuerCategories contains bilingual labels", () => {

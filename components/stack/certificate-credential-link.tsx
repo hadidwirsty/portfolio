@@ -1,15 +1,20 @@
 import { ExternalLink } from "lucide-react"
 
+import { LetterRoll } from "@/components/ui/letter-roll"
+import { cn } from "@/lib/utils"
+
 import type { CertificationItem } from "@/lib/certifications-data"
 
 interface CertificateCredentialLinkProps {
   certificate: Pick<CertificationItem, "title" | "credentialUrl">
   lang: "id" | "en"
+  className?: string
 }
 
 export function CertificateCredentialLink({
   certificate,
   lang,
+  className,
 }: CertificateCredentialLinkProps) {
   if (!certificate.credentialUrl) return null
 
@@ -22,9 +27,12 @@ export function CertificateCredentialLink({
       target="_blank"
       rel="noopener noreferrer"
       aria-label={`${label}: ${certificate.title} (${newTabLabel})`}
-      className="inline-flex w-fit items-center gap-2 rounded-lg border border-border/60 bg-primary/10 px-3 py-2 font-mono text-xs font-semibold text-primary transition-colors hover:border-primary hover:bg-primary/20 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:outline-none"
+      className={cn(
+        "inline-flex w-fit items-center gap-2 rounded-full border border-border/60 bg-primary/10 px-3 py-2 font-mono text-xs font-semibold text-primary transition-colors hover:border-primary hover:bg-primary/20 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:outline-none",
+        className
+      )}
     >
-      {label}
+      <LetterRoll text={label} hoverTarget="parent" />
       <ExternalLink aria-hidden="true" className="size-3.5 shrink-0" />
     </a>
   )

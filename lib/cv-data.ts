@@ -137,8 +137,6 @@ export const ui = {
     "Saya terbuka untuk peluang kerja sebagai Frontend Engineer dan kolaborasi proyek. Anda bisa menghubungi saya lewat email.",
     "I’m open to frontend engineering roles and project collaborations. Email is the best way to reach me."
   ),
-  contactSheetTitle: bi("Lembar Kontak 01", "Contact Sheet 01"),
-  sheetNumber: bi("Lembar 1/1", "Sheet 1/1"),
   dragStickerHint: bi("Coba geser stikernya", "Try dragging the stickers"),
   stickerBoardModes: {
     pile: bi("Tumpukan", "Pile"),
@@ -147,7 +145,6 @@ export const ui = {
   },
   shuffle: bi("Acak", "Shuffle"),
   tidyUp: bi("Rapikan", "Tidy up"),
-  madeInSemarang: bi("Dibuat di Semarang", "Made in Semarang"),
   stickerAreaLabel: bi(
     "Stiker kontak yang bisa digeser",
     "Draggable contact stickers"
@@ -439,17 +436,12 @@ export const certifications: CertificationEntry[] = [
     period: bi("Jan 2024 – Jan 2027", "Jan 2024 – Jan 2027"),
   },
   {
-    name: "Academic English Proficiency Test (AcEPT) – Skor 218",
-    issuer: "Pusat Bahasa FIB, Universitas Gadjah Mada",
-    period: bi("Agu 2024 – Berlaku Seumur Hidup", "Aug 2024 – No Expiration"),
-  },
-  {
     name: "EF SET English Certification",
     issuer: "English First",
     period: "Aug 2024",
   },
   {
-    name: "Magang Generasi Bertalenta BUMN (MAGENTA) – Skor 87.9",
+    name: "Magang Generasi Bertalenta BUMN (MAGENTA)",
     issuer: "FHCI BUMN",
     period: bi("Feb 2024 – Berlaku Seumur Hidup", "Feb 2024 – No Expiration"),
   },

@@ -17,17 +17,36 @@ export interface CertificationItem {
   expiresAt?: string
   credentialUrl?: string
   featured?: boolean
+  completion?: {
+    timeUtc: string
+    durationMinutes: number
+    skills: string[]
+  }
 }
 
 export interface OtherCredentialItem {
   id: string
   title: string
   issuer: string
+  certificateId?: string
   period: {
     id: string
     en: string
   }
   credentialUrl?: string
+  issuedAt?: string
+  assessment?: {
+    score: string
+    level: { id: string; en: string }
+    skills: { id: string; en: string }[]
+  }
+  internship?: {
+    organization: string
+    role: string
+    startedAt: string
+    endedAt: string
+    grade: string
+  }
 }
 
 export interface CertificationIssuer {
@@ -41,7 +60,7 @@ export interface CertificationIssuer {
 }
 
 export const LEARNING_ARCHIVE_HERO = {
-  sectionIndex: "02 / CERTIFICATIONS",
+  sectionIndex: { id: "02 / SERTIFIKAT", en: "02 / CERTIFICATIONS" },
   title: {
     id: "Arsip Pembelajaran",
     en: "Learning Archive",
@@ -134,8 +153,8 @@ export const CERTIFICATION_ISSUERS: Record<
     id: "dicoding",
     name: "Dicoding Indonesia",
     localizedDescription: {
-      id: "Jalur pembelajaran rekayasa frontend dan ekosistem web modern terakreditasi industri.",
-      en: "Industry-accredited frontend specialization and modern web engineering learning paths.",
+      id: "Pengembangan Web & React",
+      en: "Web Development & React",
     },
     featuredCertificateIds: [
       "dicoding-react-expert",
@@ -147,8 +166,8 @@ export const CERTIFICATION_ISSUERS: Record<
     id: "linkedin",
     name: "LinkedIn Learning",
     localizedDescription: {
-      id: "Pengembangan profesional berkelanjutan, arsitektur komponen React, dan praktik Agile modern.",
-      en: "Continuous professional development courses in React components and modern Agile workflows.",
+      id: "React, Agile & Keterampilan Profesional",
+      en: "React, Agile & Professional Skills",
     },
     featuredCertificateIds: [
       "linkedin-react-essential",
@@ -346,6 +365,11 @@ export const CERTIFICATES_DATA: CertificationItem[] = [
     credentialUrl:
       "https://www.linkedin.com/learning/certificates/ff25b4a497d900e702729c12796e54c0f3720d0987563035cfa0da2fd21495cf",
     issuedAt: "2025-07-03",
+    completion: {
+      timeUtc: "03:38",
+      durationMinutes: 105,
+      skills: ["Web Development", "React.js", "Front-End Development"],
+    },
     featured: true,
   },
   {
@@ -356,6 +380,11 @@ export const CERTIFICATES_DATA: CertificationItem[] = [
     credentialUrl:
       "https://www.linkedin.com/learning/certificates/bfebd927bd8cdde1ca15faf657f0422dae786dcafecae21d5156140df6fe7417",
     issuedAt: "2025-07-03",
+    completion: {
+      timeUtc: "02:17",
+      durationMinutes: 35,
+      skills: ["React.js"],
+    },
     featured: true,
   },
 
@@ -368,6 +397,11 @@ export const CERTIFICATES_DATA: CertificationItem[] = [
     credentialUrl:
       "https://www.linkedin.com/learning/certificates/fd6ad980d1da24f05b38846ba7b799dcbe2f86ceda9ff53e1dff144fb699d60e",
     issuedAt: "2025-06-18",
+    completion: {
+      timeUtc: "08:53",
+      durationMinutes: 95,
+      skills: ["Agile Methodologies", "Agile Project Management"],
+    },
     featured: true,
   },
   {
@@ -378,6 +412,11 @@ export const CERTIFICATES_DATA: CertificationItem[] = [
     credentialUrl:
       "https://www.linkedin.com/learning/certificates/e2c1e032f4d1d5ec10b98a203a7f52d898ada03366545638f249aa65575922d9",
     issuedAt: "2025-07-03",
+    completion: {
+      timeUtc: "04:50",
+      durationMinutes: 60,
+      skills: ["Organizational Change Management"],
+    },
   },
   {
     id: "linkedin-rapid-workplace-change",
@@ -387,6 +426,15 @@ export const CERTIFICATES_DATA: CertificationItem[] = [
     credentialUrl:
       "https://www.linkedin.com/learning/certificates/0ff57008e6a2e8bd730940e7f27e41fe19cf38add07cc4772a153afb54444501",
     issuedAt: "2025-07-03",
+    completion: {
+      timeUtc: "04:07",
+      durationMinutes: 38,
+      skills: [
+        "Team Management",
+        "Cross-team Communication",
+        "Change Management",
+      ],
+    },
   },
   {
     id: "linkedin-cultural-humility",
@@ -396,6 +444,11 @@ export const CERTIFICATES_DATA: CertificationItem[] = [
     credentialUrl:
       "https://www.linkedin.com/learning/certificates/bda481e48b3a96e150c978e5364a4c435bc2d4a5e6874edf515530dbd8aa700f",
     issuedAt: "2025-06-24",
+    completion: {
+      timeUtc: "12:33",
+      durationMinutes: 55,
+      skills: ["Cultural Awareness", "Diversity & Inclusion"],
+    },
   },
   {
     id: "linkedin-embracing-uncertainty",
@@ -405,6 +458,11 @@ export const CERTIFICATES_DATA: CertificationItem[] = [
     credentialUrl:
       "https://www.linkedin.com/learning/certificates/a5b7c649d3bd12b5fc4452741cea7c65aadf12e90ff69f0b08649fba616b03bd",
     issuedAt: "2025-07-03",
+    completion: {
+      timeUtc: "04:29",
+      durationMinutes: 14,
+      skills: ["Resiliency"],
+    },
   },
   {
     id: "linkedin-fearless-mindfulness",
@@ -414,6 +472,11 @@ export const CERTIFICATES_DATA: CertificationItem[] = [
     credentialUrl:
       "https://www.linkedin.com/learning/certificates/26433d7c1cad2831159479820b146860cd76547c4439efe1ea9125af227f2ead",
     issuedAt: "2025-07-03",
+    completion: {
+      timeUtc: "06:13",
+      durationMinutes: 53,
+      skills: ["Mindfulness", "Leadership"],
+    },
   },
 
   // Category C — Communication & Resilience (7)
@@ -425,6 +488,11 @@ export const CERTIFICATES_DATA: CertificationItem[] = [
     credentialUrl:
       "https://www.linkedin.com/learning/certificates/898a794b297451902d7211ff230ee4e99f4476840f9ed7942cc7c486bce78966",
     issuedAt: "2025-06-20",
+    completion: {
+      timeUtc: "07:11",
+      durationMinutes: 22,
+      skills: ["Professional Communication", "Self-confidence"],
+    },
   },
   {
     id: "linkedin-courage-to-speak-up",
@@ -434,6 +502,11 @@ export const CERTIFICATES_DATA: CertificationItem[] = [
     credentialUrl:
       "https://www.linkedin.com/learning/certificates/2534bea3ef1acfa5cbda9c8ef7ddf198938a681c1ba187f20cd30d2ddfe98940",
     issuedAt: "2025-07-03",
+    completion: {
+      timeUtc: "04:04",
+      durationMinutes: 29,
+      skills: ["Professional Communication", "Self-confidence"],
+    },
   },
   {
     id: "linkedin-nano-communicating-courage",
@@ -444,6 +517,11 @@ export const CERTIFICATES_DATA: CertificationItem[] = [
     credentialUrl:
       "https://www.linkedin.com/learning/certificates/0cdb90c22fce5c116de8d1d6f910d1169a5a5db3cb6edc071db12a2e49857b96",
     issuedAt: "2025-06-20",
+    completion: {
+      timeUtc: "06:42",
+      durationMinutes: 13,
+      skills: ["Workplace Relations", "Communication", "Self-confidence"],
+    },
   },
   {
     id: "linkedin-nano-strength-resilience",
@@ -454,6 +532,11 @@ export const CERTIFICATES_DATA: CertificationItem[] = [
     credentialUrl:
       "https://www.linkedin.com/learning/certificates/cf52d430be10270bb1a3ab2d4ad473f716d13d83da9f6b0aa4fab84a4d2d4d07",
     issuedAt: "2025-06-17",
+    completion: {
+      timeUtc: "07:39",
+      durationMinutes: 14,
+      skills: ["Resiliency"],
+    },
   },
   {
     id: "linkedin-courage-habit",
@@ -463,6 +546,11 @@ export const CERTIFICATES_DATA: CertificationItem[] = [
     credentialUrl:
       "https://www.linkedin.com/learning/certificates/cf05e930476c217ac24680890d976f0afe56c03e22aa803131d7b0423d57b077",
     issuedAt: "2025-06-20",
+    completion: {
+      timeUtc: "04:32",
+      durationMinutes: 13,
+      skills: ["Resiliency"],
+    },
   },
   {
     id: "linkedin-courage-self-compassion",
@@ -472,6 +560,11 @@ export const CERTIFICATES_DATA: CertificationItem[] = [
     credentialUrl:
       "https://www.linkedin.com/learning/certificates/6c7d007503d736ba2c099267b45f482bab6fc6a5cd0843dbe48ff94a30bdbc2a",
     issuedAt: "2025-06-20",
+    completion: {
+      timeUtc: "04:00",
+      durationMinutes: 43,
+      skills: ["Emotional Intelligence", "Compassion"],
+    },
   },
   {
     id: "linkedin-compassionate-purpose",
@@ -481,6 +574,11 @@ export const CERTIFICATES_DATA: CertificationItem[] = [
     credentialUrl:
       "https://www.linkedin.com/learning/certificates/17e40bd6bf1340e84f4c03b4fc54d918c366ffc2c15baff0cc6fca3dd8818f7a",
     issuedAt: "2025-06-20",
+    completion: {
+      timeUtc: "04:25",
+      durationMinutes: 29,
+      skills: ["Compassion"],
+    },
   },
 
   // Category D — Customer Relations & Sales (4)
@@ -492,6 +590,11 @@ export const CERTIFICATES_DATA: CertificationItem[] = [
     credentialUrl:
       "https://www.linkedin.com/learning/certificates/d7e68a75d2749d96e7da37d956487d663b126d146d8beb2f8eb5e64d1178495c",
     issuedAt: "2025-06-18",
+    completion: {
+      timeUtc: "09:28",
+      durationMinutes: 25,
+      skills: ["Relationship Building", "Customer Service"],
+    },
   },
   {
     id: "linkedin-positive-conversations-customers",
@@ -501,6 +604,11 @@ export const CERTIFICATES_DATA: CertificationItem[] = [
     credentialUrl:
       "https://www.linkedin.com/learning/certificates/131d6c81228119e599f7fb086ba055e96c64c51a46af918700bda05669afdab5",
     issuedAt: "2025-06-20",
+    completion: {
+      timeUtc: "07:13",
+      durationMinutes: 30,
+      skills: ["Challenging Environment", "Customer Service"],
+    },
   },
   {
     id: "linkedin-nano-customer-centric",
@@ -510,6 +618,15 @@ export const CERTIFICATES_DATA: CertificationItem[] = [
     credentialUrl:
       "https://www.linkedin.com/learning/certificates/0a24a11719f53fcf6ad3e0f75a5eb8a379fe8b1cc0b103cb3854d27f734d4922",
     issuedAt: "2025-06-20",
+    completion: {
+      timeUtc: "06:41",
+      durationMinutes: 9,
+      skills: [
+        "Brand Communication",
+        "Customer Communication",
+        "Customer Service",
+      ],
+    },
   },
   {
     id: "linkedin-personalized-sales",
@@ -520,6 +637,11 @@ export const CERTIFICATES_DATA: CertificationItem[] = [
     credentialUrl:
       "https://www.linkedin.com/learning/certificates/6ac85e81a4fc24d4234a2373cbb087cd1f51d9df8e62294c41062b5bdb0da79f",
     issuedAt: "2025-06-20",
+    completion: {
+      timeUtc: "02:36",
+      durationMinutes: 56,
+      skills: ["Client Relations", "Sales Effectiveness"],
+    },
   },
 
   // Category E — Business Ethics (3)
@@ -531,6 +653,11 @@ export const CERTIFICATES_DATA: CertificationItem[] = [
     credentialUrl:
       "https://www.linkedin.com/learning/certificates/97fc2cf6e0b584b3988a332085d670c8c0f3c671d705980e4047e0d196ad1586",
     issuedAt: "2025-06-20",
+    completion: {
+      timeUtc: "09:20",
+      durationMinutes: 52,
+      skills: ["Business Ethics"],
+    },
   },
   {
     id: "linkedin-ethics-sales",
@@ -540,6 +667,11 @@ export const CERTIFICATES_DATA: CertificationItem[] = [
     credentialUrl:
       "https://www.linkedin.com/learning/certificates/9fa252ca31934f1852fb12f91018d86b6f8583b90c9c7266d4e6af3051583775",
     issuedAt: "2025-06-20",
+    completion: {
+      timeUtc: "07:13",
+      durationMinutes: 60,
+      skills: ["Sales", "Business Ethics"],
+    },
   },
   {
     id: "linkedin-practical-ethics",
@@ -549,24 +681,34 @@ export const CERTIFICATES_DATA: CertificationItem[] = [
     credentialUrl:
       "https://www.linkedin.com/learning/certificates/117aa43ce845cf1bab5dbbfa289828375d2b207d7055b5482513863e8df59918",
     issuedAt: "2025-07-03",
+    completion: {
+      timeUtc: "06:02",
+      durationMinutes: 53,
+      skills: [
+        "Professional Ethics",
+        "Business Ethics",
+        "Ethical Decision Making",
+      ],
+    },
   },
 ]
 
-// 3 Separate Legacy Non-Course Credentials (Preserved directly from repository data)
+// Non-course credentials stay separate from the course archive count.
 export const OTHER_CREDENTIALS: OtherCredentialItem[] = [
-  {
-    id: "other-ugm-acept",
-    title: "Academic English Proficiency Test (AcEPT) – Skor 218",
-    issuer: "Pusat Bahasa FIB, Universitas Gadjah Mada",
-    period: {
-      id: "Agu 2024 – Berlaku Seumur Hidup",
-      en: "Aug 2024 – No Expiration",
-    },
-  },
   {
     id: "other-ef-set",
     title: "EF SET English Certification",
     issuer: "English First",
+    issuedAt: "2024-08-17",
+    credentialUrl: "https://cert.efset.org/MDhMhx",
+    assessment: {
+      score: "60/100",
+      level: { id: "B2 Menengah Atas", en: "B2 Upper Intermediate" },
+      skills: [
+        { id: "Membaca", en: "Reading" },
+        { id: "Menyimak", en: "Listening" },
+      ],
+    },
     period: {
       id: "Agu 2024",
       en: "Aug 2024",
@@ -574,8 +716,19 @@ export const OTHER_CREDENTIALS: OtherCredentialItem[] = [
   },
   {
     id: "other-fhci-magenta",
-    title: "Magang Generasi Bertalenta BUMN (MAGENTA) – Skor 87.9",
+    title: "Magang Generasi Bertalenta BUMN (MAGENTA)",
     issuer: "FHCI BUMN",
+    certificateId: "00263/MAGENTA/FHCI01/2/24",
+    issuedAt: "2024-02-27",
+    credentialUrl:
+      "https://magentaku.id/?nomor_sertifikat=00263%252FMAGENTA%252FFHCI01%252F2%252F24",
+    internship: {
+      organization: "PT Telekomunikasi Indonesia (Persero) Tbk",
+      role: "Developer",
+      startedAt: "2023-01-02",
+      endedAt: "2023-12-31",
+      grade: "A",
+    },
     period: {
       id: "Feb 2024 – Berlaku Seumur Hidup",
       en: "Feb 2024 – No Expiration",
@@ -606,6 +759,41 @@ export function getCategoryById(
   categoryId: string
 ): CertificationCategory | undefined {
   return CERTIFICATION_CATEGORIES.find((cat) => cat.id === categoryId)
+}
+
+export function getCertificateId(
+  certificate: CertificationItem
+): string | undefined {
+  if (certificate.certificateId || certificate.issuerId !== "linkedin") {
+    return certificate.certificateId
+  }
+
+  return certificate.credentialUrl?.match(
+    /^https:\/\/www\.linkedin\.com\/learning\/certificates\/([a-f0-9]{64})(?=$|[/?#])/i
+  )?.[1]
+}
+
+export function formatCourseDuration(
+  minutes: number,
+  lang: "id" | "en"
+): string {
+  const hours = Math.floor(minutes / 60)
+  const remainder = minutes % 60
+  const units: [number, "hour" | "minute"][] = [
+    [hours, "hour"],
+    [remainder, "minute"],
+  ]
+
+  return units
+    .filter(([value]) => value > 0)
+    .map(([value, unit]) =>
+      new Intl.NumberFormat(lang, {
+        style: "unit",
+        unit,
+        unitDisplay: "long",
+      }).format(value)
+    )
+    .join(" ")
 }
 
 export function getCategoriesByIssuer(

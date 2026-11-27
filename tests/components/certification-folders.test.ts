@@ -10,6 +10,7 @@ import {
   CERTIFICATES_DATA,
   CERTIFICATION_ISSUERS,
   LEARNING_ARCHIVE_HERO,
+  getCertificateId,
   getFeaturedCertificatesByIssuer,
   getIssuerCount,
   getTotalCertificatesCount,
@@ -17,10 +18,7 @@ import {
 } from "../../lib/certifications-data.ts"
 
 const DATA_PATH = path.resolve(process.cwd(), "lib/certifications-data.ts")
-const DOC_PREVIEW_PATH = path.resolve(
-  process.cwd(),
-  "components/stack/certificate-document-preview.tsx"
-)
+
 const DETAIL_PATH = path.resolve(
   process.cwd(),
   "components/stack/certificate-detail.tsx"
@@ -227,17 +225,26 @@ test("LinkedIn certificates match exact titles and have distinct canonical crede
   assert.strictEqual(ethCerts.length, 3)
 })
 
-test("other credentials contains exactly 3 historical records separate from the 38 course count", () => {
-  assert.strictEqual(OTHER_CREDENTIALS.length, 3)
+test("other credentials lists the two linked records separately from the 38 courses", () => {
+  assert.strictEqual(OTHER_CREDENTIALS.length, 2)
 
   const titles = OTHER_CREDENTIALS.map((o) => o.title)
   assert.ok(
-    titles.includes("Academic English Proficiency Test (AcEPT) – Skor 218")
+    !titles.includes("Academic English Proficiency Test (AcEPT) – Skor 218")
   )
   assert.ok(titles.includes("EF SET English Certification"))
-  assert.ok(
-    titles.includes("Magang Generasi Bertalenta BUMN (MAGENTA) – Skor 87.9")
+  assert.ok(titles.includes("Magang Generasi Bertalenta BUMN (MAGENTA)"))
+  const efSet = OTHER_CREDENTIALS.find(({ id }) => id === "other-ef-set")
+  const magenta = OTHER_CREDENTIALS.find(
+    ({ id }) => id === "other-fhci-magenta"
   )
+  assert.equal(efSet?.credentialUrl, "https://cert.efset.org/MDhMhx")
+  assert.equal(efSet?.assessment?.score, "60/100")
+  assert.equal(
+    magenta?.credentialUrl,
+    "https://magentaku.id/?nomor_sertifikat=00263%252FMAGENTA%252FFHCI01%252F2%252F24"
+  )
+  assert.equal(magenta?.certificateId, "00263/MAGENTA/FHCI01/2/24")
 
   // Verify none of other credentials are in CERTIFICATES_DATA
   const courseIds = new Set(CERTIFICATES_DATA.map((c) => c.id))
@@ -286,6 +293,9 @@ const loadTsx = requireFromTest(jitiPath).createJiti(import.meta.url, {
   fsCache: false,
   alias: { "@": process.cwd() },
 })
+const { Dialog: DialogPrimitive } = loadTsx(
+  "@base-ui/react/dialog"
+) as typeof import("@base-ui/react/dialog")
 
 const FOLDER_PATH = path.resolve("components/stack/certification-folder.tsx")
 
@@ -303,37 +313,88 @@ test("closed certification folders expose only the disclosure button; open folde
         createElement(
           LanguageProvider,
           null,
-          createElement(CertificationFolder, {
-            issuer,
-            isOpen,
-            selectedCertId: isOpen ? featured[0].id : null,
-            onToggle: () => {},
-            onSelectCert: () => {},
-            onCloseDetail: () => {},
-          })
+          createElement(
+            DialogPrimitive.Root,
+            null,
+            createElement(CertificationFolder, {
+              issuer,
+              isOpen,
+              onToggle: () => {},
+            })
+          )
         )
       )
     const closed = render(false)
-    assert.equal((closed.match(/<button\b/g) ?? []).length, 1)
+    assert.equal((closed.match(/<button\b/g) ?? []).length, 4)
+    assert.equal((closed.match(/<button[^>]* disabled=""/g) ?? []).length, 3)
     assert.match(closed, /aria-expanded="false"/)
-    assert.match(closed, /<\/button>[\s\S]*?data-certificate-stack/)
-    assert.match(closed, /aria-hidden="true"[^>]*data-certificate-stack/)
-    assert.doesNotMatch(closed, /aria-pressed=/)
+    assert.match(closed, /inert="" aria-hidden="true"/)
+    for (const cert of featured)
+      assert.ok(closed.includes(cert.title.replaceAll("&", "&amp;")))
 
     const open = render(true)
     const target = open.match(/aria-controls="([^"]+)"/)?.[1]
     assert.ok(target)
     assert.ok(open.includes(`id="${target}"`))
     assert.match(open, /aria-expanded="true"/)
-    assert.equal((open.match(/aria-pressed="(?:true|false)"/g) ?? []).length, 3)
-    assert.equal((open.match(/aria-pressed="true"/g) ?? []).length, 1)
-    assert.match(open, /<ul[^>]*grid-cols-1[^>]*grid-cols-3/)
-    assert.doesNotMatch(open, /data-certificate-stack/)
+    assert.equal((open.match(/aria-haspopup="dialog"/g) ?? []).length, 3)
+    assert.doesNotMatch(open, /<button[^>]* disabled=/)
+    assert.match(
+      open,
+      /class="certificate-sleeve" aria-hidden="false">[\s\S]*?<svg[^>]*class="certificate-folder-back\b[\s\S]*?<ul class="certificate-sheets"/
+    )
+    assert.match(open, /<svg[^>]*class="certificate-folder-front\b/)
+    assert.match(closed, /<svg[^>]*class="certificate-folder-back\b/)
+    const firstSheet = open.match(
+      /class="certificate-sheets"><li[\s\S]*?<\/li>/
+    )?.[0]
+    assert.ok(firstSheet)
+    assert.ok(firstSheet.includes(`data-certificate-sticker="${issuer.id}"`))
+    assert.ok(firstSheet.includes(featured[0].title))
+    assert.ok(firstSheet.includes(issuer.name))
+    const [first] = featured
+    const issuedAt = first.completion
+      ? `${first.issuedAt}T${first.completion.timeUtc}:00Z`
+      : first.issuedAt
+    assert.ok(firstSheet.includes(`dateTime="${issuedAt}"`))
+    assert.equal(
+      (closed.match(/data-certificate-sticker=/g) ?? []).length,
+      featured.length
+    )
+    assert.equal(
+      (open.match(/data-certificate-sticker=/g) ?? []).length,
+      featured.length
+    )
+    for (const cert of featured) {
+      const title = cert.title.replaceAll("&", "&amp;")
+      assert.ok(closed.includes(`aria-label="${title}"`))
+      assert.ok(open.includes(`aria-label="${title}"`))
+    }
+    assert.doesNotMatch(open, /<img\b/)
   }
 
-  const preview = fs.readFileSync(DOC_PREVIEW_PATH, "utf-8")
-  assert.match(preview, /initial=\{shouldReduceMotion \? false :/)
-  assert.match(preview, /delay: shouldReduceMotion \? 0 :/)
+  const styles = fs.readFileSync("app/globals.css", "utf-8")
+  assert.match(styles, /\.certificate-sleeve\s*\{[^}]*\border:\s*-1;/)
+  assert.match(
+    styles,
+    /\n\.certificate-sleeve\s*\{[^}]*\bmargin-bottom:\s*calc\(-1 \* var\(--certificate-pocket-overlap\)\);/
+  )
+  assert.doesNotMatch(
+    styles,
+    /\.certificate-folder\[data-open="true"\] \.certificate-folder-back\s*\{[^}]*\bdisplay:\s*none;/
+  )
+  assert.doesNotMatch(
+    styles,
+    /\.certificate-folder\[data-open="true"\] \.certificate-sleeve\s*\{[^}]*\border:\s*0;/
+  )
+  assert.match(
+    styles,
+    /@container \(min-width: 32rem\)[\s\S]*?grid-template-columns: repeat\(3/
+  )
+  assert.match(
+    styles,
+    /@media \(prefers-reduced-motion: no-preference\)[^{]*\{\s*\.certificate-sheets > li/
+  )
 })
 
 test("folder Escape is locally owned and returns focus to the relevant trigger", () => {
@@ -352,11 +413,8 @@ test("folder Escape is locally owned and returns focus to the relevant trigger",
     folder,
     /event\.preventDefault\(\)[\s\S]*?event\.stopPropagation\(\)/
   )
-  assert.match(
-    folder,
-    /if \(selectedCert\) \{\s*handleCloseDetailWithFocus\(\)\s*\} else \{\s*onToggle\(\)\s*toggleButtonRef\.current\?\.focus\(\)/
-  )
-  assert.match(folder, /onCloseDetail\(\)[\s\S]*?selectedButton\?\.focus\(\)/)
+  assert.match(folder, /onToggle\(\)\s*toggleButtonRef\.current\?\.focus\(\)/)
+  assert.doesNotMatch(folder, /<CertificateDetail/)
 })
 
 test("certificate-detail provides neutral wording when credential URL is unavailable", () => {
@@ -392,7 +450,80 @@ test("certification-archive implements expandable 38-certificate listing with co
   assert.match(source, /handleIssuerChange\("linkedin"\)/)
 
   // Other credentials section
-  assert.match(source, /OTHER_CREDENTIALS\.map/)
+  assert.match(
+    source,
+    /<ul className="certificate-archive-list\b[^"]*">\s*\{OTHER_CREDENTIALS\.map[\s\S]*?<CertificateSticker certificate=\{cred\}/
+  )
+  assert.match(
+    source,
+    /<ul className="certificate-archive-list\b[^"]*">\s*\{filteredCertificates\.map[\s\S]*?<CertificateSticker certificate=\{cert\}/
+  )
+
+  const { CertificateSticker } = loadTsx(
+    "@/components/stack/certificate-sticker"
+  ) as typeof import("../../components/stack/certificate-sticker")
+  const { LanguageProvider } = loadTsx(
+    "@/lib/language-context"
+  ) as typeof import("../../lib/language-context")
+  for (const certificate of [...CERTIFICATES_DATA, ...OTHER_CREDENTIALS]) {
+    const isCourse = "issuerId" in certificate
+    const html = renderToStaticMarkup(
+      createElement(
+        LanguageProvider,
+        null,
+        createElement(
+          DialogPrimitive.Root,
+          null,
+          createElement(CertificateSticker, { certificate })
+        )
+      )
+    )
+    assert.ok(
+      html.includes(
+        `data-certificate-sticker="${isCourse ? certificate.issuerId : certificate.id}"`
+      )
+    )
+    assert.ok(html.startsWith("<button "))
+    assert.match(html, /aria-haspopup="dialog"/)
+
+    if (isCourse && certificate.issuerId === "dicoding") {
+      assert.ok(certificate.certificateId)
+      const qrPath = `/images/sertifikat/dicoding-qr/${certificate.certificateId}.webp`
+      assert.ok(html.includes(qrPath))
+      assert.ok(fs.existsSync(`public${qrPath}`))
+      assert.ok(
+        html.includes(`dicoding.com/certificates/${certificate.certificateId}`)
+      )
+      assert.ok(html.includes(`dateTime="${certificate.expiresAt}"`))
+    }
+
+    if (isCourse && certificate.issuerId === "linkedin") {
+      const certificateId = getCertificateId(certificate)
+      assert.ok(certificateId, certificate.title)
+      assert.ok(certificate.completion?.skills.length, certificate.title)
+      assert.ok(html.includes(certificateId))
+      assert.ok(html.includes(`T${certificate.completion.timeUtc}:00Z`))
+      assert.match(html, /certificate-miniature-linkedin-signature/)
+    }
+
+    if (certificate.id === "other-ef-set") {
+      assert.match(html, /class="certificate-miniature-efset-wordmark"/)
+      assert.match(html, /role="img" aria-label="60\/100 · B2 /)
+      assert.equal(
+        (html.match(/class="certificate-miniature-efset-check"/g) ?? []).length,
+        2
+      )
+      assert.match(html, /dateTime="2024-08-17"/)
+    }
+
+    if (certificate.id === "other-fhci-magenta") {
+      assert.match(html, /00263\/MAGENTA\/FHCI01\/2\/24/)
+      assert.match(html, /dateTime="2023-01-02"/)
+      assert.match(html, /dateTime="2023-12-31"/)
+      assert.match(html, /<strong>A<\/strong>/)
+      assert.match(html, /certificate-miniature-magenta-qr/)
+    }
+  }
 })
 
 test("complete archive uses one collapsed disclosure labelled with the course count", () => {
@@ -433,15 +564,35 @@ test("archive announces the selected platform and category filters", () => {
   assert.match(source, /aria-pressed=\{activeCategory === cat\.id\}/)
 })
 
-test("closing archive details restores focus to the selected certificate button", () => {
-  const source = fs.readFileSync(ARCHIVE_PATH, "utf-8")
-
-  assert.match(source, /ref=\{isSelected \? selectedButtonRef : undefined\}/)
-  assert.match(source, /onClose=\{handleCloseDetailWithFocus\}/)
-  assert.match(
-    source,
-    /const selectedButton = selectedButtonRef\.current\s+setSelectedCertId\(null\)\s+selectedButton\?\.focus\(\)/
+test("certificate entries share a modal with initial and trigger focus", () => {
+  const grid = fs.readFileSync(
+    "components/stack/certification-folder-grid.tsx",
+    "utf-8"
   )
+  const detail = fs.readFileSync(DETAIL_PATH, "utf-8")
+  const sticker = fs.readFileSync(
+    "components/stack/certificate-sticker.tsx",
+    "utf-8"
+  )
+
+  assert.match(grid, /<DialogPrimitive.Root<CertificateRecord>>/)
+  assert.match(grid, /<CertificateDetail certificate=\{payload\}/)
+  assert.match(sticker, /<DialogTrigger\s+payload=\{certificate\}/)
+  assert.match(
+    detail,
+    /<DialogContent\s+hideCloseButton\s+initialFocus=\{titleRef\}\s+finalFocus/
+  )
+  assert.match(detail, /<DialogTitle\s+ref=\{titleRef\}\s+tabIndex=\{-1\}/)
+  assert.match(detail, /<DialogClose\b/)
+  assert.match(
+    detail,
+    /<DialogContent[^>]+className="[^"]*border-0 bg-transparent/
+  )
+  assert.match(
+    detail,
+    /<\/DialogHeader>\s*<CertificatePaper certificate=\{certificate\}\s*\/>[\s\S]*?<dl[\s\S]*?<CertificateCredentialLink/
+  )
+  assert.match(detail, /repeat: reduceMotion \? 0 : Infinity/)
 })
 
 test("app/stack/page.tsx renders single unified Section 02 learning archive without duplicate legacy component", () => {
@@ -512,6 +663,10 @@ test("course dates match the audited source documents by stable ID", () => {
 })
 
 test("Learning Archive uses a single bilingual summary and compact platform folders", () => {
+  assert.deepEqual(LEARNING_ARCHIVE_HERO.sectionIndex, {
+    id: "02 / SERTIFIKAT",
+    en: "02 / CERTIFICATIONS",
+  })
   assert.deepEqual(LEARNING_ARCHIVE_HERO.title, {
     id: "Arsip Pembelajaran",
     en: "Learning Archive",
@@ -526,20 +681,17 @@ test("Learning Archive uses a single bilingual summary and compact platform fold
   )
   assert.match(grid, /getTotalCertificatesCount\(\)/)
   assert.match(grid, /grid-cols-1[^"\n]*lg:grid-cols-2/)
-  assert.match(
-    folder,
-    /<Badge[^>]*variant="outline"[^>]*>\s*\{certCountLabel\}\s*<\/Badge>/
-  )
-  assert.doesNotMatch(folder, /\[Buka 3 Dokumen\]/)
+  assert.match(folder, /\{issuer\.name\}/)
+  assert.match(folder, /\{issuer\.localizedDescription\[lang\]\}/)
+  assert.match(folder, /aria-label=\{actionLabel\}/)
+  assert.doesNotMatch(folder, /<Badge\b|<ChevronDown\b/)
 })
 
-test("credential actions are conditional native links in detail and archive", () => {
+test("credential actions are conditional native links in certificate details", () => {
   const detail = fs.readFileSync(DETAIL_PATH, "utf-8")
-  const archive = fs.readFileSync(ARCHIVE_PATH, "utf-8")
-  assert.match(detail, /<CertificateCredentialLink\s+certificate=\{cert\}/)
   assert.match(
-    archive,
-    /<\/button>\s*<CertificateCredentialLink\s+certificate=\{cert\}/
+    detail,
+    /<CertificateCredentialLink\s+certificate=\{certificate\}/
   )
   const { CertificateCredentialLink } = loadTsx(
     path.resolve("components/stack/certificate-credential-link.tsx")

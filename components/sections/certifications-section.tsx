@@ -5,6 +5,7 @@ import { Award, Calendar, ChevronDown } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
+import { LetterRoll } from "@/components/ui/letter-roll"
 import { SectionHeading } from "@/components/section-heading"
 import {
   filterCertifications,
@@ -83,11 +84,14 @@ function CertificationsSection() {
             onClick={() => setExpanded((prev) => !prev)}
             className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-border/50 bg-background/80 px-4 py-2 text-xs font-medium text-muted-foreground shadow-2xs transition-all duration-150 hover:bg-muted/70 hover:text-foreground"
           >
-            <span>
-              {expanded
-                ? showLessLabel
-                : `${showAllLabel} (${filteredCerts.length - INITIAL_VISIBLE_COUNT} lainnya)`}
-            </span>
+            <LetterRoll
+              hoverTarget="parent"
+              text={
+                expanded
+                  ? showLessLabel
+                  : `${showAllLabel} (${filteredCerts.length - INITIAL_VISIBLE_COUNT} lainnya)`
+              }
+            />
             <ChevronDown
               className={cn(
                 "size-3.5 transition-transform duration-200",
@@ -125,7 +129,7 @@ function IssuerTabButton({
           : "border border-border/50 bg-background/80 text-muted-foreground hover:bg-muted/70 hover:text-foreground"
       )}
     >
-      <span>{label}</span>
+      <LetterRoll text={label} hoverTarget="parent" />
       <span
         className={cn(
           "rounded-full px-1.5 py-0.5 font-mono text-[0.65rem] leading-none font-semibold",
