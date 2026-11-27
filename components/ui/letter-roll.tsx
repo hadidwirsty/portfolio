@@ -49,6 +49,7 @@ export interface LetterRollProps extends React.HTMLAttributes<HTMLSpanElement> {
   className?: string
   style?: React.CSSProperties
   isRolled?: boolean
+  truncate?: boolean
 }
 
 export function LetterRoll({
@@ -65,6 +66,7 @@ export function LetterRoll({
   className,
   style,
   isRolled,
+  truncate = false,
   ...rest
 }: LetterRollProps) {
   const rootRef = React.useRef<HTMLElement | null>(null)
@@ -280,12 +282,16 @@ export function LetterRoll({
         display: "block",
         margin: 0,
         color: color || "inherit",
-        whiteSpace: autoWidth ? "nowrap" : "normal",
+        whiteSpace: autoWidth || truncate ? "nowrap" : "normal",
         width: autoWidth ? "max-content" : style?.width,
       }}
     >
       <span style={srOnly}>{text}</span>
-      <span aria-hidden="true" style={{ display: "block", userSelect: "none" }}>
+      <span
+        aria-hidden="true"
+        className={truncate ? "truncate" : undefined}
+        style={{ display: "block", userSelect: "none" }}
+      >
         {words.map((item, wi) =>
           item.isSpace ? (
             <span key={wi}>{item.word}</span>

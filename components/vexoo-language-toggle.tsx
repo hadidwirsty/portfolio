@@ -4,6 +4,7 @@ import * as React from "react"
 import { Globe } from "lucide-react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 
+import { LetterRoll } from "@/components/ui/letter-roll"
 import { useLanguage } from "@/lib/language-context"
 import { cn } from "@/lib/utils"
 
@@ -169,7 +170,7 @@ export function VexooLanguageToggle() {
                     }
                   />
                 )}
-                <span className="relative z-20">ID</span>
+                <LetterRoll text="ID" hoverTarget="parent" className="z-20" />
               </button>
 
               {/* Opsi EN */}
@@ -199,7 +200,7 @@ export function VexooLanguageToggle() {
                     }
                   />
                 )}
-                <span className="relative z-20">EN</span>
+                <LetterRoll text="EN" hoverTarget="parent" className="z-20" />
               </button>
             </div>
           </motion.div>

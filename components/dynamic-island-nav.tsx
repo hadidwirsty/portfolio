@@ -19,6 +19,7 @@ import {
   X,
 } from "lucide-react"
 
+import { LetterRoll } from "@/components/ui/letter-roll"
 import { nav, subpages } from "@/lib/cv-data"
 import { useT } from "@/lib/language-context"
 
@@ -223,7 +224,7 @@ export function DynamicIslandNav() {
                 className="inline-flex items-center gap-2 rounded-full bg-neutral-800/90 px-3.5 py-1.5 font-mono text-xs font-semibold tracking-tight text-white shadow-xs transition-colors hover:bg-neutral-700/90 active:scale-95 dark:bg-neutral-700/80 dark:hover:bg-neutral-600/80"
               >
                 <ActiveIcon className="size-4 shrink-0 text-white" />
-                <span>{activeItem.label}</span>
+                <LetterRoll text={activeItem.label} hoverTarget="parent" />
               </button>
 
               <button
@@ -289,7 +290,7 @@ export function DynamicIslandNav() {
                       }`}
                     >
                       <Icon className="size-4.5 shrink-0" />
-                      <span>{item.label}</span>
+                      <LetterRoll text={item.label} hoverTarget="parent" />
                     </Link>
                   )
                 })}
@@ -381,7 +382,10 @@ export function DynamicIslandNav() {
                             transition={activeTransition}
                             className="overflow-hidden font-mono tracking-tight whitespace-nowrap"
                           >
-                            {item.label}
+                            <LetterRoll
+                              text={item.label}
+                              isRolled={isHovered}
+                            />
                           </motion.span>
                         )}
                       </AnimatePresence>
@@ -410,7 +414,7 @@ export function DynamicIslandNav() {
                   className="inline-flex h-9 items-center gap-2 rounded-full bg-neutral-800/90 px-3.5 font-mono text-xs font-semibold tracking-tight text-white shadow-xs transition-colors hover:bg-neutral-700/90 focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:outline-none active:scale-95 sm:h-10 sm:px-4 sm:text-[13px] dark:bg-neutral-700/80 dark:hover:bg-neutral-600/80"
                 >
                   <ActiveIcon className="size-4.5 shrink-0 text-white sm:size-5" />
-                  <span>{activeItem.label}</span>
+                  <LetterRoll text={activeItem.label} hoverTarget="parent" />
                 </Link>
 
                 <div

@@ -121,7 +121,7 @@ test("LetterRoll isolates decorative character layers with aria-hidden and prese
   // Character-splitting visual layers are hidden from accessibility tree
   assert.match(
     source,
-    /<span aria-hidden=["']true["']/,
+    /<span\s+aria-hidden=["']true["']/,
     "LetterRoll must wrap visual split-character spans in aria-hidden"
   )
 

@@ -45,16 +45,18 @@ function DialogBackdrop({
 }
 
 function DialogContent({
+  backdropClassName,
   className,
   children,
   hideCloseButton = false,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Popup> & {
+  backdropClassName?: string
   hideCloseButton?: boolean
 }) {
   return (
     <DialogPortal>
-      <DialogBackdrop />
+      <DialogBackdrop className={backdropClassName} />
       <DialogPrimitive.Popup
         data-slot="dialog-content"
         className={cn(
